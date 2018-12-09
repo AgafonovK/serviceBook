@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface AppRoleRepository extends JpaRepository <AppRole, Long> {
 
-    @Query("select ar.roleName from AppRole ar where ar.appUser.userId = :userId ")
-    List<String>getRoleNames(@Param("userId") Long userId);
+    /** work query
+     * select ar.roleName from AppRole ar inner join UserRole ur on ar = ur.appRole inner join AppUser au on ur.user = au where au.userId = :userId
+     */
+    @Query("select ur.appRole.roleName from UserRole ur where ur.user.userId = :userId")
+    List<String> getRoleNames(@Param("userId") Long userId);
 }

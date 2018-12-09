@@ -1,11 +1,10 @@
 package com.xvr.serviceBook.service;
 
-import com.xvr.serviceBook.entity.User;
+import com.xvr.serviceBook.entity.AppUser;
 
 
 public interface UserService {
 
-
-    User loadUserByUsername(String userName);
+    AppUser addUser(AppUser appUser);
 
 }
