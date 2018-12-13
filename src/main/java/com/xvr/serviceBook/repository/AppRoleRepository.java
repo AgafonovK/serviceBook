@@ -12,6 +12,6 @@ public interface AppRoleRepository extends JpaRepository <AppRole, Long> {
     /** work query
      * select ar.roleName from AppRole ar inner join UserRole ur on ar = ur.appRole inner join AppUser au on ur.user = au where au.userId = :userId
      */
-    @Query("select ur.appRole.roleName from UserRole ur where ur.user.userId = :userId")
+    @Query("select ur.appRole.roleName from UserRole ur where ur.appUser.userId = :userId")
     List<String> getRoleNames(@Param("userId") Long userId);
 }
