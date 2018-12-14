@@ -38,8 +38,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/","/login", "/logout").permitAll()
                 .antMatchers("/user").hasAnyRole("USER")
-                .antMatchers("/admin").hasAnyRole("ADMIN")
+                .antMatchers("/admin", "/h2-console").hasAnyRole("ADMIN")
                 .anyRequest().authenticated();
+
         http.authorizeRequests()
                 .and()
                 .formLogin()
@@ -64,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(60*60); // 1 hour token;
-
+        http.headers().frameOptions().disable();
     }
 
     public PersistentTokenRepository persistentTokenRepository(){
