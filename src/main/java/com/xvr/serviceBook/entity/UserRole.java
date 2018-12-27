@@ -3,7 +3,7 @@ package com.xvr.serviceBook.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_Role")
+@Table(name = "user_role")
 public class UserRole {
 
     @Id
