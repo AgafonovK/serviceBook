@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/login", "/logout").permitAll()
+                .antMatchers("/","/login", "/logout", "/register").permitAll()
                 .antMatchers("/user").hasAnyRole("USER")
                 .antMatchers("/admin", "/h2-console").hasAnyRole("ADMIN")
                 .anyRequest().authenticated();
@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .and()
                 .formLogin()
+                .loginProcessingUrl("/j_spring_security_check")
                 .loginPage("/login")
                 .defaultSuccessUrl("/userAccount")
                 .failureUrl("/login?error=true")

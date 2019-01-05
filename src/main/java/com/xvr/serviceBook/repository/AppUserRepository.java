@@ -12,4 +12,5 @@ public interface AppUserRepository extends JpaRepository <AppUser,Long> {
     @Query("select u from AppUser u where u.userName = :name")
     AppUser findUserAccount(@Param("name") String userName);
 
+
 }

@@ -1,6 +1,6 @@
 package com.xvr.serviceBook.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.xvr.serviceBook.form.AppUserForm;
 import com.xvr.serviceBook.utils.WebUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -24,15 +23,19 @@ public class MainController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(Model model, Principal principal){
+
         User loginedUser = (User) ((Authentication)principal).getPrincipal();
 
         String userInfo = WebUtils.toString(loginedUser);
-        model.addAttribute("userinfo", userInfo);
+
+        model.addAttribute("userInfo", userInfo);
+
         return "adminPage";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model){
+
         return "loginPage";
     }
 
@@ -43,8 +46,41 @@ public class MainController {
     }
 
     @RequestMapping(value = "/403Page", method = RequestMethod.GET)
-    public String accessDenied (Model model){
+    public String accessDenied (Model model,Principal principal){
+        if (principal!=null){
+            User loginedUser = (User)((Authentication)principal).getPrincipal();
+
+            String userInfo = WebUtils.toString(loginedUser);
+            model.addAttribute("userInfo", userInfo);
+            String message = "hi " + principal.getName() + "<br> You do not have permission to access this page!";
+            model.addAttribute("message", message);
+
+        }
         return "403Page";
     }
 
+    //Show register page
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String viewRegister(Model model){
+        AppUserForm form = new AppUserForm();
+        model.addAttribute("appUserForm", form);
+        return "registerPage";
+    }
+
+    @RequestMapping(value = "/registerSuccessful")
+    public String viewRegisterSuccessful(Model model){
+        return "registerSuccessfulPage";
+    }
+
+    @RequestMapping (value = "/userInfo", method = RequestMethod.GET)
+    public String userInfo(Model model, Principal principal){
+        String userName = principal.getName();
+        System.out.println("User Name: " + userName);
+
+        User loginedUSer = (User) ((Authentication)principal).getPrincipal();
+
+        String userInfo = WebUtils.toString(loginedUSer);
+        model.addAttribute("userInfo", userInfo);
+        return "userInfoPage";
+    }
 }

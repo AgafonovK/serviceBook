@@ -13,6 +13,10 @@
 
     | &nbsp;
 
+    <a th:href="@{/registerPage}">Register</a>
+
+    | &nbsp;
+
     <a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>
 
 </div>
