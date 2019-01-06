@@ -1,9 +1,6 @@
 package com.xvr.serviceBook.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -22,6 +19,10 @@ public class AppUser {
 
     @Column(name = "enable", length = 1, nullable = false)
     private boolean enable;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(table = "worker", name = "id",nullable = false)
+    private Worker worker;
 
     public Long getId() {
         return userId;
@@ -53,5 +54,13 @@ public class AppUser {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public Worker getWorker() {
+        return worker;
+    }
+
+    public void setWorker(Worker worker) {
+        this.worker = worker;
     }
 }
