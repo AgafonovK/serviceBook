@@ -17,7 +17,6 @@ public class Equipment {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(table = "department", name = "id", nullable = false)
     private Department department;
 
     public Long getId() {

@@ -1,7 +1,12 @@
 package com.xvr.serviceBook.controller;
 
+import com.xvr.serviceBook.entity.Worker;
 import com.xvr.serviceBook.form.AppUserForm;
+import com.xvr.serviceBook.repository.WorkerRepository;
+import com.xvr.serviceBook.service.WorkerService;
+import com.xvr.serviceBook.service.impl.WorkerServiceImpl;
 import com.xvr.serviceBook.utils.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -10,9 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class MainController {
+
+
+    @Autowired
+    WorkerServiceImpl workerService;
 
     @RequestMapping(value = {"/","/welcome"},method = RequestMethod.GET)
     public String welcomePage(Model model){
@@ -30,11 +40,13 @@ public class MainController {
 
         model.addAttribute("userInfo", userInfo);
 
+
         return "adminPage";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model){
+
 
         return "loginPage";
     }
@@ -45,7 +57,7 @@ public class MainController {
         return "logoutSuccessfulPage";
     }
 
-    @RequestMapping(value = "/403Page", method = RequestMethod.GET)
+    @RequestMapping(value = "/403", method = RequestMethod.GET)
     public String accessDenied (Model model,Principal principal){
         if (principal!=null){
             User loginedUser = (User)((Authentication)principal).getPrincipal();
@@ -82,5 +94,14 @@ public class MainController {
         String userInfo = WebUtils.toString(loginedUSer);
         model.addAttribute("userInfo", userInfo);
         return "userInfoPage";
+    }
+
+    @RequestMapping(value = "/worker", method = RequestMethod.GET)
+    public String viewWorkers(Model model){
+
+        List<Worker> list = workerService.getAllWorker();
+        model.addAttribute("title", "Workers List");
+        model.addAttribute("worker", list);
+        return "workerPage";
     }
 }

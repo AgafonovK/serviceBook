@@ -36,14 +36,14 @@ public class UserDetailServiceImpl implements UserService {
         System.out.println("username " + userName);
         AppUser appUser = this.appUserRepository.findUserAccount(userName);
         if (appUser==null){
-            System.out.println("AppUser not found" + appUser);
-            throw new UsernameNotFoundException("USer "+
+            System.out.println("AppUser not found " + appUser);
+            throw new UsernameNotFoundException("User "+
                     userName + "was ot found ");
         }
-        System.out.println("Found user " + appUser);
+        System.out.println("Found user " + appUser.getUserName());
         //Role USER, ROLE ADMIN
         List<String> roleNames = this.appRoleRepository.getRoleNames(appUser.getId());
-        System.out.println(roleNames.size());
+        System.out.println(roleNames);
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
         if (roleNames!=null){
             for (String role: roleNames ){

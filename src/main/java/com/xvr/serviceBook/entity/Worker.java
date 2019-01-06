@@ -1,6 +1,12 @@
 package com.xvr.serviceBook.entity;
 
+import org.apache.tomcat.jni.Local;
+
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -31,13 +37,12 @@ public class Worker {
     private String email;
 
     @Column(name = "date_accept")
-    private Date dateAccept;
+    private LocalDate dateAccept;
 
     @Column(name = "date_fired")
-    private Date dateFired;
+    private LocalDate dateFired;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(table = "department", name = "id",nullable = false)
     private Department department;
 
     public Long getId() {
@@ -96,19 +101,21 @@ public class Worker {
         this.email = email;
     }
 
-    public Date getDateAccept() {
+    public LocalDate getDateAccept()
+    {
+
         return dateAccept;
     }
 
-    public void setDateAccept(Date dateAccept) {
+    public void setDateAccept(LocalDate dateAccept) {
         this.dateAccept = dateAccept;
     }
 
-    public Date getDateFired() {
+    public LocalDate getDateFired() {
         return dateFired;
     }
 
-    public void setDateFired(Date dateFired) {
+    public void setDateFired(LocalDate dateFired) {
         this.dateFired = dateFired;
     }
 

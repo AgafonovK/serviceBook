@@ -21,7 +21,6 @@ public class AppUser {
     private boolean enable;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(table = "worker", name = "id",nullable = false)
     private Worker worker;
 
     public Long getId() {

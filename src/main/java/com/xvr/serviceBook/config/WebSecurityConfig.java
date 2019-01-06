@@ -1,8 +1,10 @@
 package com.xvr.serviceBook.config;
 
+import com.xvr.serviceBook.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,6 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    @Autowired
+    private UserDetailServiceImpl userDetailService;
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder (){
@@ -31,14 +36,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return bCryptPasswordEncoder;
     }
 
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+
+        // Setting Service to find User in the database.
+        // And Setting PassswordEncoder
+        auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
+
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/","/login", "/logout", "/register").permitAll()
-                .antMatchers("/user").hasAnyRole("USER")
-                .antMatchers("/admin", "/h2-console").hasAnyRole("ADMIN")
+                .antMatchers("/userInfo").hasAnyRole("USER","ADMIN")
+                .anyRequest().authenticated()
+                .antMatchers("/admin", "/members").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         http.authorizeRequests()
@@ -46,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginProcessingUrl("/j_spring_security_check")
                 .loginPage("/login")
-                .defaultSuccessUrl("/userAccount")
+                .defaultSuccessUrl("/admin")
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
                 .passwordParameter("password")
@@ -58,6 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .and()
                 .exceptionHandling()
+                //.accessDeniedPage("/403");
                 .accessDeniedHandler(accessDeniedHandler);
 
         //Confgure Token Remember Me
