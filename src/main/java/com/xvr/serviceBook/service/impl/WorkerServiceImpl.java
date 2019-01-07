@@ -1,32 +1,45 @@
 package com.xvr.serviceBook.service.impl;
 
 import com.xvr.serviceBook.entity.Worker;
+import com.xvr.serviceBook.form.WorkerForm;
+import com.xvr.serviceBook.repository.DepartmentRepository;
 import com.xvr.serviceBook.repository.WorkerRepository;
 import com.xvr.serviceBook.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class WorkerServiceImpl implements WorkerService {
 
+    private final WorkerRepository workerRepository;
+
+    private final DepartmentRepository departmentRepository;
+
     @Autowired
-    WorkerRepository workerRepository;
-    private static final Map<Long, Worker> USERS_MAP = new HashMap<>();
+    public WorkerServiceImpl(WorkerRepository workerRepository, DepartmentRepository departmentRepository) {
+        this.workerRepository = workerRepository;
+        this.departmentRepository = departmentRepository;
+    }
+
+    @Override
+    public Long getMaxUserId() {
+        return (long) workerRepository.findAll().size();
+    }
 
 
     @Override
-    public List<Worker> getAllWorker() {
-
-        List<Worker> list = new ArrayList<>();
-        list.addAll(USERS_MAP.values());
-        return workerRepository.findAll();
-
+    public Worker createWorker(WorkerForm form) {
+        Long id = getMaxUserId();
+        Worker worker = new Worker(id+1,form.getPositionName(),form.getFirstName(),form.getLastName(),form.getPatronymic(),form.getPhone(),
+                form.getEmail(),form.getDateAccept(), form.getDateFired(),form.getDepartment());
+        return workerRepository.saveAndFlush(worker);
     }
 
+    @Override
+    public List<Worker> getAllWorker() {
+        return workerRepository.findAll();
+    }
 
 }

@@ -1,9 +1,13 @@
 package com.xvr.serviceBook.controller;
 
+import com.sun.xml.internal.bind.v2.TODO;
+import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.entity.Worker;
 import com.xvr.serviceBook.form.AppUserForm;
+import com.xvr.serviceBook.form.WorkerForm;
 import com.xvr.serviceBook.repository.WorkerRepository;
 import com.xvr.serviceBook.service.WorkerService;
+import com.xvr.serviceBook.service.impl.DepartmentServiceImpl;
 import com.xvr.serviceBook.service.impl.WorkerServiceImpl;
 import com.xvr.serviceBook.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +15,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -21,8 +27,16 @@ import java.util.List;
 public class MainController {
 
 
+    private final WorkerServiceImpl workerService;
+
+    private final DepartmentServiceImpl departmentService;
+
+
     @Autowired
-    WorkerServiceImpl workerService;
+    public MainController(WorkerServiceImpl workerService, DepartmentServiceImpl departmentService) {
+        this.workerService = workerService;
+        this.departmentService = departmentService;
+    }
 
     @RequestMapping(value = {"/","/welcome"},method = RequestMethod.GET)
     public String welcomePage(Model model){
@@ -46,8 +60,6 @@ public class MainController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model){
-
-
         return "loginPage";
     }
 
@@ -71,7 +83,7 @@ public class MainController {
         return "403Page";
     }
 
-    //Show register page
+    //TODO Show register page
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String viewRegister(Model model){
         AppUserForm form = new AppUserForm();
@@ -84,24 +96,16 @@ public class MainController {
         return "registerSuccessfulPage";
     }
 
+
     @RequestMapping (value = "/userInfo", method = RequestMethod.GET)
     public String userInfo(Model model, Principal principal){
         String userName = principal.getName();
-        System.out.println("User Name: " + userName);
-
         User loginedUSer = (User) ((Authentication)principal).getPrincipal();
-
         String userInfo = WebUtils.toString(loginedUSer);
         model.addAttribute("userInfo", userInfo);
         return "userInfoPage";
     }
 
-    @RequestMapping(value = "/worker", method = RequestMethod.GET)
-    public String viewWorkers(Model model){
 
-        List<Worker> list = workerService.getAllWorker();
-        model.addAttribute("title", "Workers List");
-        model.addAttribute("worker", list);
-        return "workerPage";
-    }
+
 }

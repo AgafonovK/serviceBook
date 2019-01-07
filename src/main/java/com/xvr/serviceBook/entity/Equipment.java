@@ -19,6 +19,7 @@ public class Equipment {
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
+
     public Long getId() {
         return id;
     }

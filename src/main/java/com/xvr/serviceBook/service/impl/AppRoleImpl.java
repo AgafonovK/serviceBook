@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppRoleImpl implements AppRoleService {
 
+    private final AppRoleRepository appRoleRepository;
+
     @Autowired
-    private AppRoleRepository appRoleRepository;
+    public AppRoleImpl(AppRoleRepository appRoleRepository) {
+        this.appRoleRepository = appRoleRepository;
+    }
 
     @Override
     public AppRole addAppRole(AppRole appRole) {

@@ -19,11 +19,15 @@ import java.util.List;
 @Service
 public class UserDetailServiceImpl implements UserService {
 
-    @Autowired
-    private AppUserRepository appUserRepository;
+    private final AppUserRepository appUserRepository;
+
+    private final AppRoleRepository appRoleRepository;
 
     @Autowired
-    private AppRoleRepository appRoleRepository;
+    public UserDetailServiceImpl(AppUserRepository appUserRepository, AppRoleRepository appRoleRepository) {
+        this.appUserRepository = appUserRepository;
+        this.appRoleRepository = appRoleRepository;
+    }
 
     @Override
     public AppUser addUser(AppUser appUser) {

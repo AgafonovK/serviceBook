@@ -1,5 +1,5 @@
 package com.xvr.serviceBook.entity.enums;
 
-public enum workerRole {
+public enum PositionRole {
     MANAGER;
 }

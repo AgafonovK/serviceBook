@@ -20,14 +20,18 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
+    private final AccessDeniedHandler accessDeniedHandler;
+
+    private final DataSource dataSource;
+
+    private final UserDetailServiceImpl userDetailService;
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
-    private UserDetailServiceImpl userDetailService;
+    public WebSecurityConfig(AccessDeniedHandler accessDeniedHandler, DataSource dataSource, UserDetailServiceImpl userDetailService) {
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.dataSource = dataSource;
+        this.userDetailService = userDetailService;
+    }
 
 
     @Bean
@@ -84,7 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
     }
 
-    public PersistentTokenRepository persistentTokenRepository(){
+    private PersistentTokenRepository persistentTokenRepository(){
         JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
         db.setDataSource(dataSource);
         return db;

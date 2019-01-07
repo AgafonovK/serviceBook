@@ -1,50 +1,32 @@
-package com.xvr.serviceBook.entity;
+package com.xvr.serviceBook.form;
 
-import org.apache.tomcat.jni.Local;
+import com.xvr.serviceBook.entity.Department;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "worker")
-public class Worker {
+public class WorkerForm {
 
-    @Id
-    @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(name = "position_name", length = 32, nullable = false)
     private String positionName;
-
-    @Column(name = "first_name",length = 32, nullable = false)
     private String firstName;
-
-    @Column(name = "last_name", length = 32, nullable = false)
     private String lastName;
-
-    @Column(name = "patronymic", length = 32, nullable = false)
     private String patronymic;
-
-    @Column(name = "phone")
     private Long phone;
-
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "date_accept")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateAccept;
 
-    @Column(name = "date_fired")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateFired;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
-    public Worker() {
+    public WorkerForm() {
     }
 
-    public Worker(Long id, String positionName, String firstName, String lastName, String patronymic, Long phone, String email, LocalDate dateAccept, LocalDate dateFired, Department department) {
+    public WorkerForm(Long id, String positionName, String firstName, String lastName, String patronymic, Long phone, String email, LocalDate dateAccept, LocalDate dateFired, Department department) {
         this.id = id;
         this.positionName = positionName;
         this.firstName = firstName;
@@ -113,9 +95,7 @@ public class Worker {
         this.email = email;
     }
 
-    public LocalDate getDateAccept()
-    {
-
+    public LocalDate getDateAccept() {
         return dateAccept;
     }
 

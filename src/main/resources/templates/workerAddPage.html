@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/workerAdd}" th:object="${workerForm}" method="POST">
+    <table>
+        <tr>
+            <td>Position Name</td>
+            <td><input type="text" th:field="*{positionName}" /></td>
+            <td>
+                <span th:if="${#fields.hasErrors('positionName')}" th:errors="*{positionName}">..</span>
+            </td>
+        </tr>
+        <tr>
+            <td>First Name</td>
+            <td><input type="text" th:field="*{firstName}" /></td>
+            <td>
+                <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">..</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td><input type="text" th:field="*{lastName}" /> </td>
+            <td>
+                <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">..</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Patronymic</td>
+            <td><input type="text" th:field="*{patronymic}" /> </td>
+            <td>
+                <span th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}">..</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Department</td>
+            <td>
+                <select th:field="*{department}">
+                    <option value=""> -- </option>
+                    <option th:each="department : ${listDepartment}"
+                            th:value="${department.getId()}"
+                            th:utext="${department.getName()}"/>
+                </select>
+            <td><span th:if="${#fields.hasErrors('department')}" th:errors="*{department}">..</span></td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td><input type="number" th:field="*{phone}" /> </td>
+            <td>
+                <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">..</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td><input type="email" th:field="*{email}" /> </td>
+            <td>
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">..</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Date Accept</td>
+            <td><input type="date" th:field="*{dateAccept}" /> </td>
+            <td>
+                <span th:if="${#fields.hasErrors('dateAccept')}" th:errors="*{dateAccept}">..</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Date Fired</td>
+            <td><input type="date" th:field="*{dateFired}" /> </td>
+            <td>
+                <span th:if="${#fields.hasErrors('dateFired')}" th:errors="*{dateFired}">..</span>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input type="submit" value="Submit" />
+                <a th:href="@{/}">Cancel</a>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
