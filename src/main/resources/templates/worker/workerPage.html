@@ -18,14 +18,15 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-<h2>Members</h2>
+<h2>Workers</h2>
 <div>
-    <a th:href="@{/workerAdd}">Add Workers</a>
+    <a th:href="@{/worker/workerAdd}">Add Workers</a>
 </div>
 
 
 <table border="1">
     <tr>
+        <th>Position</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>Patronymic</th>
@@ -37,6 +38,7 @@
 
     </tr>
     <tr th:each ="workers : ${worker}">
+        <td th:utext="${workers.positionName}">...</td>
         <td th:utext="${workers.firstName}">...</td>
         <td th:utext="${workers.lastName}">...</td>
         <td th:utext="${workers.patronymic}">...</td>

@@ -51,20 +51,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/","/login", "/logout", "/register").permitAll()
-                .antMatchers("/userInfo").hasAnyRole("USER","ADMIN")
-                .anyRequest().authenticated()
-                .antMatchers("/admin", "/members").hasRole("ADMIN")
-                .anyRequest().authenticated();
+        http.csrf().disable();
+
+        http.authorizeRequests()
+            .antMatchers("/","/login", "/logout", "/register").permitAll();
+                //.anyRequest().authenticated()
+        http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('USER','ADMIN')").anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/admin","/worker/**","/department/**","/equipment/**").access("hasRole('ADMIN')").anyRequest().authenticated();
 
         http.authorizeRequests()
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/j_spring_security_check")
                 .loginPage("/login")
-                .defaultSuccessUrl("/admin")
+                .defaultSuccessUrl("/userAccountInfo")
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
                 .passwordParameter("password")
@@ -88,7 +88,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
     }
 
-    private PersistentTokenRepository persistentTokenRepository(){
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(){
         JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
         db.setDataSource(dataSource);
         return db;

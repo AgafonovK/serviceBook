@@ -100,8 +100,9 @@ public class MainController {
     @RequestMapping (value = "/userInfo", method = RequestMethod.GET)
     public String userInfo(Model model, Principal principal){
         String userName = principal.getName();
-        User loginedUSer = (User) ((Authentication)principal).getPrincipal();
-        String userInfo = WebUtils.toString(loginedUSer);
+        System.out.println("UserName " + userName);
+        User loginedUser = (User) ((Authentication)principal).getPrincipal();
+        String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
         return "userInfoPage";
     }

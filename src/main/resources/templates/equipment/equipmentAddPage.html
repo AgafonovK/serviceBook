@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/equipment/equipmentAdd}" th:object="${equipmentForm}" method="POST">
+    <table>
+        <tr>
+            <td>Equipment Name</td>
+            <td><input type="text" th:field="*{name}" /></td>
+            <td>
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">..</span>
+            </td>
+        </tr>
+        <tr>
+            <td>Equipment Description</td>
+            <td><input type="text" th:field="*{description}" /></td>
+            <td>
+                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">..</span>
+            </td>
+        </tr>
+        <td>Department</td>
+            <td>
+                <select th:field="*{department}">
+                    <option value=""> -- </option>
+                    <option th:each="department : ${listDepartment}"
+                            th:value="${department.getId()}"
+                            th:utext="${department.getName()}"/>
+                </select>
+            <td><span th:if="${#fields.hasErrors('department')}" th:errors="*{department}">..</span></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input type="submit" value="Submit" />
+                <a th:href="@{/}">Cancel</a>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

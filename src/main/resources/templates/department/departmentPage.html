@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:utext="${title}"></title>
+</head>
+
+<style>
+    table th, table td {
+        padding: 5px;
+    }
+    .message {
+        color: blue;
+    }
+</style>
+
+<body>
+
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<h2>Department</h2>
+<div>
+    <a th:href="@{/department/departmentAdd}">Add Department</a>
+</div>
+
+
+<table border="1">
+    <tr>
+        <th>Department Name</th>
+
+    </tr>
+    <tr th:each ="departments : ${department}">
+        <td th:utext="${departments.getName()}">...</td>
+
+
+    </tr>
+</table>
+
+</body>
+</html>

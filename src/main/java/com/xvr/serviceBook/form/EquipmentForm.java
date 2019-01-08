@@ -1,28 +1,18 @@
-package com.xvr.serviceBook.entity;
+package com.xvr.serviceBook.form;
 
-import javax.persistence.*;
+import com.xvr.serviceBook.entity.Department;
 
-@Entity
-@Table(name = "equipment")
-public class Equipment {
+public class EquipmentForm {
 
-    @Id
-    @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "description", nullable = false)
     private String description;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
-    public Equipment() {
+    public EquipmentForm() {
     }
 
-    public Equipment(Long id, String name, String description, Department department) {
+    public EquipmentForm(Long id, String name, String description, Department department) {
         this.id = id;
         this.name = name;
         this.description = description;

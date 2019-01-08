@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "worker")
 public class WorkerController {
 
     private final WorkerServiceImpl workerService;
@@ -35,7 +36,7 @@ public class WorkerController {
         List<Worker> list = workerService.getAllWorker();
         model.addAttribute("title", "Workers List");
         model.addAttribute("worker", list);
-        return "workerPage";
+        return "worker/workerPage";
     }
 
     @RequestMapping(value = "/workerAdd", method = RequestMethod.GET)
@@ -44,7 +45,7 @@ public class WorkerController {
         List<Department> list = departmentService.getAllDepartment();
         model.addAttribute("workerForm", worker);
         model.addAttribute("listDepartment", list);
-        return "workerAddPage";
+        return "worker/workerAddPage";
     }
 
     //TODO Create validation
@@ -59,15 +60,15 @@ public class WorkerController {
         // Other error!!
         catch (Exception e) {
             model.addAttribute("errorMessage", "Error: " + e.getMessage());
-            return "workerAddPage";
+            return "worker/workerAddPage";
         }
         redirectAttributes.addFlashAttribute("flashUser", worker);
-        return "redirect:/workerAddSuccessful";
+        return "redirect:/worker/workerAddSuccessful";
     }
 
     @RequestMapping(value = "/workerAddSuccessful",method = RequestMethod.GET)
     public String viewWorkerAddSuccessful(){
-        return "workerAddSuccessfulPage";
+        return "worker/workerAddSuccessfulPage";
     }
 
 

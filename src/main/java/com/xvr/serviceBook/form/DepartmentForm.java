@@ -1,22 +1,14 @@
-package com.xvr.serviceBook.entity;
+package com.xvr.serviceBook.form;
 
-import javax.persistence.*;
+public class DepartmentForm {
 
-@Entity
-@Table(name = "department")
-public class Department {
-
-    @Id
-    @Column(name = "id",nullable = false)
     private Long id;
-
-    @Column(name = "name", nullable = false)
     private String name;
 
-    public Department() {
+    public DepartmentForm() {
     }
 
-    public Department(Long id, String name) {
+    public DepartmentForm(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -36,5 +28,4 @@ public class Department {
     public void setName(String name) {
         this.name = name;
     }
-
 }

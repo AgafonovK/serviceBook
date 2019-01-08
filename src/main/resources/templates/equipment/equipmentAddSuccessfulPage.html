@@ -12,12 +12,12 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-<h2>You have successfully registered!</h2>
+<h2>You have successfully add equipment!</h2>
 
 <div th:if="${flashUser != null}">
     <ul>
-        <li>User Name: <span th:utext="${flashUser.lastName}">..</span></li>
-        <li>Email: <span th:utext="${flashUser.firstName}">..</span></li>
+        <li>Equipment Name: <span th:utext="${flashUser.name}">..</span></li>
+        <li>Description: <span th:utext="${flashUser.description}">..</span></li>
     </ul>
 </div>
 
