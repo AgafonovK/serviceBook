@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:utext="${title}"></title>
+</head>
+
+<style>
+    table th, table td {
+        padding: 5px;
+    }
+    .message {
+        color: blue;
+    }
+</style>
+
+<body>
+
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<h2>Report find By Equipment Name </h2>
+
+<table border="1">
+    <tr>
+        <th>Report Name</th>
+        <th>Report Start Date</th>
+        <th>Report End Date</th>
+        <th>Report Description </th>
+        <th>Report Equipment Name</th>
+        <th>Report Worker Name</th>
+        <th>Report Worker Last Name</th>
+        <th>Report Worker Position Name</th>
+
+    <tr th:each ="reports : ${listReportByEquipmentName}">
+    <td th:utext="${reports.getReportName()}">...</td>
+    <td th:utext="${reports.getStartDateReport()}">...</td>
+    <td th:utext="${reports.getEndDateReport()}">...</td>
+    <td th:utext="${reports.getDescriptionReport()}">...</td>
+    <td th:utext="${reports.getEquipment().getName()}">...</td>
+    <td th:utext="${reports.getWorker().getFirstName()}">...</td>
+    <td th:utext="${reports.getWorker().getLastName()}">...</td>
+    <td th:utext="${reports.getWorker().getPositionName()}">...</td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.xvr.serviceBook.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -28,6 +30,20 @@ public class Report {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Worker worker;
+
+    public Report() {
+    }
+
+    public Report(Long reportId, String reportName, LocalDate startDateReport, LocalDate endDateReport, String descriptionReport, Equipment equipment, Worker worker) {
+        this.reportId = reportId;
+        this.reportName = reportName;
+        this.startDateReport = startDateReport;
+        this.endDateReport = endDateReport;
+        this.descriptionReport = descriptionReport;
+        this.equipment = equipment;
+        this.worker = worker;
+    }
+
 
     public Equipment getEquipment() {
         return equipment;

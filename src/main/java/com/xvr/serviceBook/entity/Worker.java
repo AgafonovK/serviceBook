@@ -116,7 +116,6 @@ public class Worker {
 
     public LocalDate getDateAccept()
     {
-
         return dateAccept;
     }
 

@@ -2,6 +2,7 @@ package com.xvr.serviceBook.form;
 
 import com.xvr.serviceBook.entity.Equipment;
 import com.xvr.serviceBook.entity.Worker;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -11,8 +12,10 @@ public class ReportForm {
 
     private String reportName;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDateReport;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDateReport;
 
     private String descriptionReport;

@@ -54,10 +54,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-            .antMatchers("/","/login", "/logout", "/register").permitAll();
-                //.anyRequest().authenticated()
-        http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('USER','ADMIN')").anyRequest().authenticated();
-        http.authorizeRequests().antMatchers("/admin","/worker/**","/department/**","/equipment/**").access("hasRole('ADMIN')").anyRequest().authenticated();
+            .antMatchers("/","/login", "/logout", "/register")
+                .permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/userInfo").hasAuthority("USER")
+                .and()
+                .authorizeRequests().antMatchers("/admin").hasAuthority("ADMIN")
+                .anyRequest().authenticated();
+
 
         http.authorizeRequests()
                 .and()
@@ -85,7 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(60*60); // 1 hour token;
-        http.headers().frameOptions().disable();
+       // http.headers().frameOptions().disable();
     }
 
     @Bean
