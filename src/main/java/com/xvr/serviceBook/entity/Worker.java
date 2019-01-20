@@ -42,6 +42,8 @@ public class Worker {
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
+
+
     public Worker() {
     }
 
