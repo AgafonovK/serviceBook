@@ -1,6 +1,7 @@
 package com.xvr.serviceBook.form;
 
 import com.xvr.serviceBook.entity.Department;
+import com.xvr.serviceBook.entity.TypeEquipment;
 
 public class EquipmentForm {
 
@@ -8,15 +9,25 @@ public class EquipmentForm {
     private String name;
     private String description;
     private Department department;
+    private TypeEquipment typeEquipment;
 
     public EquipmentForm() {
     }
 
-    public EquipmentForm(Long id, String name, String description, Department department) {
+    public EquipmentForm(Long id, String name, String description, Department department, TypeEquipment typeEquipment) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.department = department;
+        this.typeEquipment = typeEquipment;
+    }
+
+    public TypeEquipment getTypeEquipment() {
+        return typeEquipment;
+    }
+
+    public void setTypeEquipment(TypeEquipment typeEquipment) {
+        this.typeEquipment = typeEquipment;
     }
 
     public Long getId() {

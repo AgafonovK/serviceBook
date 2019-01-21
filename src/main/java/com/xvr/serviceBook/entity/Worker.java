@@ -1,8 +1,5 @@
 package com.xvr.serviceBook.entity;
 
-import org.apache.tomcat.jni.Local;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -15,8 +12,9 @@ public class Worker {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "position_name", length = 32, nullable = false)
-    private String positionName;
+    //@Column(name = "position_name", length = 32, nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    private PositionWorker positionWorker;
 
     @Column(name = "first_name",length = 32, nullable = false)
     private String firstName;
@@ -47,9 +45,9 @@ public class Worker {
     public Worker() {
     }
 
-    public Worker(Long id, String positionName, String firstName, String lastName, String patronymic, Long phone, String email, LocalDate dateAccept, LocalDate dateFired, Department department) {
+    public Worker(Long id, PositionWorker positionWorker, String firstName, String lastName, String patronymic, Long phone, String email, LocalDate dateAccept, LocalDate dateFired, Department department) {
         this.id = id;
-        this.positionName = positionName;
+        this.positionWorker = positionWorker;
         this.firstName = firstName;
         this.lastName = lastName;
         this.patronymic = patronymic;
@@ -68,12 +66,12 @@ public class Worker {
         this.id = id;
     }
 
-    public String getPositionName() {
-        return positionName;
+    public PositionWorker getPositionWorker() {
+        return positionWorker;
     }
 
-    public void setPositionName(String positionName) {
-        this.positionName = positionName;
+    public void setPositionWorker(PositionWorker positionWorker) {
+        this.positionWorker = positionWorker;
     }
 
     public String getFirstName() {

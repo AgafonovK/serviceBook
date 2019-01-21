@@ -19,14 +19,27 @@ public class Equipment {
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private TypeEquipment typeEquipment;
+
+
     public Equipment() {
     }
 
-    public Equipment(Long id, String name, String description, Department department) {
+    public TypeEquipment getTypeEquipment() {
+        return typeEquipment;
+    }
+
+    public void setTypeEquipment(TypeEquipment typeEquipment) {
+        this.typeEquipment = typeEquipment;
+    }
+
+    public Equipment(Long id, String name, String description, Department department, TypeEquipment typeEquipment) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.department = department;
+        this.typeEquipment = typeEquipment;
     }
 
     public Long getId() {

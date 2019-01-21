@@ -1,6 +1,8 @@
 package com.xvr.serviceBook.form;
 
 import com.xvr.serviceBook.entity.Department;
+import com.xvr.serviceBook.entity.PositionWorker;
+import javafx.geometry.Pos;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -8,7 +10,7 @@ import java.time.LocalDate;
 public class WorkerForm {
 
     private Long id;
-    private String positionName;
+    private PositionWorker positionWorker;
     private String firstName;
     private String lastName;
     private String patronymic;
@@ -26,9 +28,9 @@ public class WorkerForm {
     public WorkerForm() {
     }
 
-    public WorkerForm(Long id, String positionName, String firstName, String lastName, String patronymic, Long phone, String email, LocalDate dateAccept, LocalDate dateFired, Department department) {
+    public WorkerForm(Long id, PositionWorker positionWorker, String firstName, String lastName, String patronymic, Long phone, String email, LocalDate dateAccept, LocalDate dateFired, Department department) {
         this.id = id;
-        this.positionName = positionName;
+        this.positionWorker = positionWorker;
         this.firstName = firstName;
         this.lastName = lastName;
         this.patronymic = patronymic;
@@ -47,12 +49,12 @@ public class WorkerForm {
         this.id = id;
     }
 
-    public String getPositionName() {
-        return positionName;
+    public PositionWorker getPositionWorker() {
+        return positionWorker;
     }
 
-    public void setPositionName(String positionName) {
-        this.positionName = positionName;
+    public void setPositionWorker(PositionWorker positionWorker) {
+        this.positionWorker = positionWorker;
     }
 
     public String getFirstName() {

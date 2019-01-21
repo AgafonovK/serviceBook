@@ -32,7 +32,7 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public Worker createWorker(WorkerForm form) {
         Long id = getMaxUserId();
-        Worker worker = new Worker(id+1,form.getPositionName(),form.getFirstName(),form.getLastName(),form.getPatronymic(),form.getPhone(),
+        Worker worker = new Worker(id+1,form.getPositionWorker(),form.getFirstName(),form.getLastName(),form.getPatronymic(),form.getPhone(),
                 form.getEmail(),form.getDateAccept(), form.getDateFired(),form.getDepartment());
         return workerRepository.saveAndFlush(worker);
     }

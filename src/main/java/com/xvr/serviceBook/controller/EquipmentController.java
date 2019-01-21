@@ -49,7 +49,7 @@ public class EquipmentController {
                              final RedirectAttributes redirectAttributes) {
 
         Long id = (long) equipmentRepository.findAll().size();
-        Equipment equipment = new Equipment(id+1,equipmentForm.getName(),equipmentForm.getDescription(),equipmentForm.getDepartment());
+        Equipment equipment = new Equipment(id+1,equipmentForm.getName(),equipmentForm.getDescription(),equipmentForm.getDepartment(),equipmentForm.getTypeEquipment());
         try {
              equipmentRepository.saveAndFlush(equipment);
         }

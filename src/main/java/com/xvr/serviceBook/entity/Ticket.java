@@ -11,20 +11,15 @@ public class Ticket {
     @Column(name = "id",nullable = false)
     private Long id;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @OneToOne(fetch = FetchType.LAZY)
+    private StatusTicket status;
 
-    @Column (name = "priority", nullable = false)
-    private String priority;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Priority priority;
 
     //TODO
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Worker client;
-
-    //TODO
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Worker worker;
 
     @Column(name = "description")
     private String ticketDescription;
@@ -52,15 +47,14 @@ public class Ticket {
         this.clientDepartment = clientDepartment;
     }
 
-    public Ticket(Long id, String status, String priority,
+    public Ticket(Long id, StatusTicket status, Priority priority,
                   Worker client,
-                  Worker worker, String ticketDescription,
+                  String ticketDescription,
                   Department clientDepartment, Equipment equipment, LocalDate start_date, LocalDate end_date) {
         this.id = id;
         this.status = status;
         this.priority = priority;
         this.client = client;
-        this.worker = worker;
         this.ticketDescription = ticketDescription;
         this.clientDepartment = clientDepartment;
         this.equipment = equipment;
@@ -76,19 +70,19 @@ public class Ticket {
         this.id = id;
     }
 
-    public String getStatus() {
+    public StatusTicket getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusTicket status) {
         this.status = status;
     }
 
-    public String getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
@@ -98,14 +92,6 @@ public class Ticket {
 
     public void setClient(Worker client) {
         this.client = client;
-    }
-
-    public Worker getWorker() {
-        return worker;
-    }
-
-    public void setWorker(Worker worker) {
-        this.worker = worker;
     }
 
     public String getTicketDescription() {
