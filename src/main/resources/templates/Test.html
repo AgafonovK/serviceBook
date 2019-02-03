@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+        /*https://webref.ru/layout/learn-html-css/box-model
+        https://webformyself.com/flexbox-primery-shablony-dlya-sajta-ot-nachala-i-do-konca/
+        */
+
+        header {
+            /* «включаем» FlexBox режим */
+            display: flex;
+            /* Размещаем элементы внутри шапки */
+            justify-content: space-between;
+            /* Выравниваем элементы вертикально посередине*/
+            align-items: center;
+
+        }
+        /*header button,
+        header nav {
+            display: inline-block;
+
+        }*/
+        /* Кнопка добавить заявку */
+        #add-ticket {
+            border-radius: 10%;
+            font-size: 14px;
+        }
+
+        header nav{
+
+            word-spacing: 100%;
+            font-size: 150%;
+        }
+
+        #nav-toggle{
+
+            font-size: 180%;
+            border-radius: 100%; /* Радиус скругления */
+            /*border: 3px solid green; /* Параметры рамки */
+        }
+        footer{
+            background-color: aquamarine;
+            vertical-align: middle;
+        }
+        main{
+            background-color: #cccccc;
+            flex-direction: column;
+        }
+        #подраздел_документа
+        {
+            width: 100%;
+            min-height: 30px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            margin-left: 10px;
+            font-size: 14px;
+            font-family: sans-serif;
+            color: #595959;
+            flex-direction:column;
+            flex-shrink:0;
+        }
+
+        .тело_подраздела_таблица
+        {
+            overflow: hidden;
+            width: 100%;
+            padding: 5px;
+            padding-right: 0px;
+            justify-content:space-between;
+            flex-shrink:0;
+            background: white;
+        }
+
+        #колонка_таблицы_нумерация
+        {
+            width: 58px;
+        }
+        #главная_колонка_таблицы
+        {
+            width: 30%;
+        }
+        .колонка_таблицы_внутренняя
+        {
+            width: 100%;
+            flex-direction:column;
+            justify-content:flex-end;
+        }
+        .колонка_таблицы
+        {
+            width: 100%;
+            margin-right: 0px;
+            background: white;
+            border: 1px solid white;
+            box-shadow: 0px 0px 0px #b0b0b0;
+            flex-direction:column;
+            justify-content:flex-end;
+        }
+
+        #строка_таблицы
+        {
+            width: 100%;
+            height: 35px;
+            overflow: hidden;
+            padding: 10px;
+            justify-content:center;
+            align-items:center;
+        }
+        .строка_таблицы_неакт
+        {
+            border: 0px solid #e5e5e5;
+        }
+        .строка_таблицы_актив
+        {
+            border: 1px solid gray;
+        }
+
+        .подразделы_колонки
+        {
+            width: 100%;
+            justify-content:space-between;
+        }
+        .тело_колонки
+        {
+            width: 100%;
+            flex-direction:column;
+            justify-content:space-between;
+            border-top: 3px solid #e5e5e5;
+        }
+
+        .колонка_таблицы > #строка_таблицы,
+        .колонка_таблицы_внутренняя > #строка_таблицы
+        {
+            max-height: 100%;
+            min-height: 35px;
+            flex-grow:1;
+        }
+
+        #главная_колонка_таблицы #строка_таблицы
+        {
+            justify-content: flex-start;
+        }
+
+        /*header::after {
+            content: '';
+            display: inline-block;
+            width: 100%;
+        }*/
+
+    </style>
+    <script src="/static/Testjs.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<header>
+
+    <button id="add-ticket">+ Подать заявку</button>
+
+    <nav>
+        <a href="">Заявки</a>
+        <a href="">Оборудование</a>
+        <a href="">Департаменты</a>
+        <a href="">Сотрудники</a>
+    </nav>
+    <nav>
+    <button id="nav-toggle" href="#">&#9776;</button>
+    </nav>
+</header>
+<main>
+    <ul class="">
+        <li class="">
+            <h3 class="">Example</h3>
+            <span class="">Test2</span>
+
+            <div class="">
+                <ul class="">
+                    <li><span>GM</span></li>
+                    <li><span>Ser</span></li>
+                    <li><span>20%</span></li>
+                </ul>
+
+                <span class="" >234$</span>
+            </div>
+        </li>
+
+        <li class="">
+            <h3 class="">Ex</h3>
+            <span class=""> Active</span>
+        </li>
+    </ul>
+</main>
+
+<footer >
+<h2>HEllo</h2>
+</footer>
+</div>
+
+</body>
+</html>
