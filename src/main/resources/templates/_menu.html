@@ -1,18 +1,43 @@
 <div xmlns:th="http://www.thymeleaf.org"
-     style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;">
+     style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;"
 
-    <a th:href="@{/}">Home</a>
+>
 
-    | &nbsp;
+    <header style=" display: flex; /* Размещаем элементы внутри шапки */
+    justify-content: space-between;/* Выравниваем элементы вертикально посередине*/
+    align-items: center;">
 
-    <a th:href="@{/userInfo}">User</a>
+        <a th:href="@{/ticket/addTicket}">
+        <input id="add-ticket" type=button value='+ Создать заявку'></a>
 
-    | &nbsp;
+        <nav style="word-spacing: 100%;font-size: 150%;">
 
-    <a th:href="@{/admin}">Admin</a>
+            <a style=" text-decoration: none;" th:href="@{/}">Заявки</a>
 
-    | &nbsp;
+            | &nbsp;
 
-    <a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>
+            <a style=" text-decoration: none;" th:href="@{/userInfo}">Оборудование</a>
 
+            | &nbsp;
+
+            <a style=" text-decoration: none;" th:href="@{/admin}">Департаменты</a>
+
+            | &nbsp;
+
+            <a style=" text-decoration: none;" th:href="@{/admin}">Сотрудники</a>
+
+            | &nbsp;
+
+            <a style=" text-decoration: none;" th:href="@{/admin}">Отчеты</a>
+
+            | &nbsp;
+
+            <a style=" text-decoration: none;" th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>
+        </nav>
+
+        <nav style="word-spacing: 100%;font-size: 150%;">
+            <img th:href="@{/static/img/zayavka-ikonka.png}">
+            <button id="nav-toggle" href="#">&#9776;</button>
+        </nav>
+    </header>
 </div>
