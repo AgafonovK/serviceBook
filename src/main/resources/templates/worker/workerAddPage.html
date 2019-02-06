@@ -45,6 +45,7 @@
                             th:utext="${department.getName()}"/>
                 </select>
             <td><span th:if="${#fields.hasErrors('department')}" th:errors="*{department}">..</span></td>
+            <td><a th:href="@{/department/departmentAdd}">Add Department</a></td>
         </tr>
         <tr>
             <td>Phone</td>

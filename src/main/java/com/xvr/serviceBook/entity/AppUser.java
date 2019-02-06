@@ -17,8 +17,8 @@ public class AppUser {
     @Column(name = "encryptedPassword", nullable = false)
     private String encryptedPassword;
 
-    @Column(name = "enable", length = 1, nullable = false)
-    private boolean enable;
+    @Column(name = "enabled_user", length = 1, nullable = false)
+    private boolean enabled;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Worker worker;
@@ -47,12 +47,12 @@ public class AppUser {
         this.encryptedPassword = encryptedPassword;
     }
 
-    public boolean isEnable() {
-        return enable;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setEnable(boolean enable) {
-        this.enable = enable;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Worker getWorker() {
