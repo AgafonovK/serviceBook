@@ -2,10 +2,8 @@
         https://webformyself.com/flexbox-primery-shablony-dlya-sajta-ot-nachala-i-do-konca/
         */
 
-{
-    border: 1px solid #ccc;
-    padding:5px;
-    margin-bottom:20px;
+body{
+    margin: 0;
 }
 header {
     /* «включаем» FlexBox режим */
@@ -14,6 +12,7 @@ header {
     justify-content: space-between;
     /* Выравниваем элементы вертикально посередине*/
     align-items: center;
+    background: #595959;
 
 }
 /*header button,
@@ -50,99 +49,7 @@ main{
     background-color: #cccccc;
     flex-direction: column;
 }
-#подраздел_документа
-{
-    width: 100%;
-    min-height: 30px;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    margin-left: 10px;
-    font-size: 14px;
-    font-family: sans-serif;
-    color: #595959;
-    flex-direction:column;
-    flex-shrink:0;
-}
 
-.тело_подраздела_таблица
-{
-    overflow: hidden;
-    width: 100%;
-    padding: 5px;
-    padding-right: 0px;
-    justify-content:space-between;
-    flex-shrink:0;
-    background: white;
-}
-
-#колонка_таблицы_нумерация
-{
-    width: 58px;
-}
-#главная_колонка_таблицы
-{
-    width: 30%;
-}
-.колонка_таблицы_внутренняя
-{
-    width: 100%;
-    flex-direction:column;
-    justify-content:flex-end;
-}
-.колонка_таблицы
-{
-    width: 100%;
-    margin-right: 0px;
-    background: white;
-    border: 1px solid white;
-    box-shadow: 0px 0px 0px #b0b0b0;
-    flex-direction:column;
-    justify-content:flex-end;
-}
-
-#строка_таблицы
-{
-    width: 100%;
-    height: 35px;
-    overflow: hidden;
-    padding: 10px;
-    justify-content:center;
-    align-items:center;
-}
-.строка_таблицы_неакт
-{
-    border: 0px solid #e5e5e5;
-}
-.строка_таблицы_актив
-{
-    border: 1px solid gray;
-}
-
-.подразделы_колонки
-{
-    width: 100%;
-    justify-content:space-between;
-}
-.тело_колонки
-{
-    width: 100%;
-    flex-direction:column;
-    justify-content:space-between;
-    border-top: 3px solid #e5e5e5;
-}
-
-.колонка_таблицы > #строка_таблицы,
-.колонка_таблицы_внутренняя > #строка_таблицы
-{
-    max-height: 100%;
-    min-height: 35px;
-    flex-grow:1;
-}
-
-#главная_колонка_таблицы #строка_таблицы
-{
-    justify-content: flex-start;
-}
 
 /*header::after {
     content: '';

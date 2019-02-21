@@ -7,24 +7,24 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-<h2>Admin Page</h2>
-<h3>Welcome :
+<h2>Страница администратора</h2>
+<h3>Приветствуем :
     <span th:utext="${#request.userPrincipal.name}"></span>
 </h3>
-<b>This is protected page!</b>
+
 
 <br/><br/>
 
 
 <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
 <div>
-    <a th:href="@{/worker/worker}">Get Workers Table</a>
+    <a th:href="@{/worker/worker}">Получить список сотрудников</a>
 </div>
 <div>
-    <a th:href="@{/equipment/equipment}">Get Equipment Table</a>
+    <a th:href="@{/equipment/equipment}">Получить список оборудования</a>
 </div>
 <div>
-    <a th:href="@{/department/department}">Get Department Table</a>
+    <a th:href="@{/department/department}">Получить список департаментов</a>
 </div>
 
 </body>

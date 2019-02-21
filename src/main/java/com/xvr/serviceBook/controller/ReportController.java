@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "report")
+@RequestMapping(value = "/report")
 public class ReportController {
 
     @Autowired
@@ -27,12 +27,13 @@ public class ReportController {
     @Autowired
     WorkerRepository workerRepository;
 
-    @RequestMapping(value = "/report", method = RequestMethod.GET)
+    @RequestMapping(value = "report", method = RequestMethod.GET)
     public String viewReport(Model model) {
 
         List<Report> list = reportRepository.findAll();
         model.addAttribute("title", "Report List");
         model.addAttribute("report", list);
+
         return "report/reportPage";
     }
 

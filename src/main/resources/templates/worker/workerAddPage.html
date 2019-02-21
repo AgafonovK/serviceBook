@@ -5,38 +5,40 @@
     <title>Title</title>
 </head>
 <body>
+<h2>Добавление нового сотрудника</h2>
 <form th:action="@{/worker/workerAdd}" th:object="${workerForm}" method="POST">
+
     <table>
         <tr>
-            <td>Position Name</td>
+            <td>Должность сотрудника</td>
             <td><input type="text" th:field="*{positionWorker}" /></td>
             <td>
                 <span th:if="${#fields.hasErrors('positionWorker')}" th:errors="*{positionWorker}">..</span>
             </td>
         </tr>
         <tr>
-            <td>First Name</td>
+            <td>Фамилия</td>
             <td><input type="text" th:field="*{firstName}" /></td>
             <td>
                 <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">..</span>
             </td>
         </tr>
         <tr>
-            <td>Last Name</td>
+            <td>Имя</td>
             <td><input type="text" th:field="*{lastName}" /> </td>
             <td>
                 <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">..</span>
             </td>
         </tr>
         <tr>
-            <td>Patronymic</td>
+            <td>Отчество</td>
             <td><input type="text" th:field="*{patronymic}" /> </td>
             <td>
                 <span th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}">..</span>
             </td>
         </tr>
         <tr>
-            <td>Department</td>
+            <td>Департамент</td>
             <td>
                 <select th:field="*{department}">
                     <option value=""> -- </option>
@@ -45,31 +47,31 @@
                             th:utext="${department.getName()}"/>
                 </select>
             <td><span th:if="${#fields.hasErrors('department')}" th:errors="*{department}">..</span></td>
-            <td><a th:href="@{/department/departmentAdd}">Add Department</a></td>
+            <td><a th:href="@{/department/departmentAdd}">Добавить департамент</a></td>
         </tr>
         <tr>
-            <td>Phone</td>
+            <td>Телефон</td>
             <td><input type="number" th:field="*{phone}" /> </td>
             <td>
                 <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">..</span>
             </td>
         </tr>
         <tr>
-            <td>Email</td>
+            <td>Электронная почта</td>
             <td><input type="email" th:field="*{email}" /> </td>
             <td>
                 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">..</span>
             </td>
         </tr>
         <tr>
-            <td>Date Accept</td>
+            <td>Дата принятия на работу</td>
             <td><input type="date" th:field="*{dateAccept}" /> </td>
             <td>
                 <span th:if="${#fields.hasErrors('dateAccept')}" th:errors="*{dateAccept}">..</span>
             </td>
         </tr>
         <tr>
-            <td>Date Fired</td>
+            <td>Дата увольнения</td>
             <td><input type="date" th:field="*{dateFired}" /> </td>
             <td>
                 <span th:if="${#fields.hasErrors('dateFired')}" th:errors="*{dateFired}">..</span>
@@ -78,8 +80,8 @@
         <tr>
             <td>&nbsp;</td>
             <td>
-                <input type="submit" value="Submit" />
-                <a th:href="@{/}">Cancel</a>
+                <input type="submit" value="Добавить сотрудника" />
+                <a th:href="@{/}">Отмена</a>
             </td>
             <td>&nbsp;</td>
         </tr>

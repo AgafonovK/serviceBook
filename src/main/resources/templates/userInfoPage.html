@@ -8,16 +8,14 @@
 <th:block th:include="/_menu"></th:block>
 
 
-<h2>User Info Page</h2>
-<h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
-<b>This is protected page!</b>
+<h2>Пользователь</h2>
+<h3>Приветствуем : <span th:utext="${#request.userPrincipal.name}"></span></h3>
 
 <br/><br/>
 
 <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
-<div> <a th:href="@{/report/reportAdd}">Add Report</a></div>
-<div> <a th:href="@{/report/report}">Get Report Table</a></div>
-
+<div> <a th:href="@{/report/reportAdd}">Добавить отчет</a></div>
+<div> <a th:href="@{/report/report}">Показать все отчеты</a></div>
 </body>
 
 </html>

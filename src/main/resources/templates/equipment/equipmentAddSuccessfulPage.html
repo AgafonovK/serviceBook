@@ -12,12 +12,12 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-<h2>You have successfully add equipment!</h2>
+<h2>Вы успешно добавили оборудование!</h2>
 
 <div th:if="${flashUser != null}">
     <ul>
-        <li>Equipment Name: <span th:utext="${flashUser.name}">..</span></li>
-        <li>Description: <span th:utext="${flashUser.description}">..</span></li>
+        <li>Название оборудования: <span th:utext="${flashUser.name}">..</span></li>
+        <li>Описание: <span th:utext="${flashUser.description}">..</span></li>
     </ul>
 </div>
 

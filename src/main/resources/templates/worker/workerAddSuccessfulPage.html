@@ -12,12 +12,12 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-<h2>You have successfully add worker!</h2>
+<h2>Сотрудник успешно добавлен!</h2>
 
 <div th:if="${flashUser != null}">
     <ul>
-        <li>Worker First Name: <span th:utext="${flashUser.firstName}">..</span></li>
-        <li>Worker Last Name: <span th:utext="${flashUser.lastName}">..</span></li>
+        <li>Фамилия сотрудника: <span th:utext="${flashUser.firstName}">..</span></li>
+        <li>Имя сотрудника: <span th:utext="${flashUser.lastName}">..</span></li>
     </ul>
 </div>
 

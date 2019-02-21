@@ -10,16 +10,25 @@ public class EquipmentForm {
     private String description;
     private Department department;
     private TypeEquipment typeEquipment;
-
+    private String location;
     public EquipmentForm() {
     }
 
-    public EquipmentForm(Long id, String name, String description, Department department, TypeEquipment typeEquipment) {
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public EquipmentForm(Long id, String name, String description, Department department, TypeEquipment typeEquipment, String location) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.department = department;
         this.typeEquipment = typeEquipment;
+        this.location = location;
     }
 
     public TypeEquipment getTypeEquipment() {

@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "department")
+@RequestMapping(value = "/department")
 public class DepartmentController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class DepartmentController {
     @Autowired
     DepartmentRepository departmentRepository;
 
-    @RequestMapping(value = "/department", method = RequestMethod.GET)
+    @RequestMapping(value = "department", method = RequestMethod.GET)
     public String viewDepartment(Model model){
 
         List<Department> list = departmentRepository.findAll();
@@ -33,7 +33,7 @@ public class DepartmentController {
         return "department/departmentPage";
     }
 
-    @RequestMapping(value = "/departmentAdd", method = RequestMethod.GET)
+    @RequestMapping(value = "departmentAdd", method = RequestMethod.GET)
     public String addDepartment(Model model){
         DepartmentForm equipment = new DepartmentForm();
         model.addAttribute("departmentForm", equipment);
@@ -41,7 +41,7 @@ public class DepartmentController {
     }
 
 
-    @RequestMapping(value = "/departmentAdd", method = RequestMethod.POST)
+    @RequestMapping(value = "departmentAdd", method = RequestMethod.POST)
     public String saveDepartment(Model model,@ModelAttribute("DepartmentForm") DepartmentForm departmentForm,
                              final RedirectAttributes redirectAttributes) {
 
@@ -59,7 +59,7 @@ public class DepartmentController {
         return "redirect:/department/departmentAddSuccessful";
     }
 
-    @RequestMapping(value = "/departmentAddSuccessful", method = RequestMethod.GET)
+    @RequestMapping(value = "departmentAddSuccessful", method = RequestMethod.GET)
     public String viewDepartmentAddSuccessful(){
         return "department/departmentAddSuccessfulPage";
     }

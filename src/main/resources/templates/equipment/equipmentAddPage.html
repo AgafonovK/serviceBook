@@ -8,20 +8,20 @@
 <form th:action="@{/equipment/equipmentAdd}" th:object="${equipmentForm}" method="POST">
     <table>
         <tr>
-            <td>Equipment Name</td>
+            <td>Название оборудования</td>
             <td><input type="text" th:field="*{name}" /></td>
             <td>
                 <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">..</span>
             </td>
         </tr>
         <tr>
-            <td>Equipment Description</td>
+            <td>Описание оборудования</td>
             <td><input type="text" th:field="*{description}" /></td>
             <td>
                 <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}">..</span>
             </td>
         </tr>
-        <td>Department</td>
+        <td>Департамент</td>
             <td>
                 <select th:field="*{department}">
                     <option value=""> -- </option>
@@ -34,8 +34,8 @@
         <tr>
             <td>&nbsp;</td>
             <td>
-                <input type="submit" value="Submit" />
-                <a th:href="@{/}">Cancel</a>
+                <input type="submit" value="Добавить оборудование" />
+                <a th:href="@{/}">Отмена</a>
             </td>
             <td>&nbsp;</td>
         </tr>

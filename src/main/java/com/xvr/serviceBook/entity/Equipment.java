@@ -22,6 +22,16 @@ public class Equipment {
     @OneToOne(fetch = FetchType.LAZY)
     private TypeEquipment typeEquipment;
 
+    @Column(name = "location",nullable = false)
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public Equipment() {
     }
@@ -34,12 +44,13 @@ public class Equipment {
         this.typeEquipment = typeEquipment;
     }
 
-    public Equipment(Long id, String name, String description, Department department, TypeEquipment typeEquipment) {
+    public Equipment(Long id, String name, String description, Department department, TypeEquipment typeEquipment, String location) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.department = department;
         this.typeEquipment = typeEquipment;
+        this.location = location;
     }
 
     public Long getId() {

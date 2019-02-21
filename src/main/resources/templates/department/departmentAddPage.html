@@ -8,7 +8,7 @@
 <form th:action="@{/department/departmentAdd}" th:object="${departmentForm}" method="POST">
     <table>
         <tr>
-            <td>Department Name</td>
+            <td>Название департамента</td>
             <td><input type="text" th:field="*{name}" /></td>
             <td>
                 <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">..</span>
@@ -17,8 +17,8 @@
         <tr>
             <td>&nbsp;</td>
             <td>
-                <input type="submit" value="Submit" />
-                <a th:href="@{/}">Cancel</a>
+                <input type="submit" value="Добавить департамент" />
+                <a th:href="@{/}">Отмена</a>
             </td>
             <td>&nbsp;</td>
         </tr>

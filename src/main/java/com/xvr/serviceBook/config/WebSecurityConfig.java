@@ -54,12 +54,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-            .antMatchers("/","/login", "/logout", "/register")
+            .antMatchers("/actuator/**","/login", "/logout", "/register")
                 .permitAll()
                 .and()
-                .authorizeRequests().antMatchers("/userInfo").hasAuthority("USER")
+                .authorizeRequests().antMatchers("/userInfo","/ticket/**","/report/**").hasAuthority("USER")
                 .and()
-                .authorizeRequests().antMatchers("/admin").hasAuthority("ADMIN")
+                .authorizeRequests().antMatchers("/admin","/equipment/**","/department/**","/worker/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated();
 
 
@@ -68,14 +68,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginProcessingUrl("/j_spring_security_check")
                 .loginPage("/login")
-                .defaultSuccessUrl("/userAccountInfo")
+                .defaultSuccessUrl("/userInfo")
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/logoutSuccessful");
+                .logoutSuccessUrl("/logoutSuccessful")
+                .invalidateHttpSession(true);
 
         http.authorizeRequests()
                 .and()

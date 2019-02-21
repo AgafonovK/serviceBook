@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:utext="${title}"></title>
+
 </head>
 
 <style>
@@ -18,30 +18,29 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-<h2>Report</h2>
+<h2>Отчеты</h2>
 <div>
     <a th:href="@{/report/reportAdd}">Add Report</a>
 </div>
 <form th:action="@{/report/reportFindByEquipmentName}" method="POST">
     <div>
-        Find by name equipment
+        Найти отчет по названию оборудования:
         <input name="equipmentName" type="text" th:value="*{equipmentName}" />
-        <input type="submit" value="Submit" />
-        <a th:href="@{/}">Cancel</a>
+        <input type="submit" value="Найти" />
+        <a th:href="@{/}">Отмена</a>
     </div>
 </form>
 
-
 <table border="1">
     <tr>
-        <th>Report Name</th>
-        <th>Report Start Date</th>
-        <th>Report End Date</th>
-        <th>Report Description </th>
-        <th>Report Equipment Name</th>
-        <th>Report Worker Name</th>
-        <th>Report Worker Last Name</th>
-        <th>Report Worker Position Name</th>
+        <th>Имя отчета</th>
+        <th>Дата открытия отчета</th>
+        <th>Дата закрытия отчета</th>
+        <th>Описание</th>
+        <th>Название оборудования</th>
+        <th>Имя сотрудника</th>
+        <th>Фамилия сотрудника</th>
+        <th>Должность сотрудника</th>
 
     </tr>
     <tr th:each ="reports : ${report}">
@@ -56,6 +55,5 @@
 
     </tr>
 </table>
-
 </body>
 </html>

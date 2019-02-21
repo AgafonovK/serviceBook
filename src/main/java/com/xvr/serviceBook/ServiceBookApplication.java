@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ServiceBookApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(ServiceBookApplication.class, args);
 	}
 }

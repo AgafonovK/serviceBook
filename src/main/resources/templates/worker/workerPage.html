@@ -18,23 +18,23 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
-<h2>Workers</h2>
+<h2>Список сотрудников</h2>
 <div>
-    <a th:href="@{/worker/workerAdd}">Add Workers</a>
+    <a th:href="@{/worker/workerAdd}">Добавить сотрудника</a>
 </div>
 
 
 <table border="1">
     <tr>
-        <th>Position</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Patronymic</th>
-        <th>Department</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>DateAccept</th>
-        <th>DateFired</th>
+        <th>Должность</th>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+        <th>Департамент</th>
+        <th>Телефон</th>
+        <th>Электронная почта</th>
+        <th>Дата принятия </th>
+        <th>Дата увольнения</th>
 
     </tr>
     <tr th:each ="workers : ${worker}">

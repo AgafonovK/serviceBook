@@ -1,12 +1,6 @@
 package com.xvr.serviceBook.controller;
 
-import com.sun.xml.internal.bind.v2.TODO;
-import com.xvr.serviceBook.entity.Department;
-import com.xvr.serviceBook.entity.Worker;
 import com.xvr.serviceBook.form.AppUserForm;
-import com.xvr.serviceBook.form.WorkerForm;
-import com.xvr.serviceBook.repository.WorkerRepository;
-import com.xvr.serviceBook.service.WorkerService;
 import com.xvr.serviceBook.service.impl.DepartmentServiceImpl;
 import com.xvr.serviceBook.service.impl.WorkerServiceImpl;
 import com.xvr.serviceBook.utils.WebUtils;
@@ -15,13 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 public class MainController {
@@ -41,7 +32,7 @@ public class MainController {
     @RequestMapping(value = {"/","/welcome"},method = RequestMethod.GET)
     public String welcomePage(Model model){
         model.addAttribute("title", "Welcome");
-        model.addAttribute("message","This is welcome page! You can login");
+        model.addAttribute("message","Вы успешно прошли авторизацию");
         return "welcomePage";
     }
 

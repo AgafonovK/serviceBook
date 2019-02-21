@@ -1,6 +1,5 @@
 <div xmlns:th="http://www.thymeleaf.org"
      style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;"
-
 >
 
     <header style=" display: flex; /* Размещаем элементы внутри шапки */
@@ -12,27 +11,27 @@
 
         <nav style="word-spacing: 100%;font-size: 150%;">
 
-            <a style=" text-decoration: none;" th:href="@{/}">Заявки</a>
+            <a style=" text-decoration: none;" th:href="@{/ticket/ticket}">Заявки</a>
 
             | &nbsp;
 
-            <a style=" text-decoration: none;" th:href="@{/userInfo}">Оборудование</a>
+            <a style=" text-decoration: none;" th:href="@{/equipment/equipment}">Оборудование</a>
 
             | &nbsp;
 
-            <a style=" text-decoration: none;" th:href="@{/admin}">Департаменты</a>
+            <a style=" text-decoration: none;" th:href="@{/department/department}">Департаменты</a>
 
             | &nbsp;
 
-            <a style=" text-decoration: none;" th:href="@{/admin}">Сотрудники</a>
+            <a style=" text-decoration: none;" th:href="@{/worker/worker}">Сотрудники</a>
 
             | &nbsp;
 
-            <a style=" text-decoration: none;" th:href="@{/admin}">Отчеты</a>
+            <a style=" text-decoration: none;" th:href="@{/report/report}">Отчеты</a>
 
             | &nbsp;
 
-            <a style=" text-decoration: none;" th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>
+            <a style=" text-decoration: none;" th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Выйти</a>
         </nav>
 
         <nav style="word-spacing: 100%;font-size: 150%;">

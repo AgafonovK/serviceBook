@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "equipment")
+@RequestMapping(value = "/equipment")
 public class EquipmentController {
 
     @Autowired
@@ -26,16 +26,19 @@ public class EquipmentController {
     @Autowired
     DepartmentServiceImpl departmentService;
 
-    @RequestMapping(value = "/equipment", method = RequestMethod.GET)
+    @RequestMapping(value = "equipment", method = RequestMethod.GET)
     public String viewEquipment(Model model){
 
         List<Equipment> list = equipmentRepository.findAll();
+        for (int i=0; i<list.size();i++){
+            System.out.println(list.get(i).getDepartment().getName());
+        }
         model.addAttribute("title", "Equipment List");
         model.addAttribute("equipment", list);
         return "equipment/equipmentPage";
     }
 
-    @RequestMapping(value = "/equipmentAdd", method = RequestMethod.GET)
+    @RequestMapping(value = "equipmentAdd", method = RequestMethod.GET)
     public String addEquipment(Model model){
         EquipmentForm equipment = new EquipmentForm();
         List<Department> list = departmentService.getAllDepartment();
@@ -44,12 +47,12 @@ public class EquipmentController {
         return "equipment/equipmentAddPage";
     }
 
-    @RequestMapping(value = "/equipmentAdd", method = RequestMethod.POST)
+    @RequestMapping(value = "equipmentAdd", method = RequestMethod.POST)
     public String saveEquipment(Model model,@ModelAttribute("EquipmentForm") EquipmentForm equipmentForm,
                              final RedirectAttributes redirectAttributes) {
 
         Long id = (long) equipmentRepository.findAll().size();
-        Equipment equipment = new Equipment(id+1,equipmentForm.getName(),equipmentForm.getDescription(),equipmentForm.getDepartment(),equipmentForm.getTypeEquipment());
+        Equipment equipment = new Equipment(id+1,equipmentForm.getName(),equipmentForm.getDescription(),equipmentForm.getDepartment(),equipmentForm.getTypeEquipment(),equipmentForm.getLocation());
         try {
              equipmentRepository.saveAndFlush(equipment);
         }
@@ -62,7 +65,7 @@ public class EquipmentController {
         return "redirect:/equipment/equipmentAddSuccessful";
     }
 
-    @RequestMapping(value = "/equipmentAddSuccessful",method = RequestMethod.GET)
+    @RequestMapping(value = "equipmentAddSuccessful",method = RequestMethod.GET)
     public String viewEquipmentAddSuccessful(){
         return "equipment/equipmentAddSuccessfulPage";
     }

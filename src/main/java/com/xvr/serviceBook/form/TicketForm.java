@@ -1,57 +1,39 @@
-package com.xvr.serviceBook.entity;
+package com.xvr.serviceBook.form;
 
-import javax.persistence.*;
+import com.xvr.serviceBook.entity.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "ticket")
-public class Ticket {
+public class TicketForm {
 
-    @Id
-    @Column(name = "id",nullable = false)
-    private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    private Long reportId;
+
     private StatusTicket status;
 
-    @OneToOne(fetch = FetchType.LAZY)
     private Priority priority;
 
     //TODO
-    @ManyToOne(fetch = FetchType.LAZY)
     private Worker client;
 
-    @Column(name = "description")
     private String ticketDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     private Department clientDepartment;
     //TODO
-    @ManyToOne(fetch = FetchType.LAZY)
     private Equipment equipment;
 
-    @Column(name = "start_date")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDateTicket;
 
-    @Column(name = "end_date")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDateTicket;
 
-    public Ticket() {
+    public TicketForm() {
     }
 
-    public Department getClientDepartment() {
-        return clientDepartment;
-    }
-
-    public void setClientDepartment(Department clientDepartment) {
-        this.clientDepartment = clientDepartment;
-    }
-
-    public Ticket(Long id, StatusTicket status, Priority priority,
-                  Worker client,
-                  String ticketDescription,
-                  Department clientDepartment, Equipment equipment, LocalDate startDateTicket, LocalDate endDateTicket) {
-        this.id = id;
+    public TicketForm(Long reportId, StatusTicket status, Priority priority, Worker client, String ticketDescription, Department clientDepartment, Equipment equipment, LocalDate startDateTicket, LocalDate endDateTicket) {
+        this.reportId = reportId;
         this.status = status;
         this.priority = priority;
         this.client = client;
@@ -62,12 +44,12 @@ public class Ticket {
         this.endDateTicket = endDateTicket;
     }
 
-    public Long getId() {
-        return id;
+    public Long getReportId() {
+        return reportId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setReportId(Long reportId) {
+        this.reportId = reportId;
     }
 
     public StatusTicket getStatus() {
@@ -100,6 +82,14 @@ public class Ticket {
 
     public void setTicketDescription(String ticketDescription) {
         this.ticketDescription = ticketDescription;
+    }
+
+    public Department getClientDepartment() {
+        return clientDepartment;
+    }
+
+    public void setClientDepartment(Department clientDepartment) {
+        this.clientDepartment = clientDepartment;
     }
 
     public Equipment getEquipment() {
