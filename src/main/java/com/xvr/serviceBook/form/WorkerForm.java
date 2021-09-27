@@ -2,7 +2,6 @@ package com.xvr.serviceBook.form;
 
 import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.entity.PositionWorker;
-import javafx.geometry.Pos;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;

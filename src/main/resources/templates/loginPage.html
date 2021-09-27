@@ -8,7 +8,7 @@
 </head>
 <body>
 <!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+<th:block th:include="/_menu" />
 <h1>Авторизация</h1>
 
 <!-- /login?error=true -->
@@ -29,11 +29,11 @@
     <table>
         <tr>
             <td>Пользователь:</td>
-            <td><input type='text' name='username' value=''></td>
+            <td><input type='text' name='j_username' value=''></td>
         </tr>
         <tr>
             <td>Пароль:</td>
-            <td><input type='password' name='password' /></td>
+            <td><input type='password' name='j_password' /></td>
         </tr>
         <tr>
             <td>Запомнить меня?</td>
@@ -42,6 +42,9 @@
         <tr>
             <td><input name="submit" type="submit" value="Авторизоваться" /></td>
 
+        </tr>
+        <tr>
+            <td><input name="submit" type="submit" value="Регистрация"/></td>
         </tr>
     </table>
 </form>

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -54,13 +53,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests()
-            .antMatchers("/actuator/**","/login", "/logout", "/register")
-                .permitAll()
+                .antMatchers("/admin","/equipment/**","/department/**","/worker/**").hasAuthority("ADMIN")
                 .and()
                 .authorizeRequests().antMatchers("/userInfo","/ticket/**","/report/**").hasAuthority("USER")
                 .and()
-                .authorizeRequests().antMatchers("/admin","/equipment/**","/department/**","/worker/**").hasAuthority("ADMIN")
-                .anyRequest().authenticated();
+                .authorizeRequests().antMatchers("/actuator/**","/login", "/register").permitAll()
+                .and()
+                .authorizeRequests().anyRequest().authenticated();
 
 
         http.authorizeRequests()

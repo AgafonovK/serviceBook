@@ -15,12 +15,9 @@ public class WorkerServiceImpl implements WorkerService {
 
     private final WorkerRepository workerRepository;
 
-    private final DepartmentRepository departmentRepository;
-
     @Autowired
     public WorkerServiceImpl(WorkerRepository workerRepository, DepartmentRepository departmentRepository) {
         this.workerRepository = workerRepository;
-        this.departmentRepository = departmentRepository;
     }
 
     @Override

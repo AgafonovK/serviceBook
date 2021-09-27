@@ -18,15 +18,8 @@ import java.security.Principal;
 public class MainController {
 
 
-    private final WorkerServiceImpl workerService;
-
-    private final DepartmentServiceImpl departmentService;
-
-
     @Autowired
     public MainController(WorkerServiceImpl workerService, DepartmentServiceImpl departmentService) {
-        this.workerService = workerService;
-        this.departmentService = departmentService;
     }
 
     @RequestMapping(value = {"/","/welcome"},method = RequestMethod.GET)
@@ -44,7 +37,6 @@ public class MainController {
         String userInfo = WebUtils.toString(loginedUser);
 
         model.addAttribute("userInfo", userInfo);
-
 
         return "adminPage";
     }
