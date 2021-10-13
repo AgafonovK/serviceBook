@@ -18,9 +18,10 @@ import java.util.List;
 
 @Service
 public class UserDetailServiceImpl implements UserService {
-
+    //https://sysout.ru/polzovatelskaya-autentifikatsiya/
+    @Autowired
     private final AppUserRepository appUserRepository;
-
+    @Autowired
     private final AppRoleRepository appRoleRepository;
 
     @Autowired
@@ -31,8 +32,7 @@ public class UserDetailServiceImpl implements UserService {
 
     @Override
     public AppUser addUser(AppUser appUser) {
-        AppUser savedAppUser = appUserRepository.saveAndFlush(appUser);
-        return savedAppUser;
+        return appUserRepository.saveAndFlush(appUser);
     }
 
     @Override

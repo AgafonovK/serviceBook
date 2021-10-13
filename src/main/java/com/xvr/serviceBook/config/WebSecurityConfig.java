@@ -4,6 +4,7 @@ import com.xvr.serviceBook.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,11 +19,11 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    @Autowired
     private final AccessDeniedHandler accessDeniedHandler;
-
+    @Autowired
     private final DataSource dataSource;
-
+    @Autowired
     private final UserDetailServiceImpl userDetailService;
 
     @Autowired
@@ -31,7 +32,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.dataSource = dataSource;
         this.userDetailService = userDetailService;
     }
-
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder (){
@@ -51,13 +51,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.csrf().disable();
+        http.headers().frameOptions().disable();
 
         http.authorizeRequests()
-                .antMatchers("/admin","/equipment/**","/department/**","/worker/**").hasAuthority("ADMIN")
+                .antMatchers("/admin","/equipment/**","/department/**","/worker/**","/h2-console/**").hasAuthority("ADMIN")
                 .and()
                 .authorizeRequests().antMatchers("/userInfo","/ticket/**","/report/**").hasAuthority("USER")
                 .and()
-                .authorizeRequests().antMatchers("/actuator/**","/login", "/register").permitAll()
+                .authorizeRequests().antMatchers("/actuator/**","/login", "/register", "/h2-console/**").permitAll()
                 .and()
                 .authorizeRequests().anyRequest().authenticated();
 
