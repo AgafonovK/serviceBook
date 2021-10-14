@@ -44,8 +44,14 @@ public class MainController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(Model model) {
-        System.out.println("YOUR MUST LOGIN " + " ");
+    public String loginPage(Model model,
+                            @RequestParam(value = "username", required = false) String username,
+                            @RequestParam(value = "password", required = false) String password,
+                            @RequestParam(value = "submit", required = false) String submit) {
+        System.out.println("YOUR MUST LOGIN " + username + " " + password);
+        /*if (submit.equals("Регистрация")){
+            return "registerPage";
+        }*/
         return "loginPage";
     }
 
@@ -74,6 +80,7 @@ public class MainController {
     public String viewRegister(Model model) {
         AppUserForm form = new AppUserForm();
         model.addAttribute("appUserForm", form);
+        model.addAttribute("userName", "Fedya");
         return "registerPage";
     }
 

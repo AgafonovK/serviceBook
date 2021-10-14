@@ -18,7 +18,6 @@ import java.util.List;
 
 @Service
 public class UserDetailServiceImpl implements UserService {
-    //https://sysout.ru/polzovatelskaya-autentifikatsiya/
     @Autowired
     private final AppUserRepository appUserRepository;
     @Autowired
@@ -59,8 +58,7 @@ public class UserDetailServiceImpl implements UserService {
             System.out.println("roleNames = null");
         }
 
-        UserDetails userDetails = (UserDetails) new User(appUser.getUserName(), appUser.getEncryptedPassword(),grantedAuthorityList);
-        return userDetails;
+        return new User(appUser.getUserName(), appUser.getEncryptedPassword(),grantedAuthorityList);
     }
 
 }

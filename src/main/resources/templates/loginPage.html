@@ -25,15 +25,15 @@
 
 
 <h3>Введите имя пользователя и пароль:</h3>
-<form name='f' th:action="@{/j_spring_security_check}" method='GET'>
+<form name='login' th:action="@{/login}" method='GET'>
     <table>
         <tr>
             <td>Пользователь:</td>
-            <td><input type='text' th:name='username' value=''></td>
+            <td><input type='text' th:id='username' th:name='username' value=''></td>
         </tr>
         <tr>
             <td>Пароль:</td>
-            <td><input type='password' th:name='password' /></td>
+            <td><input type='password' th:id='password' th:name='password' /></td>
         </tr>
         <tr>
             <td>Запомнить меня?</td>
@@ -44,7 +44,7 @@
 
         </tr>
         <tr>
-            <td><input name="submit" type="submit" value="Регистрация"/></td>
+            <td><input name="submit" type="url" value="Регистрация"/></td>
         </tr>
     </table>
 </form>
