@@ -25,7 +25,7 @@
 
 
 <h3>Введите имя пользователя и пароль:</h3>
-<form name='login' th:action="@{/login}" method='GET'>
+<form name='login' th:action="@{login/perform_login}" method='POST'>
     <table>
         <tr>
             <td>Пользователь:</td>
@@ -44,7 +44,7 @@
 
         </tr>
         <tr>
-            <td><input name="submit" type="url" value="Регистрация"/></td>
+            <td><input name="submit" type="submit" value="Регистрация"/></td>
         </tr>
     </table>
 </form>

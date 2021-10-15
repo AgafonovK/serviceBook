@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import javax.sql.DataSource;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private final AccessDeniedHandler accessDeniedHandler;
@@ -40,10 +40,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        // Setting Service to find User in the database.
-        // And Setting PassswordEncoder
+        // Setting Authentication Manager Service to find User in the database.
+        // And Setting PasswordEncoder
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
 
     }
@@ -66,8 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/j_spring_security_check")
                 .loginPage("/login")
+                .loginProcessingUrl("/perform_login")
                 .defaultSuccessUrl("/userInfo")
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
