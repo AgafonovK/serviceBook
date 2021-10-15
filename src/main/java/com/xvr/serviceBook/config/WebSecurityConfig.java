@@ -34,12 +34,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder (){
+    public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
     }
 
-    @Autowired
+    @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         // Setting Authentication Manager Service to find User in the database.
@@ -49,11 +49,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.headers().frameOptions().disable();
+        http
+                .authorizeRequests()
+                    .antMatchers("/welcome","/signup", "/about","/error").permitAll()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/h2-console/**").access("hasRole('ADMIN') and hasRole('DBA')")
+                    .anyRequest().authenticated()
+                .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/userInfo")
+                    .failureUrl("/login?error=true")
+                    .permitAll()
+                .and()
+                    .exceptionHandling()
+                    .accessDeniedPage("/403")
+                    .accessDeniedHandler(accessDeniedHandler)
+                .and()
+                    .rememberMe()
+                    .tokenRepository(this.persistentTokenRepository())
+                    .tokenValiditySeconds(60*60) // 1 hour token;*/
+                .and()
+                    .httpBasic();
 
-        http.authorizeRequests()
+        /*http.authorizeRequests()
                 .antMatchers("/admin","/equipment/**","/department/**","/worker/**","/h2-console/**").hasAuthority("ADMIN")
                 .and()
                 .authorizeRequests().antMatchers("/userInfo","/ticket/**","/report/**").hasAuthority("USER")
@@ -89,12 +111,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe()
                 .tokenRepository(this.persistentTokenRepository())
-                .tokenValiditySeconds(60*60); // 1 hour token;
-       // http.headers().frameOptions().disable();
+                .tokenValiditySeconds(60*60); // 1 hour token;*/
+        // http.headers().frameOptions().disable();
     }
 
     @Bean
-    public PersistentTokenRepository persistentTokenRepository(){
+    public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
         db.setDataSource(dataSource);
         return db;

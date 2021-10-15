@@ -16,14 +16,14 @@ import java.io.IOException;
 @Component
 public class MyAccessDeniedHandler implements AccessDeniedHandler {
 
-    private static Logger logger = LoggerFactory.getLogger(MyAccessDeniedHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(MyAccessDeniedHandler.class);
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication!=null){
-            logger.info("AppUser '" + authentication.getName() + "attemped to access the protected URL: " + httpServletRequest.getRequestURL());
+            logger.info("AppUser '" + authentication.getName() + "attempted to access the protected URL: " + httpServletRequest.getRequestURL());
 
         }
         httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+ "/403");

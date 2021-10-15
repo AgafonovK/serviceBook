@@ -24,13 +24,12 @@ public class ServiceBookApplication {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
 		String pass = bCryptPasswordEncoder.encode("user");
-
 		Path path = Paths.get("./src/main/resources/data.sql");
 		try (RandomAccessFile f = new RandomAccessFile(path.toFile(), "rw")) {
-			long aPositionWhereIWantToGo = 163;
+			long aPositionWhereIWantToGo = 165; // 163 ubuntu
 			f.seek(aPositionWhereIWantToGo); // this basically reads n bytes in the file
 			f.write(pass.getBytes());
-			f.seek(245);
+			f.seek(247); // 245 ubuntu
 			f.write(pass.getBytes());
 			f.close();
 		}

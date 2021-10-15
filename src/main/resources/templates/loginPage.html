@@ -23,9 +23,8 @@
 
 </div>
 
-
 <h3>Введите имя пользователя и пароль:</h3>
-<form name='login' th:action="@{login/perform_login}" method='POST'>
+<form name='login' th:action="${login}" method='POST'>
     <table>
         <tr>
             <td>Пользователь:</td>

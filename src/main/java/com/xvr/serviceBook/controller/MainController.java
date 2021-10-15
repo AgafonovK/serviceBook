@@ -44,14 +44,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(Model model,
-                            @RequestParam(value = "username", required = false) String username,
-                            @RequestParam(value = "password", required = false) String password,
-                            @RequestParam(value = "submit", required = false) String submit) {
-        System.out.println("YOUR MUST LOGIN " + username + " " + password);
-        /*if (submit.equals("Регистрация")){
-            return "registerPage";
-        }*/
+    public String loginPage(Model model){
         return "loginPage";
     }
 
@@ -68,7 +61,8 @@ public class MainController {
 
             String userInfo = WebUtils.toString(loginedUser);
             model.addAttribute("userInfo", userInfo);
-            String message = "hi " + principal.getName() + "<br> You do not have permission to access this page!";
+            String message = "hi " + principal.getName() + "<br> You do not have permission to access this page! " +
+                    loginedUser.getAuthorities();
             model.addAttribute("message", message);
 
         }
