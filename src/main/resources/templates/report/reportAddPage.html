@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/report/reportAdd}" th:object="${reportForm}" method="POST">
+<form th:action="@{/reports/reportAdd}" th:object="${reportForm}" method="POST">
     <table>
         <tr>
             <td>Report Name</td>
@@ -42,7 +42,7 @@
                     <option value=""> -- </option>
                     <option th:each="equipment : ${listEquipment}"
                             th:value="${equipment.getId()}"
-                            th:utext="${equipment.getName()}"/>
+                            th:utext="${equipment.getName()}"></option>
                 </select>
             <td><span th:if="${#fields.hasErrors('equipment')}" th:errors="*{equipment}">..</span></td>
         </tr>
@@ -53,7 +53,7 @@
                     <option value=""> -- </option>
                     <option th:each="worker : ${listWorkers}"
                             th:value="${worker.getId()}"
-                            th:utext="${worker.getFirstName()}"/>
+                            th:utext="${worker.getFirstName()}"></option>
                 </select>
             <td><span th:if="${#fields.hasErrors('worker')}" th:errors="*{worker}">..</span></td>
         </tr>

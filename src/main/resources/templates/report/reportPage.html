@@ -20,9 +20,9 @@
 
 <h2>Отчеты</h2>
 <div>
-    <a th:href="@{/report/reportAdd}">Add Report</a>
+    <a th:href="@{/reports/reportAdd}">Add Report</a>
 </div>
-<form th:action="@{/report/reportFindByEquipmentName}" method="POST">
+<form th:action="@{/reports/reportFindByEquipmentName}" method="POST">
     <div>
         Найти отчет по названию оборудования:
         <input name="equipmentName" type="text" th:value="*{equipmentName}" />

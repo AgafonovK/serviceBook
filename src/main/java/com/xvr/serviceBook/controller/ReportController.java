@@ -12,10 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "/report")
+@RequestMapping(value = "/reports")
 public class ReportController {
 
     @Autowired
@@ -27,7 +29,7 @@ public class ReportController {
     @Autowired
     WorkerRepository workerRepository;
 
-    @RequestMapping(value = "report", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String viewReport(Model model) {
 
         List<Report> list = reportRepository.findAll();
@@ -37,6 +39,12 @@ public class ReportController {
         return "report/reportPage";
     }
 
+    @RequestMapping(value = "/{reportId}", method = RequestMethod.GET)
+    public String viewReportById(@RequestParam("reportId") Long reportId){
+        Optional<Report> report = reportRepository.findById(reportId);
+        if (report.isEmpty()) throw new EntityNotFoundException("Id " + reportId);
+        return "report/reportPage";
+    }
     @RequestMapping(value = "/reportAdd", method = RequestMethod.GET)
     public String addReport(Model model) {
         ReportForm report = new ReportForm();
@@ -53,7 +61,7 @@ public class ReportController {
     public String saveReport(Model model, @ModelAttribute("ReportForm") ReportForm reportForm,
                              final RedirectAttributes redirectAttributes) {
 
-        Long id = (long) reportRepository.findAll().size();
+        long id = (long) reportRepository.findAll().size();
         Report report = new Report(id + 1, reportForm.getReportName(), reportForm.getStartDateReport(),
                 reportForm.getEndDateReport(), reportForm.getDescriptionReport(),
                 reportForm.getEquipment(), reportForm.getWorker()
@@ -64,10 +72,10 @@ public class ReportController {
         // Other error!!
         catch (Exception e) {
             model.addAttribute("errorMessage", "Error: " + e.getMessage());
-            return "report/reportAddPage";
+            return "reports/reportAddPage";
         }
         redirectAttributes.addFlashAttribute("flashUser", report);
-        return "redirect:/report/reportAddSuccessful";
+        return "redirect:/reports/reportAddSuccessful";
     }
 
     @RequestMapping(value = "/reportAddSuccessful", method = RequestMethod.GET)
@@ -80,8 +88,8 @@ public class ReportController {
     public String findReportByEquipmentName(Model model, @RequestParam ("equipmentName") String equipmentName) {
         System.out.println("equipmentName = " + equipmentName);
 
-        List<Report> listReprot = reportRepository.findReportByEquipmentName(equipmentName);
-        model.addAttribute("listReportByEquipmentName", listReprot);
+        List<Report> listReport = reportRepository.findReportByEquipmentName(equipmentName);
+        model.addAttribute("listReportByEquipmentName", listReport);
         return "report/reportFindByEquipmentNamePage";
     }
 
