@@ -2,11 +2,27 @@ INSERT INTO app_role (role_id, role_name) VALUES
 (1,'ADMIN'),
 (2,'USER');
 INSERT INTO app_user (user_id, enable_user, encrypted_password, username) VALUES
-(1,1,'$2a$10$F0U/2tzYuphX9Bkq40EvY.W3GnborsatUhVK6tm2.IfD7sfhbER8m', 'dbadmin'),
-(2,1,'$2a$10$F0U/2tzYuphX9Bkq40EvY.W3GnborsatUhVK6tm2.IfD7sfhbER8m', 'user');
+(1,1,'$2a$10$4o6Izzwq9boAhIcCZ7MiruxmhlnJoriWWCw8aQvs5IXUOfT/5Ezca', 'dbadmin'),
+(2,1,'$2a$10$4o6Izzwq9boAhIcCZ7MiruxmhlnJoriWWCw8aQvs5IXUOfT/5Ezca', 'user');
 
 INSERT INTO user_role (user_role_id, role_id, user_id) values
  (1,1,1),
  (2,2,1),
  (3,2,2);
-
+INSERT INTO position_worker (id, position_name) values
+ (1, 'Engineer'),
+ (2, 'Manager');
+ INSERT INTO department (id, name) values
+ (1, 'Service department'),
+ (2, 'Managment department');
+INSERT INTO worker (id, first_name, last_name, patronymic,
+department_id, position_worker_id, phone, email,
+date_accept, date_fired) values
+(1, 'Ivanov', 'Ivan', 'Ivanovich', 1, 1, 3654643, null, null, null, null),
+(2, 'Petrov', 'Petr', 'Petrovich', 2, 2, 1234567, null, null, null, null);
+INSERT INTO equipment (id, name, description, location) values
+(1, 'sert', ' frez', '37'),
+(2, 'kotr', ' frez', '45');
+INSERT INTO report (id, name, start_date, end_date, description) values
+(1, 'first report'),
+(2, 'second report');

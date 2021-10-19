@@ -25,11 +25,21 @@ public class ServiceBookApplication {
 
 		String pass = bCryptPasswordEncoder.encode("user");
 		Path path = Paths.get("./src/main/resources/data.sql");
+		String os = System.getProperty("os.name");
 		try (RandomAccessFile f = new RandomAccessFile(path.toFile(), "rw")) {
-			long aPositionWhereIWantToGo = 165; // 163 ubuntu
+			long aPositionWhereIWantToGo;
+			if (os.equals("Linux")){
+				aPositionWhereIWantToGo = 161; // 163 ubuntu, win 165
+			}else {
+				aPositionWhereIWantToGo = 165;
+			}
 			f.seek(aPositionWhereIWantToGo); // this basically reads n bytes in the file
 			f.write(pass.getBytes());
-			f.seek(247); // 245 ubuntu
+			if (os.equals("Linux")){
+				f.seek(242); // 245 ubuntu, win 247
+			}else {
+				f.seek(247);
+			}
 			f.write(pass.getBytes());
 			f.close();
 		}

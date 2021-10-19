@@ -7,6 +7,8 @@ import com.xvr.serviceBook.repository.EquipmentRepository;
 import com.xvr.serviceBook.repository.ReportRepository;
 import com.xvr.serviceBook.repository.WorkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,8 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+
+@RestController
 @RequestMapping(value = "/reports")
 public class ReportController {
 
@@ -30,13 +33,13 @@ public class ReportController {
     WorkerRepository workerRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String viewReport(Model model) {
+    public ResponseEntity<Object> viewReport(Model model) {
 
         List<Report> list = reportRepository.findAll();
-        model.addAttribute("title", "Report List");
-        model.addAttribute("report", list);
-
-        return "report/reportPage";
+        //model.addAttribute("title", "Report List");
+        //model.addAttribute("report", list);
+        return new ResponseEntity<Object>(list, HttpStatus.ACCEPTED);
+        //return "report/reportPage";
     }
 
     @RequestMapping(value = "/{reportId}", method = RequestMethod.GET)
