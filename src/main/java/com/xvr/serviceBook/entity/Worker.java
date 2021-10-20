@@ -14,6 +14,7 @@ public class Worker {
 
     //@Column(name = "position_name", length = 32, nullable = false)
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "position_worker_id")
     private PositionWorker positionWorker;
 
     @Column(name = "first_name",length = 32, nullable = false)
@@ -38,6 +39,7 @@ public class Worker {
     private LocalDate dateFired;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
     private Department department;
 
 

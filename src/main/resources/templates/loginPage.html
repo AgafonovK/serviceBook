@@ -8,7 +8,7 @@
 </head>
 <body>
 <!-- Include _menu.html -->
-<th:block th:include="/_menu" />
+<!--<th:block th:include="/_menu" />-->
 <h1>Авторизация</h1>
 
 <!-- /login?error=true -->
@@ -22,6 +22,7 @@
          </span>
 
 </div>
+
 
 <h3>Введите имя пользователя и пароль:</h3>
 <form name='login' th:action="${login}" method='POST'>

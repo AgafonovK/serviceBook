@@ -2,15 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:utext="${title}"></title>
-    <div th:replace="_menu :: header-css"></div>
+    <!--<div th:replace="_menu :: header-css"></div>-->
 </head>
 
 <body>
-<div th:replace="_menu :: header"></div>
+<!--<div th:replace="_menu :: header"></div>-->
 <!-- Include _menu.html -->
 <!--th:block th:include="/_menu"></th:block-->
 
-<h2> <span th:utext="${message}"></span></h2>
+
+
+<h2><span th:utext="${message}"></span></h2>
+<div>
+    <a th:href="@{/login}">Перейти на главную страницу</a>
+</div>
 
 </body>
 </html>

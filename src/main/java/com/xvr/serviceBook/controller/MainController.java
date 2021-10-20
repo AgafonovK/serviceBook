@@ -27,10 +27,13 @@ public class MainController {
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
-        model.addAttribute("message", "Вы успешно прошли авторизацию");
+        model.addAttribute("message", "We waiting you.");
         return "welcomePage";
     }
-
+    @RequestMapping(value = {"/test"}, method = RequestMethod.GET)
+    public String test (){
+        return "Test";
+    }
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(Model model, Principal principal) {
 

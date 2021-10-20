@@ -7,9 +7,14 @@
 <!-- Include _menu.html -->
 <th:block th:include="/_menu"></th:block>
 
+<div>
+    <form th:action="${logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
 
 <h2>Пользователь</h2>
-<h3>Приветствуем : <span th:utext="${#request.userPrincipal.name}"></span></h3>
+<h3>Приветствуем тебя: <span th:utext="${#request.userPrincipal.name}"></span></h3>
 
 <br/><br/>
 
