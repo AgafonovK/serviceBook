@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http
                 .authorizeRequests()
-                    .antMatchers("/welcome").permitAll()
+                    .antMatchers("/", "/welcome").permitAll()
                     .antMatchers("/admins/**").hasRole("ADMIN")
                     .antMatchers("/users/**").hasRole("USER")
                     .antMatchers("/h2-console/**").access("hasRole('ADMIN') and hasRole('DBA')")
@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .formLogin()
                     .loginPage("/login")
-                    .defaultSuccessUrl("/userInfo")
+                    .defaultSuccessUrl("/users?")
                     .failureUrl("/login?error=true")
                     .permitAll()
                 .and()
