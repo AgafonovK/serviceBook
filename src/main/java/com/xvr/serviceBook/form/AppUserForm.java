@@ -48,4 +48,14 @@ public class AppUserForm {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+    @Override
+    public String toString() {
+        return "AppUserForm{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
+                ", enabled=" + enabled +
+                '}';
+    }
 }

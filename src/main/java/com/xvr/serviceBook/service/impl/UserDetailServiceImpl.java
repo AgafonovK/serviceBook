@@ -30,6 +30,11 @@ public class UserDetailServiceImpl implements UserService {
     }
 
     @Override
+    public List<AppUser> getAppUsers(){
+        return appUserRepository.findAll();
+
+    }
+    @Override
     public AppUser addUser(AppUser appUser) {
         return appUserRepository.saveAndFlush(appUser);
     }

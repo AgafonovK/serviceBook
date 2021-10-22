@@ -23,7 +23,7 @@
 
 </div>
 
-
+<div>
 <h3>Введите имя пользователя и пароль:</h3>
 <form name='login' th:action="${login}" method='POST'>
     <table>
@@ -43,12 +43,12 @@
             <td><input name="submit" type="submit" value="Авторизоваться" /></td>
 
         </tr>
-        <tr>
-            <td><input name="submit" type="submit" value="Регистрация"/></td>
-        </tr>
     </table>
 </form>
-
+</div>
+<div>
+    <a class="btn btn-primary" th:href="@{/register}" role="button">Link</a>
+</div>
 <br>
 
 

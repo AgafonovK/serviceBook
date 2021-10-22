@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface AppUserRepository extends JpaRepository <AppUser,Long> {
 
     //my custom methods fo find userAccount
     @Query("select u from AppUser u where u.userName = :name")
     AppUser findUserAccount(@Param("name") String userName);
-
-
 }

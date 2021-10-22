@@ -30,7 +30,7 @@ public class DepartmentController {
     @RequestMapping(method = RequestMethod.GET)
     public String viewDepartments(Model model){
 
-        List<Department> list = departmentRepository.findAll();
+        List<Department> list = departmentService.getAllDepartment();
         model.addAttribute("title", "Department List");
         model.addAttribute("department", list);
         return "department/departmentPage";
@@ -44,8 +44,8 @@ public class DepartmentController {
     }
     @RequestMapping(value = "departmentAdd", method = RequestMethod.GET)
     public String addDepartment(Model model){
-        DepartmentForm equipment = new DepartmentForm();
-        model.addAttribute("departmentForm", equipment);
+        DepartmentForm departmentForm = new DepartmentForm();
+        model.addAttribute("departmentForm", departmentForm);
         return "department/departmentAddPage";
     }
 
