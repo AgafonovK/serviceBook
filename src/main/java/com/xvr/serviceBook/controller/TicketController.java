@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/ticket")
+@RequestMapping(value = "/tickets")
 public class TicketController {
 
     @Autowired
@@ -24,7 +24,8 @@ public class TicketController {
     EquipmentRepository equipmentRepository;
     @Autowired
     WorkerRepository workerRepository;
-    @RequestMapping (value = "addTicket", method = RequestMethod.GET)
+
+    @RequestMapping (value = "addTicket", method = RequestMethod.POST)
     public String addTicket(Model model){
         TicketForm ticketForm = new TicketForm();
         model.addAttribute("listWorker", workerRepository.findAll());
@@ -34,7 +35,7 @@ public class TicketController {
         return "ticket/addTicketPage";
     }
 
-    @RequestMapping (value = "ticket", method = RequestMethod.GET)
+    @RequestMapping (method = RequestMethod.GET)
     public String ticketView(Model model){
         List<Ticket> list = ticketRepository.findAll();
         model.addAttribute("ticket",list);

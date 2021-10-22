@@ -5,18 +5,22 @@
 </head>
 <body>
 <!-- Include _menu.html -->
+<header>
 <th:block th:include="/_menu"></th:block>
+</header>
+
+<main>
+    <h2>Пользователь</h2>
+    <h3>Приветствуем тебя: <span th:utext="${#request.userPrincipal.name}"></span></h3>
+    <br/><br/>
 
 
-
-<h2>Пользователь</h2>
-<h3>Приветствуем тебя: <span th:utext="${#request.userPrincipal.name}"></span></h3>
-
-<br/><br/>
-
-<div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
-<div> <a th:href="@{/reports/reportAdd}">Добавить отчет</a></div>
-<div> <a th:href="@{/reports}">Показать все отчеты</a></div>
+</main>
+<footer>
+    <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
+    <div> <a th:href="@{/reports/reportAdd}">Добавить отчет</a></div>
+    <div> <a th:href="@{/reports}">Показать все отчеты</a></div>
+</footer>
 </body>
 
 </html>
