@@ -5,7 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/department/departmentAdd}" th:object="${departmentForm}" method="POST">
+<div>
+<form th:action="@{/departments}" th:object="${departmentForm}" method="POST">
     <table>
         <tr>
             <td>Название департамента</td>
@@ -15,7 +16,7 @@
             </td>
         </tr>
         <tr>
-            <td>&nbsp;</td>
+            <td></td>
             <td>
                 <input type="submit" value="Добавить департамент" />
                 <a th:href="@{/}">Отмена</a>
@@ -24,5 +25,9 @@
         </tr>
     </table>
 </form>
+</div>
+<div>
+    <th:block th:include = "/department/_departmentsTable"></th:block>
+</div>
 </body>
 </html>

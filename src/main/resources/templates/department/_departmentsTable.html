@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/departments}" th:object="${departments}" method="GET">
+    <table>
+        <thead>
+        <tr>
+            <th> Department</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(departments)}">
+            <td colspan="2"> No Departments Available</td>
+        </tr>
+        <tr th:each="department : ${departments}">
+            <td><span th:text="${department.getName()}"> Name </span></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

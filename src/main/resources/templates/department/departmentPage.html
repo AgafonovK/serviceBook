@@ -4,37 +4,21 @@
     <title th:utext="${title}"></title>
 </head>
 
-<style>
-    table th, table td {
-        padding: 5px;
-    }
-    .message {
-        color: blue;
-    }
-</style>
-
 <body>
-
-<!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
-
-<h2>Департаменты</h2>
-<div>
-    <a th:href="@{/departments/departmentAdd}">Добавить департамент</a>
-</div>
-
-
-<table border="1">
-    <tr>
-        <th>Название департамента</th>
-
-    </tr>
-    <tr th:each ="departments : ${department}">
-        <td th:utext="${departments.getName()}">...</td>
-
-
-    </tr>
-</table>
-
+<header>
+    <div>
+        <!-- Include _menu.html -->
+        <th:block th:include="/_menu"></th:block>
+    </div>
+</header>
+<main>
+    <h2>Департаменты</h2>
+    <div>
+        <a th:href="@{/departments/createDepartment}">Добавить департамент</a>
+    </div>
+    <div>
+        <th:block th:include="/department/_departmentsTable"></th:block>
+    </div>
+</main>
 </body>
 </html>

@@ -7,10 +7,7 @@ import com.xvr.serviceBook.service.impl.DepartmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
@@ -28,34 +25,33 @@ public class DepartmentController {
     DepartmentRepository departmentRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String viewDepartments(Model model){
-
-        List<Department> list = departmentService.getAllDepartment();
+    public String viewDepartments(Model model) {
+        List<Department> departments = departmentService.getAllDepartment();
         model.addAttribute("title", "Department List");
-        model.addAttribute("department", list);
+        model.addAttribute("departments", departments);
         return "department/departmentPage";
     }
 
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.GET)
-    public String viewDepartmentById (@PathVariable("departmentId") Long departmentId){
+    public String viewDepartmentById(@PathVariable("departmentId") Long departmentId) {
         Optional<Department> department = departmentRepository.findById(departmentId);
-        if (!department.isPresent()) throw new EntityNotFoundException("id-"+departmentId);
+        if (department.isEmpty()) throw new EntityNotFoundException("id-" + departmentId);
         return "";
     }
-    @RequestMapping(value = "departmentAdd", method = RequestMethod.GET)
-    public String addDepartment(Model model){
+
+    @RequestMapping(value = "createDepartment", method = RequestMethod.GET)
+    public String createDepartment(Model model) {
         DepartmentForm departmentForm = new DepartmentForm();
         model.addAttribute("departmentForm", departmentForm);
-        return "department/departmentAddPage";
+        return "department/createDepartmentPage";
     }
 
-
-    @RequestMapping(value = "departmentAdd", method = RequestMethod.POST)
-    public String saveDepartment(Model model,@ModelAttribute("DepartmentForm") DepartmentForm departmentForm,
-                             final RedirectAttributes redirectAttributes) {
-
-        Long id = (long) departmentRepository.findAll().size();
-        Department department = new Department(id+1,departmentForm.getName());
+    @PostMapping
+    public String saveDepartment(@ModelAttribute("departmentForm") DepartmentForm departmentForm,
+                                 final RedirectAttributes redirectAttributes,
+                                 Model model) {
+        long id = departmentRepository.findAll().size();
+        Department department = new Department(id + 1, departmentForm.getName());
         try {
             departmentRepository.saveAndFlush(department);
         }
@@ -65,11 +61,11 @@ public class DepartmentController {
             return "department/departmentAddPage";
         }
         redirectAttributes.addFlashAttribute("flashUser", department);
-        return "redirect:/department/departmentAddSuccessful";
+        return "redirect:/departments/departmentAddSuccessful";
     }
 
     @RequestMapping(value = "departmentAddSuccessful", method = RequestMethod.GET)
-    public String viewDepartmentAddSuccessful(){
+    public String viewDepartmentAddSuccessful() {
         return "department/departmentAddSuccessfulPage";
     }
 

@@ -19,7 +19,9 @@
         <li>Название департамента: <span th:utext="${flashUser.name}">..</span></li>
     </ul>
 </div>
-
+<div>
+    <th:block th:include="/department/_departmentsTable"></th:block>
+</div>
 
 </body>
 </html>

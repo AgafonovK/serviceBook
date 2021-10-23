@@ -7,6 +7,7 @@ import com.xvr.serviceBook.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -25,7 +26,14 @@ public class TicketController {
     @Autowired
     WorkerRepository workerRepository;
 
-    @RequestMapping (value = "addTicket", method = RequestMethod.POST)
+    @RequestMapping (method = RequestMethod.GET)
+    public String ticketsView(Model model){
+        List<Ticket> list = ticketRepository.findAll();
+        model.addAttribute("ticket",list);
+        return "ticket/ticketPage";
+    }
+
+    @RequestMapping (value = "createTicket", method = RequestMethod.GET)
     public String addTicket(Model model){
         TicketForm ticketForm = new TicketForm();
         model.addAttribute("listWorker", workerRepository.findAll());
@@ -35,10 +43,13 @@ public class TicketController {
         return "ticket/addTicketPage";
     }
 
-    @RequestMapping (method = RequestMethod.GET)
-    public String ticketView(Model model){
-        List<Ticket> list = ticketRepository.findAll();
-        model.addAttribute("ticket",list);
-       return "ticket/ticketPage";
+    //TODO
+    @PostMapping(value = "tickets")
+    public String saveTickets(){
+
+        return "";
     }
+
+
+
 }
