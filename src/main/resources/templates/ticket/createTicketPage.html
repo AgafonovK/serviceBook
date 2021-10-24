@@ -7,7 +7,7 @@
 <body>
 <h2>Форма подачи заявки</h2>
 
-<form th:action="@{/ticket/ticketAdd}" th:object="${ticketForm}" method="POST">
+<form th:action="@{/tickets}" th:object="${ticketForm}" method="POST">
     <table>
         <tr>
             <td>Описание заявки</td>
@@ -24,7 +24,7 @@
                     <option value=""> -- </option>
                     <option th:each="departments : ${listDepartment}"
                             th:value="${departments.getId()}"
-                            th:utext="${departments.getName()}"/>
+                            th:utext="${departments.getName()}"></option>
                 </select>
             <td><span th:if="${#fields.hasErrors('clientDepartment')}" th:errors="*{clientDepartment}">..</span></td>
         </tr>
@@ -50,7 +50,7 @@
                     <option value=""> -- </option>
                     <option th:each="equipment : ${listEquipment}"
                             th:value="${equipment.getId()}"
-                            th:utext="${equipment.getName()}"/>
+                            th:utext="${equipment.getName()}"></option>
                 </select>
             <td><span th:if="${#fields.hasErrors('equipment')}" th:errors="*{equipment}">..</span></td>
         </tr>
@@ -61,7 +61,7 @@
                     <option value=""> -- </option>
                     <option th:each="worker : ${listWorker}"
                             th:value="${worker.getId()}"
-                            th:utext="${worker.getFirstName()}"/>
+                            th:utext="${worker.getFirstName()}"></option>
                 </select>
             <td><span th:if="${#fields.hasErrors('client')}" th:errors="*{client}">..</span></td>
         </tr>

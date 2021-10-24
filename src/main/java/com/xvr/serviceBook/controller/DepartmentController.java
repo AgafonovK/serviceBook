@@ -50,15 +50,21 @@ public class DepartmentController {
     public String saveDepartment(@ModelAttribute("departmentForm") DepartmentForm departmentForm,
                                  final RedirectAttributes redirectAttributes,
                                  Model model) {
-        long id = departmentRepository.findAll().size();
-        Department department = new Department(id + 1, departmentForm.getName());
+        //long id = departmentRepository.findAll().size();
+        //Department department = new Department(id + 1, departmentForm.getName());
+        Department department = new Department();
+        department.setName(departmentForm.getName());
+        if (departmentForm.getName().isEmpty()){
+            redirectAttributes.addAttribute("nameError", "Error: name is Empty");
+            return "redirect:/departments/createDepartment";
+        }
         try {
             departmentRepository.saveAndFlush(department);
         }
         // Other error!!
         catch (Exception e) {
             model.addAttribute("errorMessage", "Error: " + e.getMessage());
-            return "department/departmentAddPage";
+            return "department/createDepartmentPage";
         }
         redirectAttributes.addFlashAttribute("flashUser", department);
         return "redirect:/departments/departmentAddSuccessful";

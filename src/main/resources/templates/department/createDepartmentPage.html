@@ -5,6 +5,15 @@
     <title>Title</title>
 </head>
 <body>
+<div th:if="${#request.getParameter('error') == 'true'}"
+     style="color:red;margin:10px 0px;">
+    Департамент не добавлен!!!<br />
+    Причина :
+    <span th:utext="${#session.getAttribute('nameError').message}">
+                Static summary
+         </span>
+
+</div>
 <div>
 <form th:action="@{/departments}" th:object="${departmentForm}" method="POST">
     <table>

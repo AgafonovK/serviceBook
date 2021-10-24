@@ -9,6 +9,7 @@ public class Ticket {
 
     @Id
     @Column(name = "id",nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)

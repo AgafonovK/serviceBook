@@ -7,9 +7,8 @@ import com.xvr.serviceBook.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,14 +39,33 @@ public class TicketController {
         model.addAttribute("listEquipment",equipmentRepository.findAll());
         model.addAttribute("listDepartment", departmentRepository.findAll());
         model.addAttribute("ticketForm", ticketForm);
-        return "ticket/addTicketPage";
+        return "ticket/createTicketPage";
     }
 
     //TODO
     @PostMapping(value = "tickets")
-    public String saveTickets(){
-
-        return "";
+    public String saveTickets(@ModelAttribute (value = "ticketForm") TicketForm ticketForm,
+                              BindingResult result,
+                              Model model){
+        if (result.hasErrors()){
+            return "";
+        }else {
+            Ticket ticket = new Ticket();
+            ticket.setClient(ticketForm.getClient());
+            ticket.setEndDateTicket(ticketForm.getEndDateTicket());
+            ticket.setStartDateTicket(ticketForm.getStartDateTicket());
+            ticket.setTicketDescription(ticketForm.getTicketDescription());
+            ticket.setEquipment(ticketForm.getEquipment());
+            ticket.setClientDepartment(ticketForm.getClientDepartment());
+            ticket.setPriority(ticketForm.getPriority());
+            ticket.setStatus(ticketForm.getStatus());
+            try {
+                ticketRepository.saveAndFlush(ticket);
+            }catch (Exception e){
+                model.addAttribute("error", e.getMessage());
+            }
+        }
+        return "redirect:/tickets";
     }
 
 
