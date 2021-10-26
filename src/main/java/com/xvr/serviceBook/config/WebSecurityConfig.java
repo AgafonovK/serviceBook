@@ -4,7 +4,6 @@ import com.xvr.serviceBook.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,8 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -69,8 +67,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logout()
                     //.logoutUrl("/logout")
                     //.logoutSuccessUrl("/")
-                    //.invalidateHttpSession(true)        // set invalidation state when logout
-                    //.deleteCookies("JSESSIONID")
+                    .invalidateHttpSession(true)        // set invalidation state when logout
+                    .deleteCookies("JSESSIONID")
                     .permitAll()
                 .and()
                     .exceptionHandling()
@@ -83,39 +81,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .httpBasic();
 
-        /*http.authorizeRequests()
-                .antMatchers("/admin","/equipment/**","/department/**","/worker/**","/h2-console/**").hasAuthority("ADMIN")
-                .and()
-                .authorizeRequests().antMatchers("/userInfo","/ticket/**","/report/**").hasAuthority("USER")
-                .and()
-                .authorizeRequests().antMatchers("/actuator/**","/login", "/register", "/h2-console/**").permitAll()
-                .and()
-                .authorizeRequests().anyRequest().authenticated();
-
-
-        http.authorizeRequests()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/perform_login")
-                .defaultSuccessUrl("/userInfo")
-                .failureUrl("/login?error=true")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/logoutSuccessful")
-                .invalidateHttpSession(true);
-
-        http.authorizeRequests()
-                .and()
-                .exceptionHandling()
-                //.accessDeniedPage("/403");
-                .accessDeniedHandler(accessDeniedHandler);
-
         //Confgure Token Remember Me
-        http.authorizeRequests()
+        /*http.authorizeRequests()
                 .and()
                 .rememberMe()
                 .tokenRepository(this.persistentTokenRepository())

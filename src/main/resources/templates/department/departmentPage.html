@@ -8,7 +8,9 @@
 <header>
     <div>
         <!-- Include _menu.html -->
-        <th:block th:include="/_menu"></th:block>
+        <th:block th:insert="/_menu">
+
+        </th:block>
     </div>
 </header>
 <main>
@@ -17,7 +19,9 @@
         <a th:href="@{/departments/createDepartment}">Добавить департамент</a>
     </div>
     <div>
-        <th:block th:include="/department/_departmentsTable"></th:block>
+        <form th:action="@{/departments}" th:object="${departments}" method="GET">
+            <div th:insert="~{department/_departmentsTable :: departmentsTable}"></div>
+        </form>
     </div>
 </main>
 </body>

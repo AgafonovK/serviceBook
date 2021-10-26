@@ -5,38 +5,58 @@
     <title>Title</title>
 </head>
 <body>
-<div th:if="${#request.getParameter('error') == 'true'}"
-     style="color:red;margin:10px 0px;">
-    Департамент не добавлен!!!<br />
-    Причина :
-    <span th:utext="${#session.getAttribute('nameError').message}">
+<main>
+    <div th:if="${#request.getParameter('error') == 'true'}"
+         style="color:red;margin:10px 0px;">
+        Департамент не добавлен!!!<br/>
+        Причина :
+        <span th:utext="${#session.getAttribute('nameError').message}">
                 Static summary
          </span>
 
-</div>
-<div>
-<form th:action="@{/departments}" th:object="${departmentForm}" method="POST">
-    <table>
-        <tr>
-            <td>Название департамента</td>
-            <td><input type="text" th:field="*{name}" /></td>
-            <td>
-                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">..</span>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <input type="submit" value="Добавить департамент" />
-                <a th:href="@{/}">Отмена</a>
-            </td>
-            <td>&nbsp;</td>
-        </tr>
-    </table>
-</form>
-</div>
-<div>
-    <th:block th:include = "/department/_departmentsTable"></th:block>
-</div>
+    </div>
+    <div>
+        <!-- INPUT-->
+        <form th:action="@{/departments}" th:object="${departmentForm}" method="POST">
+            <table>
+                <tr>
+                    <td>Название департамента</td>
+                    <td><input type="text" th:field="*{name}"/></td>
+                    <td>
+                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">..</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" value="Добавить департамент"/>
+                        <a th:href="@{/}">Отмена</a>
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{/departments}" th:object="${departments}" method="GET">
+            <table>
+                <thead>
+                <tr>
+                    <th> Department</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(departments)}">
+                    <td colspan="2"> No Departments Available</td>
+                </tr>
+                <tr th:each="department : ${departments}">
+                    <td><span th:text="${department.getName()}"> Name </span></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+</main>
 </body>
 </html>
