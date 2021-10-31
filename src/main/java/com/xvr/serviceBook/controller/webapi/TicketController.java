@@ -1,4 +1,4 @@
-package com.xvr.serviceBook.controller;
+package com.xvr.serviceBook.controller.webapi;
 
 import com.xvr.serviceBook.entity.Report;
 import com.xvr.serviceBook.entity.Ticket;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/tickets")
+@RequestMapping(value = "/web/tickets")
 public class TicketController {
 
     @Autowired
@@ -24,11 +24,13 @@ public class TicketController {
     EquipmentRepository equipmentRepository;
     @Autowired
     WorkerRepository workerRepository;
+    @Autowired
+    StatusTicketRepository statusTicketRepository;
 
     @RequestMapping (method = RequestMethod.GET)
     public String ticketsView(Model model){
         List<Ticket> list = ticketRepository.findAll();
-        model.addAttribute("ticket",list);
+        model.addAttribute("tickets",list);
         return "ticket/ticketPage";
     }
 
@@ -38,12 +40,13 @@ public class TicketController {
         model.addAttribute("listWorker", workerRepository.findAll());
         model.addAttribute("listEquipment",equipmentRepository.findAll());
         model.addAttribute("listDepartment", departmentRepository.findAll());
+        model.addAttribute("listStatus", statusTicketRepository.findAll());
         model.addAttribute("ticketForm", ticketForm);
         return "ticket/createTicketPage";
     }
 
     //TODO
-    @PostMapping(value = "tickets")
+    @PostMapping()
     public String saveTickets(@ModelAttribute (value = "ticketForm") TicketForm ticketForm,
                               BindingResult result,
                               Model model){

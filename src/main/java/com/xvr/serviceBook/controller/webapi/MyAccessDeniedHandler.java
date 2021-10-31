@@ -1,4 +1,4 @@
-package com.xvr.serviceBook.controller;
+package com.xvr.serviceBook.controller.webapi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

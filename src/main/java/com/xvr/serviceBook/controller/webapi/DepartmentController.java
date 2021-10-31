@@ -1,4 +1,4 @@
-package com.xvr.serviceBook.controller;
+package com.xvr.serviceBook.controller.webapi;
 
 import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.form.DepartmentForm;

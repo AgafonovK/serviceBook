@@ -13,13 +13,16 @@ public class Ticket {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_ticket_id")
     private StatusTicket status;
 
     @OneToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "priority_id" )
     private Priority priority;
 
     //TODO
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "worker_id")
     private Worker client;
 
     @Column(name = "description")

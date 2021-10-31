@@ -65,7 +65,17 @@
                 </select>
             <td><span th:if="${#fields.hasErrors('client')}" th:errors="*{client}">..</span></td>
         </tr>
-
+        <tr>
+            <td>Status</td>
+            <td>
+                <select th:field="*{status}">
+                    <option value=""> -- </option>
+                    <option th:each="status : ${listStatus}"
+                            th:value="${status.getId()}"
+                            th:utext="${status.getStatusName()}"></option>
+                </select>
+            <td><span th:if="${#fields.hasErrors('status')}" th:errors="*{status}">..</span></td>
+        </tr>
         <tr>
             <td>&nbsp;</td>
             <td>

@@ -1,4 +1,4 @@
-package com.xvr.serviceBook.controller;
+package com.xvr.serviceBook.controller.webapi;
 
 import com.xvr.serviceBook.form.AppUserForm;
 import com.xvr.serviceBook.service.impl.DepartmentServiceImpl;
@@ -35,6 +35,7 @@ public class MainController {
     public String test (){
         return "Test";
     }
+
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(Model model, Principal principal) {
 

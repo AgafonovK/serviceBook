@@ -8,8 +8,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
+<footer>
 <!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+<th:block th:insert="/_menu">
+
+</th:block>
+</footer>
+<div>
+    <th:block th:insert="/_filtered">
+    </th:block>
+</div>
 
 <div class="container">
     <div class="card">
@@ -23,19 +31,20 @@
                      <th>Дата подачи</th>
                      <th>Дата окончания</th>
                      <th>Наименование оборудования</th>
+                     <th>Исполнитель</th>
                      <th>Статус</th>
                  </tr>
                 </thead>
                 <tbody>
-                <tr th:each ="tickets : ${ticket}">
-                    <td th:utext="${tickets.getId()}">...</td>
-                    <td th:utext="${tickets.getTicketDescription()}">...</td>
-                    <td th:utext="${tickets.getClientDepartment().name}">...</td>
-                    <td th:utext="${tickets.getStartDateTicket()}">...</td>
-                    <td th:utext="${tickets.getEndDateTicket()}">...</td>
-                    <td th:utext="${tickets.getClient().getFirstName()}">...</td>
-                    <td th:utext="${tickets.getStatus().getStatusName()}">...</td>
-
+                <tr th:each ="ticket : ${tickets}">
+                    <td th:utext="${ticket.getId()}">...</td>
+                    <td th:utext="${ticket.getTicketDescription()}">...</td>
+                    <td th:utext="${ticket.getClientDepartment().name}">...</td>
+                    <td th:utext="${ticket.getStartDateTicket()}">...</td>
+                    <td th:utext="${ticket.getEndDateTicket()}">...</td>
+                    <td th:utext="${ticket.getEquipment().getName()}">...</td>
+                    <td th:utext="${ticket.getClient().getFirstName()}">...</td>
+                    <td th:utext="${ticket.getStatus().getStatusName()}">...</td>
                 </tr>
                 </tbody>
             </table>
