@@ -1,7 +1,9 @@
 package com.xvr.serviceBook.entity;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 
+@Valid
 @Entity
 @Table(name = "equipment")
 public class Equipment {

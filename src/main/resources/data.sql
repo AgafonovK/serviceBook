@@ -2,8 +2,8 @@ INSERT INTO app_role (role_id, role_name) VALUES
 (1,'ADMIN'),
 (2,'USER');
 INSERT INTO app_user (user_id, enable_user, encrypted_password, username) VALUES
-(1,1,'$2a$10$m9Eh5tQ0lepWmWhEAHsGjONr.7LFQOUnNxkK5bPuVCQ7xQLtI9ueC', 'dbadmin'),
-(2,1,'$2a$10$m9Eh5tQ0lepWmWhEAHsGjONr.7LFQOUnNxkK5bPuVCQ7xQLtI9ueC', 'user');
+(1,1,'$2a$10$ESIITGG0daKM95kk7Ivpz.iM4I84L9JmrUL7M6MEhkNkSYTpabYA6', 'dbadmin'),
+(2,1,'$2a$10$ESIITGG0daKM95kk7Ivpz.iM4I84L9JmrUL7M6MEhkNkSYTpabYA6', 'user');
 
 INSERT INTO user_role (user_role_id, role_id, user_id) values
  (1,1,1),

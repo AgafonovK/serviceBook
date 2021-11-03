@@ -3,6 +3,7 @@ package com.xvr.serviceBook.form;
 import com.xvr.serviceBook.entity.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 public class TicketForm {
@@ -14,18 +15,20 @@ public class TicketForm {
 
     private Priority priority;
 
-    //TODO
     private Worker client;
 
+    @NotEmpty
     private String ticketDescription;
 
     private Department clientDepartment;
-    //TODO
+
     private Equipment equipment;
 
+    @PastOrPresent
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDateTicket;
 
+    @FutureOrPresent
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDateTicket;
 
@@ -114,5 +117,20 @@ public class TicketForm {
 
     public void setEndDateTicket(LocalDate endDateTicket) {
         this.endDateTicket = endDateTicket;
+    }
+
+    @Override
+    public String toString() {
+        return "TicketForm{" +
+                "reportId=" + reportId +
+                ", status=" + status +
+                ", priority=" + priority +
+                ", client=" + client +
+                ", ticketDescription='" + ticketDescription + '\'' +
+                ", clientDepartment=" + clientDepartment +
+                ", equipment=" + equipment +
+                ", startDateTicket=" + startDateTicket +
+                ", endDateTicket=" + endDateTicket +
+                '}';
     }
 }

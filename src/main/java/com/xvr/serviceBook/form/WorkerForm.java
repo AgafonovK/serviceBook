@@ -4,6 +4,7 @@ import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.entity.PositionWorker;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
 
 public class WorkerForm {
@@ -13,7 +14,10 @@ public class WorkerForm {
     private String firstName;
     private String lastName;
     private String patronymic;
+
     private Long phone;
+
+    @Email
     private String email;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

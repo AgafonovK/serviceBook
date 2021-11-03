@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -28,9 +29,16 @@ public class TicketController {
     StatusTicketRepository statusTicketRepository;
 
     @RequestMapping (method = RequestMethod.GET)
-    public String ticketsView(Model model){
+    public String ticketsView(@RequestParam(value = "error", required = false) String error,
+                              @RequestParam(value = "result", required = false) String result,
+                              Model model){
         List<Ticket> list = ticketRepository.findAll();
         model.addAttribute("tickets",list);
+        if (error!=null){
+            System.out.println("Sorryan error " + result + " error="+error);
+            model.addAttribute("error", result);
+            return "ticket/ticketPage";
+        }
         return "ticket/ticketPage";
     }
 
@@ -47,11 +55,17 @@ public class TicketController {
 
     //TODO
     @PostMapping()
-    public String saveTickets(@ModelAttribute (value = "ticketForm") TicketForm ticketForm,
+    public String saveTickets(@Valid @ModelAttribute (value = "ticketForm") TicketForm ticketForm,
                               BindingResult result,
                               Model model){
+        System.out.println(ticketForm.toString());
         if (result.hasErrors()){
-            return "";
+            model.addAttribute("listWorker", workerRepository.findAll());
+            model.addAttribute("listEquipment",equipmentRepository.findAll());
+            model.addAttribute("listDepartment", departmentRepository.findAll());
+            model.addAttribute("listStatus", statusTicketRepository.findAll());
+            model.addAttribute("ticketForm", ticketForm);
+            return "ticket/createTicketPage";
         }else {
             Ticket ticket = new Ticket();
             ticket.setClient(ticketForm.getClient());
@@ -63,12 +77,15 @@ public class TicketController {
             ticket.setPriority(ticketForm.getPriority());
             ticket.setStatus(ticketForm.getStatus());
             try {
+                //TODO check ticket id
                 ticketRepository.saveAndFlush(ticket);
             }catch (Exception e){
-                model.addAttribute("error", e.getMessage());
+                System.out.println(e.getMessage());
+                model.addAttribute("errorSave", e.getMessage());
+                return "ticket/createTicketPage";
             }
         }
-        return "redirect:/tickets";
+        return "redirect:/web/tickets";
     }
 
 
