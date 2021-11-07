@@ -5,6 +5,8 @@ import com.xvr.serviceBook.form.DepartmentForm;
 import com.xvr.serviceBook.repository.DepartmentRepository;
 import com.xvr.serviceBook.service.impl.DepartmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "/departments")
+@RequestMapping(value = "web/departments")
 public class DepartmentController {
 
     @Autowired
@@ -25,8 +27,13 @@ public class DepartmentController {
     DepartmentRepository departmentRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String viewDepartments(Model model) {
-        List<Department> departments = departmentService.getAllDepartment();
+    public String viewDepartments(@RequestParam(value = "page") Optional<Integer> page,
+                                  @RequestParam(value = "size") Optional<Integer> size,
+                                  Model model) {
+        int currentPage = page.orElse(0);
+        int pageSize = size.orElse(10);
+        Pageable pageable = PageRequest.of(currentPage,pageSize);
+        List<Department> departments = departmentService.findPaginated(pageable);
         model.addAttribute("title", "Department List");
         model.addAttribute("departments", departments);
         return "department/departmentPage";
@@ -39,7 +46,7 @@ public class DepartmentController {
         return "";
     }
 
-    @RequestMapping(value = "createDepartment", method = RequestMethod.GET)
+    @RequestMapping(value = "create-department", method = RequestMethod.GET)
     public String createDepartment(Model model) {
         DepartmentForm departmentForm = new DepartmentForm();
         model.addAttribute("departmentForm", departmentForm);
@@ -70,7 +77,7 @@ public class DepartmentController {
         return "redirect:/departments/departmentAddSuccessful";
     }
 
-    @RequestMapping(value = "departmentAddSuccessful", method = RequestMethod.GET)
+    @RequestMapping(value = "department-add-successful", method = RequestMethod.GET)
     public String viewDepartmentAddSuccessful() {
         return "department/departmentAddSuccessfulPage";
     }

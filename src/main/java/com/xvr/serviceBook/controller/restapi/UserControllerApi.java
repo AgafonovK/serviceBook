@@ -22,9 +22,7 @@ public class UserControllerApi {
 
     @GetMapping
     public ResponseEntity<AppUserForm> getUsers(){
-        AppUserForm appUserForm = new AppUserForm();
-        appUserForm.setUserName("Vasya");
-        appUserForm.setEnabled(true);
-        return ResponseEntity.ok(appUserForm);
+
+       return ResponseEntity.ok(new AppUserForm());
     }
 }

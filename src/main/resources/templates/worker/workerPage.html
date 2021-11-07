@@ -4,51 +4,51 @@
     <title th:utext="${title}"></title>
 </head>
 
-<style>
-    table th, table td {
-        padding: 5px;
-    }
-    .message {
-        color: blue;
-    }
-</style>
-
 <body>
 
 <!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+<th:block th:include="/_menu">
+
+</th:block>
 
 <h2>Список сотрудников</h2>
 <div>
     <a th:href="@{/workers/workerAdd}">Добавить сотрудника</a>
 </div>
 
-
-<table border="1">
-    <tr>
-        <th>Должность</th>
-        <th>Фамилия</th>
-        <th>Имя</th>
-        <th>Отчество</th>
-        <th>Департамент</th>
-        <th>Телефон</th>
-        <th>Электронная почта</th>
-        <th>Дата принятия </th>
-        <th>Дата увольнения</th>
-
-    </tr>
-    <tr th:each ="workers : ${worker}">
-        <td th:utext="${workers.positionWorker}">...</td>
-        <td th:utext="${workers.firstName}">...</td>
-        <td th:utext="${workers.lastName}">...</td>
-        <td th:utext="${workers.patronymic}">...</td>
-        <td th:utext="${workers.department.getName()}">...</td>
-        <td th:utext="${workers.phone}">...</td>
-        <td th:utext="${workers.email}">...</td>
-        <td th:utext="${workers.dateAccept}">...</td>
-        <td th:utext="${workers.dateFired}">...</td>
-    </tr>
-</table>
-
+<div class="container">
+    <div class="card">
+        <div class="card-block">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Департамент</th>
+                    <th>Должность</th>
+                    <th>Телефон</th>
+                    <th>Электронная почта</th>
+                    <th>Дата принятия</th>
+                    <th>Дата увольнения</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="worker : ${workers}">
+                    <td th:utext="${worker.lastName}">...</td>
+                    <td th:utext="${worker.firstName}">...</td>
+                    <td th:utext="${worker.patronymic}">...</td>
+                    <td th:utext="${worker.department.getName()}">...</td>
+                    <td th:utext="${worker.positionWorker.getPositionName()}">...</td>
+                    <td th:utext="${worker.phone}">...</td>
+                    <td th:utext="${worker.email}">...</td>
+                    <td th:utext="${worker.dateAccept}">...</td>
+                    <td th:utext="${worker.dateFired}">...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>

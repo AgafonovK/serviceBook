@@ -38,7 +38,7 @@ public class WorkerController {
             System.out.println(w.toString());
         }
         model.addAttribute("title", "Workers List");
-        model.addAttribute("worker", list);
+        model.addAttribute("workers", list);
         return "worker/workerPage";
     }
 

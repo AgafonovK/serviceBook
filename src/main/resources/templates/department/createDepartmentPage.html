@@ -17,7 +17,7 @@
     </div>
     <div>
         <!-- INPUT-->
-        <form th:action="@{/departments}" th:object="${departmentForm}" method="POST">
+        <form th:action="@{/web/departments}" th:object="${departmentForm}" method="POST">
             <table>
                 <tr>
                     <td>Название департамента</td>
@@ -38,7 +38,7 @@
         </form>
     </div>
     <div>
-        <form th:action="@{/departments}" th:object="${departments}" method="GET">
+        <form th:action="@{/web/departments}" th:object="${departments}" method="GET">
             <table>
                 <thead>
                 <tr>

@@ -20,7 +20,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping(value = "/reports")
+@RequestMapping(value = "/web/reports")
 public class ReportController {
 
     @Autowired
@@ -48,7 +48,7 @@ public class ReportController {
         if (report.isEmpty()) throw new EntityNotFoundException("Id " + reportId);
         return "report/reportPage";
     }
-    @RequestMapping(value = "/reportAdd", method = RequestMethod.GET)
+    @RequestMapping(value = "/report-add", method = RequestMethod.GET)
     public String addReport(Model model) {
         ReportForm report = new ReportForm();
         List<Equipment> equipmentList = equipmentRepository.findAll();
@@ -60,7 +60,7 @@ public class ReportController {
     }
 
 
-    @RequestMapping(value = "/reportAdd", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public String saveReport(Model model, @ModelAttribute("ReportForm") ReportForm reportForm,
                              final RedirectAttributes redirectAttributes) {
 
@@ -81,7 +81,7 @@ public class ReportController {
         return "redirect:/reports/reportAddSuccessful";
     }
 
-    @RequestMapping(value = "/reportAddSuccessful", method = RequestMethod.GET)
+    @RequestMapping(value = "/report-add-successful", method = RequestMethod.GET)
     public String viewReportAddSuccessful() {
         return "report/reportAddSuccessfulPage";
     }

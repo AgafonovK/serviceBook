@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/equipment")
+@RequestMapping(value = "web/equipment")
 public class EquipmentController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class EquipmentController {
         return "equipment/equipmentPage";
     }
 
-    @RequestMapping(value = "equipmentAdd", method = RequestMethod.GET)
+    @RequestMapping(value = "equipment-add", method = RequestMethod.GET)
     public String addEquipment(Model model){
         EquipmentForm equipment = new EquipmentForm();
         List<Department> list = departmentService.getAllDepartment();
@@ -47,7 +47,7 @@ public class EquipmentController {
         return "equipment/equipmentAddPage";
     }
 
-    @RequestMapping(value = "equipmentAdd", method = RequestMethod.POST)
+    @RequestMapping(value = "equipment-add", method = RequestMethod.POST)
     public String saveEquipment(Model model,@ModelAttribute("EquipmentForm") EquipmentForm equipmentForm,
                              final RedirectAttributes redirectAttributes) {
 
@@ -65,7 +65,7 @@ public class EquipmentController {
         return "redirect:/equipment/equipmentAddSuccessful";
     }
 
-    @RequestMapping(value = "equipmentAddSuccessful",method = RequestMethod.GET)
+    @RequestMapping(value = "equipment-add-successful",method = RequestMethod.GET)
     public String viewEquipmentAddSuccessful(){
         return "equipment/equipmentAddSuccessfulPage";
     }

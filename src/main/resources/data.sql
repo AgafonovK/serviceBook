@@ -2,8 +2,8 @@ INSERT INTO app_role (role_id, role_name) VALUES
 (1,'ADMIN'),
 (2,'USER');
 INSERT INTO app_user (user_id, enable_user, encrypted_password, username) VALUES
-(1,1,'$2a$10$ESIITGG0daKM95kk7Ivpz.iM4I84L9JmrUL7M6MEhkNkSYTpabYA6', 'dbadmin'),
-(2,1,'$2a$10$ESIITGG0daKM95kk7Ivpz.iM4I84L9JmrUL7M6MEhkNkSYTpabYA6', 'user');
+(1,1,'$2a$10$jVeQwMRXJIdrHwEdn9bUwO/CWkPTBxoSBSnczbQrxjoq4aSKBss0O', 'dbadmin'),
+(2,1,'$2a$10$jVeQwMRXJIdrHwEdn9bUwO/CWkPTBxoSBSnczbQrxjoq4aSKBss0O', 'user');
 
 INSERT INTO user_role (user_role_id, role_id, user_id) values
  (1,1,1),
@@ -31,6 +31,6 @@ INSERT INTO status_ticket (id, status_name) values
 INSERT INTO priority (id, priority_name) values
 (1, 'High'),
 (2, 'Medium');
-INSERT INTO ticket (id, status_ticket_id, priority_id, worker_id, description,
-client_department_id, equipment_id, start_date, end_date) values
-(1, 1, 2, 1, 'Fault in air', 2, 2, '2021-10-14', '2021-10-18')
+--INSERT INTO ticket (id, status_ticket_id, priority_id, worker_id, description,
+--client_department_id, equipment_id, start_date, end_date) values
+--(1, 1, 2, 1, 'Fault in air', 2, 2, '2021-10-14', '2021-10-18')

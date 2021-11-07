@@ -13,7 +13,7 @@ import javax.persistence.Access;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/web/users")
 public class UserController {
 
     private final UserDetailServiceImpl userDetailService;

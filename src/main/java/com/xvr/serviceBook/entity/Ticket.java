@@ -1,14 +1,17 @@
 package com.xvr.serviceBook.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Data
 @Entity
 @Table(name = "ticket")
 public class Ticket {
 
     @Id
-    @Column(name = "id",nullable = false)
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -66,67 +69,4 @@ public class Ticket {
         this.endDateTicket = endDateTicket;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public StatusTicket getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusTicket status) {
-        this.status = status;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
-
-    public Worker getClient() {
-        return client;
-    }
-
-    public void setClient(Worker client) {
-        this.client = client;
-    }
-
-    public String getTicketDescription() {
-        return ticketDescription;
-    }
-
-    public void setTicketDescription(String ticketDescription) {
-        this.ticketDescription = ticketDescription;
-    }
-
-    public Equipment getEquipment() {
-        return equipment;
-    }
-
-    public void setEquipment(Equipment equipment) {
-        this.equipment = equipment;
-    }
-
-    public LocalDate getStartDateTicket() {
-        return startDateTicket;
-    }
-
-    public void setStartDateTicket(LocalDate startDateTicket) {
-        this.startDateTicket = startDateTicket;
-    }
-
-    public LocalDate getEndDateTicket() {
-        return endDateTicket;
-    }
-
-    public void setEndDateTicket(LocalDate endDateTicket) {
-        this.endDateTicket = endDateTicket;
-    }
 }

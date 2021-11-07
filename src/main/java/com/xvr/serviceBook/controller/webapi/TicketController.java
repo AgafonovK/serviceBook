@@ -42,7 +42,7 @@ public class TicketController {
         return "ticket/ticketPage";
     }
 
-    @RequestMapping (value = "createTicket", method = RequestMethod.GET)
+    @RequestMapping (value = "create-ticket", method = RequestMethod.GET)
     public String addTicket(Model model){
         TicketForm ticketForm = new TicketForm();
         model.addAttribute("listWorker", workerRepository.findAll());
@@ -53,7 +53,7 @@ public class TicketController {
         return "ticket/createTicketPage";
     }
 
-    //TODO
+
     @PostMapping()
     public String saveTickets(@Valid @ModelAttribute (value = "ticketForm") TicketForm ticketForm,
                               BindingResult result,
@@ -78,6 +78,7 @@ public class TicketController {
             ticket.setStatus(ticketForm.getStatus());
             try {
                 //TODO check ticket id
+                System.out.println("TICKET " + ticket.toString());
                 ticketRepository.saveAndFlush(ticket);
             }catch (Exception e){
                 System.out.println(e.getMessage());
