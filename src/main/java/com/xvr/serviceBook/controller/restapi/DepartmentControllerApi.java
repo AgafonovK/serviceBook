@@ -38,7 +38,12 @@ public class DepartmentControllerApi {
     public ResponseEntity<PagedModel<EntityModel<Department>>> getAllDepartments(
             @PageableDefault(page = 0, size = 10) Pageable pageRequest
     ){
-        Page<Department> departments = departmentRepository.findAll(pageRequest);
+        Page<Department> departments = departmentRepository.findAll(pageRequest)
+                .map(department -> {
+                    department.add(linkTo(methodOn(DepartmentControllerApi.class).getAllDepartments(pageRequest)).withSelfRel());
+                    department.add(linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.getId())).withRel("department"));
+                    return department;
+                });
         PagedModel<EntityModel<Department>> model = departmentPagedResourcesAssembler
                 .toModel(departments);
         return !departments.isEmpty()
@@ -47,13 +52,16 @@ public class DepartmentControllerApi {
     }
 
 
-    @GetMapping(value = "/rest/departments/{id}")
-    public EntityModel<Department> getDepartmentById(@PathVariable (value = "id") Long id){
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<EntityModel<Department>> getDepartmentById(@PathVariable (value = "id") Long id){
         Optional<Department> department = departmentRepository.findById(id);
 
-        return new EntityModel(department,
-                linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(id)).withSelfRel());
+        return !department.isEmpty()
+                ? ResponseEntity.ok(new EntityModel(department.get(),
+                linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(id)).withSelfRel()))
+                : ResponseEntity.notFound().build();
     }
+
     @PostMapping
     public ResponseEntity<Void> newDepartment(@RequestBody Department department){
         return ResponseEntity.ok().build();
