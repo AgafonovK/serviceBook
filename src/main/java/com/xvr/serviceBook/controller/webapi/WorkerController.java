@@ -45,7 +45,7 @@ public class WorkerController {
     @RequestMapping(value = "/workerAdd", method = RequestMethod.GET)
     public String addWorker(Model model){
         WorkerForm worker = new WorkerForm();
-        List<Department> list = departmentService.getAllDepartment();
+        List<Department> list = departmentService.findAllDepartmentsList();
         model.addAttribute("workerForm", worker);
         model.addAttribute("listDepartment", list);
         return "worker/workerAddPage";

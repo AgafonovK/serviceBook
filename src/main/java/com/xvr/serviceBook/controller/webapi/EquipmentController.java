@@ -8,6 +8,9 @@ import com.xvr.serviceBook.form.WorkerForm;
 import com.xvr.serviceBook.repository.EquipmentRepository;
 import com.xvr.serviceBook.service.impl.DepartmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,16 +24,19 @@ import java.util.List;
 @RequestMapping(value = "web/equipment")
 public class EquipmentController {
 
-    @Autowired
-    EquipmentRepository equipmentRepository;
-    @Autowired
-    DepartmentServiceImpl departmentService;
+    private final EquipmentRepository equipmentRepository;
+    private final DepartmentServiceImpl departmentService;
+
+    public EquipmentController(EquipmentRepository equipmentRepository, DepartmentServiceImpl departmentService) {
+        this.equipmentRepository = equipmentRepository;
+        this.departmentService = departmentService;
+    }
 
     @RequestMapping(value = "equipment", method = RequestMethod.GET)
-    public String viewEquipment(Model model){
+    public String viewEquipment(Model model) {
 
         List<Equipment> list = equipmentRepository.findAll();
-        for (int i=0; i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             System.out.println(list.get(i).getDepartment().getName());
         }
         model.addAttribute("title", "Equipment List");
@@ -39,22 +45,22 @@ public class EquipmentController {
     }
 
     @RequestMapping(value = "equipment-add", method = RequestMethod.GET)
-    public String addEquipment(Model model){
+    public String addEquipment(Model model) {
         EquipmentForm equipment = new EquipmentForm();
-        List<Department> list = departmentService.getAllDepartment();
+        List<Department> list = departmentService.findAllDepartmentsList();
         model.addAttribute("equipmentForm", equipment);
         model.addAttribute("listDepartment", list);
         return "equipment/equipmentAddPage";
     }
 
     @RequestMapping(value = "equipment-add", method = RequestMethod.POST)
-    public String saveEquipment(Model model,@ModelAttribute("EquipmentForm") EquipmentForm equipmentForm,
-                             final RedirectAttributes redirectAttributes) {
+    public String saveEquipment(Model model, @ModelAttribute("EquipmentForm") EquipmentForm equipmentForm,
+                                final RedirectAttributes redirectAttributes) {
 
         Long id = (long) equipmentRepository.findAll().size();
-        Equipment equipment = new Equipment(id+1,equipmentForm.getName(),equipmentForm.getDescription(),equipmentForm.getDepartment(),equipmentForm.getTypeEquipment(),equipmentForm.getLocation());
+        Equipment equipment = new Equipment(id + 1, equipmentForm.getName(), equipmentForm.getDescription(), equipmentForm.getDepartment(), equipmentForm.getTypeEquipment(), equipmentForm.getLocation());
         try {
-             equipmentRepository.saveAndFlush(equipment);
+            equipmentRepository.saveAndFlush(equipment);
         }
         // Other error!!
         catch (Exception e) {
@@ -65,8 +71,8 @@ public class EquipmentController {
         return "redirect:/equipment/equipmentAddSuccessful";
     }
 
-    @RequestMapping(value = "equipment-add-successful",method = RequestMethod.GET)
-    public String viewEquipmentAddSuccessful(){
+    @RequestMapping(value = "equipment-add-successful", method = RequestMethod.GET)
+    public String viewEquipmentAddSuccessful() {
         return "equipment/equipmentAddSuccessfulPage";
     }
 }

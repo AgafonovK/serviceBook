@@ -3,34 +3,52 @@ package com.xvr.serviceBook.service.impl;
 import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.repository.DepartmentRepository;
 import com.xvr.serviceBook.service.DepartmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.xvr.serviceBook.service.servicedto.DepartmentServiceDto;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final EntityManagerFactory entityManagerFactory;
 
-    @Autowired
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository, EntityManagerFactory entityManagerFactory) {
         this.departmentRepository = departmentRepository;
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
-    public List<Department> getAllDepartment() {
+    public Page<Department> findAllDepartments(Pageable pageable) {
+        return departmentRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Department> findAllDepartmentsList(){
         return departmentRepository.findAll();
     }
 
     @Override
-    public Department findDepartmentByName(String name) {
-        return departmentRepository.findDepartmentByName(name);
+    public Optional<Department> findDepartmentById(Long id) {
+        return departmentRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Department> findDepartmentByName(String name) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("select dep.id from Department dep where dep.name = :name");
+        Optional<Department> department = departmentRepository.findById((Long) query.getSingleResult());
+        //"select id from department dep where dep.name = :name";
+        return department;
     }
 
     @Override
@@ -45,5 +63,28 @@ public class DepartmentServiceImpl implements DepartmentService {
             return new ArrayList<Department>();
         }
 
+    }
+
+    @Override
+    @Transactional
+    public void saveDepartment(DepartmentServiceDto departmentServiceDto){
+        Department department = new Department();
+        department.setName(departmentServiceDto.getName());
+        departmentRepository.saveAndFlush(department);
+    }
+
+    @Override
+    @Transactional
+    public void deleteDepartmentById(Long id) {
+        departmentRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void updateDepartment(DepartmentServiceDto departmentServiceDto) {
+        Department department = new Department();
+        department.setId(departmentServiceDto.getId());
+        department.setName(departmentServiceDto.getName());
+        departmentRepository.saveAndFlush(department);
     }
 }
