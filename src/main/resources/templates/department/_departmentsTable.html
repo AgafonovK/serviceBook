@@ -1,22 +1,46 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
 <body>
-        <table th:fragment="departmentsTable">
-            <thead>
-            <tr>
-                <th> Department</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${#lists.isEmpty(departments)}">
-                <td colspan="2"> No Departments Available</td>
-            </tr>
-            <tr th:each="department : ${departments}">
-                <td><span th:text="${department.getName()}"> Name </span></td>
-            </tr>
-            </tbody>
-        </table>
+<div class="container" th:fragment="departmentsTable">
+    <div class=" = row">
+        <div class="col-lg-10 mt-5 mb-5">
+            <table id="departments" class="table table-bordered table-responsive-sm">
+                <thead>
+                <tr>
+                    <th>Id департамента</th>
+                    <th>Название департамента</th>
+                    <th>Редактирование</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(departments.content)}">
+                    <td colspan="2"> No Departments Available</td>
+                </tr>
+                <tr th:each="department : ${departments.content}">
+                    <td><span th:text="${department.getId()}"> ID</span></td>
+                    <td><span th:text="${department.getName()}"> Name </span></td>
+                    <td><a th:href="'/web/department/' + ${department.getId()}"> Option </a> </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagination-div">
+                <span th:if="${departments.hasPrevious()}">
+                         <a th:href="@{/web/departments(page=${departments.number-1},size=${departments.size})}">Previous</a>
+                </span>
+                <th:block th:each="i: ${#numbers.sequence(0, departments.totalPages - 1)}">
+                    <span th:if="${departments.number == i}" class="selected">[[${i}+1]]</span>
+                    <span th:unless="${departments.number == i}">
+                        <a th:href="@{/web/departments(page=${i},size=${departments.size})}">[[${i}+1]]</a>
+                    </span>
+                </th:block>
+                <span th:if="${departments.hasNext()}">
+                    <a th:href="@{/web/departments(page=${departments.number+1},size=${departments.size})}">Next</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

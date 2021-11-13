@@ -9,7 +9,7 @@ public class Worker {
 
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     //@Column(name = "position_name", length = 32, nullable = false)

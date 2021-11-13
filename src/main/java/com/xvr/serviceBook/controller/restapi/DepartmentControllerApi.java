@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Max;
 import java.net.URI;
 import java.util.Optional;
 
@@ -37,7 +36,7 @@ public class DepartmentControllerApi {
     }
 
     @GetMapping
-    public ResponseEntity<PagedModel<EntityModel<Department>>> getAllDepartments(@PageableDefault(page = 0, size = 10) Pageable pageRequest) {
+    public ResponseEntity<PagedModel<EntityModel<Department>>> getAllDepartments(@PageableDefault(page = 1, size = 10) Pageable pageRequest) {
 
         Page<Department> departments = departmentService.findAllDepartments(pageRequest)
                 .map(department -> {
@@ -58,17 +57,12 @@ public class DepartmentControllerApi {
     @GetMapping(value = "/{id}")
     public ResponseEntity<EntityModel<Department>> getDepartmentById(@PathVariable(value = "id") Long id) {
         Optional<Department> department = departmentService.findDepartmentById(id);
-        return  !department.isPresent()
+        return department.isEmpty()
                 ? ResponseEntity.ok(new EntityModel<Department>(department.get(),
-                        linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(id)).withSelfRel(),
-                        //linkTo(methodOn(DepartmentControllerApi.class).newDepartment()).withRel("create_new_department"),
-                        linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(id)).withRel("delete_department")))
+                linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(id)).withSelfRel(),
+                //linkTo(methodOn(DepartmentControllerApi.class).newDepartment()).withRel("create_new_department"),
+                linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(id)).withRel("delete_department")))
                 : ResponseEntity.notFound().build();
-                /*department.<ResponseEntity<EntityModel<Department>>> map (value -> ResponseEntity.ok(new EntityModel(value,
-                        linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(id)).withSelfRel(),
-                        linkTo(methodOn(DepartmentControllerApi.class).newDepartment(new DepartmentForm(department.get().getId(), department.get().getName()))).withRel("create_new_department"),
-                        linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(id)).withRel("delete_department"))))
-                .orElseGet(() -> ResponseEntity.notFound().build());*/
     }
 
     @DeleteMapping(value = "/{id}")
@@ -80,27 +74,40 @@ public class DepartmentControllerApi {
         }
         departmentService.deleteDepartmentById(id);
         Department department = new Department();
-        department.add(linkTo(methodOn(DepartmentControllerApi.class).getAllDepartments(PageRequest.of(0, 10))).withRel("get_departments"));
+        department.add(linkTo(methodOn(DepartmentControllerApi.class).getAllDepartments(PageRequest.of(1, 10))).withRel("get_departments"));
         return ResponseEntity.ok(new EntityModel<>(department));
     }
 
-    //TODO get id for the URI
     @PostMapping
-    public ResponseEntity<Void> newDepartment(@RequestParam (value = "name") String departmentName) {
-        departmentService.saveDepartment(DepartmentServiceDto.of(departmentName));
-        Long id = departmentService.findDepartmentByName(DepartmentServiceDto.of(departmentName).getName()).get().getId();
-        return ResponseEntity.created(URI.create("/"+id)).build();
+    public ResponseEntity<EntityModel<Department>> newDepartment(@RequestParam(value = "name") String departmentName) {
+        if (departmentService.findFirstDepartmentByName(DepartmentServiceDto.of(departmentName).getName()).isPresent()) {
+            //Unprocessable Entity
+            return ResponseEntity.status(422).build();
+        } else {
+            departmentService.saveDepartment(DepartmentServiceDto.of(departmentName));
+            Department department = departmentService.findFirstDepartmentByName(DepartmentServiceDto.of(departmentName).getName()).get();
+            department.add(
+                    linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.getId())).withSelfRel(),
+                    linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(department.getId())).withRel("delete_department")
+            );
+            return ResponseEntity.created(URI.create("/" + department.getId())).body(new EntityModel<>(department));
+        }
     }
 
+    // TODO check request if error
     @PutMapping(value = "/{id}")
-    public ResponseEntity<EntityModel<Department>> updateDepartment(@Validated @RequestBody DepartmentForm departmentForm){
-        Long id = departmentService.findDepartmentByName(DepartmentServiceDto.of(departmentForm.getName()).getName()).get().getId();
+    public ResponseEntity<EntityModel<Department>> updateDepartment(@Validated @RequestBody DepartmentForm departmentForm,
+                                                                    @PathVariable (value = "id") Long id) {
+        if (departmentService.findDepartmentById(id).isPresent()){
+            departmentService.updateDepartment(DepartmentServiceDto.of(departmentForm.getName()),id);
+            Optional<Department> department = departmentService.findDepartmentById(id);
+            department.get().add(
+                    linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.get().getId())).withSelfRel(),
+                    linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(department.get().getId())).withRel("delete_department")
+            );
+            return ResponseEntity.ok().body(new EntityModel<>(department.get()));
+        }else {
+            return ResponseEntity.badRequest().build();}
 
-        Optional<Department> optional = departmentService.findDepartmentById(id);
-        if (optional.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-        departmentService.updateDepartment(DepartmentServiceDto.of(departmentForm.getId()));
-        return ResponseEntity.ok().build();
     }
 }

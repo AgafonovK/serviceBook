@@ -1,4 +1,4 @@
-package com.xvr.serviceBook.validation;
+package com.xvr.serviceBook.component.validation;
 
 import com.xvr.serviceBook.form.AppUserForm;
 import com.xvr.serviceBook.service.impl.UserDetailServiceImpl;

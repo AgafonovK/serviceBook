@@ -5,6 +5,8 @@ import com.xvr.serviceBook.repository.DepartmentRepository;
 import com.xvr.serviceBook.service.DepartmentService;
 import com.xvr.serviceBook.service.servicedto.DepartmentServiceDto;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +31,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Page<Department> findAllDepartments(Pageable pageable) {
-        return departmentRepository.findAll(pageable);
+
+        Page<Department> allDepartment = departmentRepository.findAll(pageable);
+
+        return allDepartment;
     }
 
     @Override
@@ -43,12 +48,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Optional<Department> findDepartmentByName(String name) {
+    public Optional<Department> findFirstDepartmentByName(String name) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        Query query = entityManager.createQuery("select dep.id from Department dep where dep.name = :name");
-        Optional<Department> department = departmentRepository.findById((Long) query.getSingleResult());
-        //"select id from department dep where dep.name = :name";
-        return department;
+        Optional<Department> dep = entityManager
+                .createQuery("select dep from Department dep where dep.name =:name", Department.class)
+                .setParameter("name", name)
+                .getResultStream().findAny();
+
+        return dep.flatMap(department -> departmentRepository.findById(department.getId()));
     }
 
     @Override
@@ -70,7 +77,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void saveDepartment(DepartmentServiceDto departmentServiceDto){
         Department department = new Department();
         department.setName(departmentServiceDto.getName());
-        departmentRepository.saveAndFlush(department);
+        departmentRepository.save(department);
     }
 
     @Override
@@ -81,10 +88,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     @Transactional
-    public void updateDepartment(DepartmentServiceDto departmentServiceDto) {
-        Department department = new Department();
-        department.setId(departmentServiceDto.getId());
-        department.setName(departmentServiceDto.getName());
-        departmentRepository.saveAndFlush(department);
+    public void updateDepartment(DepartmentServiceDto departmentServiceDto, Long id) {
+        departmentRepository.findById(id).map(department -> {
+            department.setName(departmentServiceDto.getName());
+            return departmentRepository.save(department);
+        });
     }
 }

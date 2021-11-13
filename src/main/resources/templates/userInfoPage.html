@@ -2,13 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User Info</title>
+    <div>
+        <!-- this is header-css -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+              crossorigin="anonymous">
+    </div>
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+
 <!-- Include _menu.html -->
 <header>
-<th:block th:include="/_menu">
+    <th:block th:include="/_menu">
 
-</th:block>
+    </th:block>
 </header>
 
 <main>
@@ -20,8 +30,8 @@
 </main>
 <footer>
     <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
-    <div> <a th:href="@{/reports/reportAdd}">Добавить отчет</a></div>
-    <div> <a th:href="@{/reports}">Показать все отчеты</a></div>
+    <div><a th:href="@{/reports/reportAdd}">Добавить отчет</a></div>
+    <div><a th:href="@{/reports}">Показать все отчеты</a></div>
 </footer>
 </body>
 

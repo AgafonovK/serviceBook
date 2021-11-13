@@ -18,11 +18,11 @@ import java.util.Objects;
 public class Department extends RepresentationModel<Department> {
 
     @Id
-    @Column(name = "id",nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Override

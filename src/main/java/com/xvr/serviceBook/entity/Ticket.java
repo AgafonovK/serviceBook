@@ -1,40 +1,51 @@
 package com.xvr.serviceBook.entity;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "ticket")
 public class Ticket {
 
     @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_ticket_id")
+    @ToString.Exclude
     private StatusTicket status;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     //@JoinColumn(name = "priority_id" )
     private Priority priority;
 
     //TODO
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worker_id")
+    @ToString.Exclude
     private Worker client;
 
     @Column(name = "description")
     private String ticketDescription;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Department clientDepartment;
     //TODO
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Equipment equipment;
 
     @Column(name = "start_date")
@@ -42,9 +53,6 @@ public class Ticket {
 
     @Column(name = "end_date")
     private LocalDate endDateTicket;
-
-    public Ticket() {
-    }
 
     public Department getClientDepartment() {
         return clientDepartment;
@@ -54,19 +62,16 @@ public class Ticket {
         this.clientDepartment = clientDepartment;
     }
 
-    public Ticket(Long id, StatusTicket status, Priority priority,
-                  Worker client,
-                  String ticketDescription,
-                  Department clientDepartment, Equipment equipment, LocalDate startDateTicket, LocalDate endDateTicket) {
-        this.id = id;
-        this.status = status;
-        this.priority = priority;
-        this.client = client;
-        this.ticketDescription = ticketDescription;
-        this.clientDepartment = clientDepartment;
-        this.equipment = equipment;
-        this.startDateTicket = startDateTicket;
-        this.endDateTicket = endDateTicket;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Ticket ticket = (Ticket) o;
+        return id != null && Objects.equals(id, ticket.id);
     }
 
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }

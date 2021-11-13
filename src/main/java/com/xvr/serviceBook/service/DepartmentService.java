@@ -22,7 +22,7 @@ public interface DepartmentService {
     Optional<Department> findDepartmentById(Long id);
 
 
-    Optional<Department> findDepartmentByName(String name);
+    Optional<Department> findFirstDepartmentByName(String name);
 
     List<Department> findPaginated(Pageable pageable);
 
@@ -30,5 +30,5 @@ public interface DepartmentService {
 
     void deleteDepartmentById(Long id);
 
-    void updateDepartment(DepartmentServiceDto departmentServiceDto);
+    void updateDepartment(DepartmentServiceDto departmentServiceDto, Long id);
 }
