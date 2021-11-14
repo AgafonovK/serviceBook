@@ -1,61 +1,29 @@
 package com.xvr.serviceBook.form;
 
+import lombok.*;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Builder
 public class AppUserForm {
 
     private Long userId;
+
+    @NotEmpty
     private String userName;
-    private String encryptedPassword;
+
+    @NotEmpty
+    @Min(6)
+    private String password;
+
     private boolean enabled;
 
-    public AppUserForm() {
-    }
 
-    public AppUserForm(Long userId, String userName, String encryptedPassword, boolean enabled) {
-        this.userId = userId;
-        this.userName = userName;
-        this.encryptedPassword = encryptedPassword;
-        this.enabled = enabled;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    @Override
-    public String toString() {
-        return "AppUserForm{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", encryptedPassword='" + encryptedPassword + '\'' +
-                ", enabled=" + enabled +
-                '}';
-    }
 }

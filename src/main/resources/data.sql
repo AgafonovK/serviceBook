@@ -37,4 +37,5 @@ INSERT INTO priority (priority_name) values
 ('Medium');
 INSERT INTO ticket (status_ticket_id, priority_id, worker_id, description,
 client_department_id, equipment_id, start_date, end_date) values
-(1, 2, 1, 'Fault in air', 2, 2, '2021-10-14', '2021-10-18')
+(1, 2, 1, 'Fault in air', 2, 2, '2021-10-14', '2021-10-18'),
+(1, 2, 1, 'Exception', 2, 2, '2021-09-12', '2021-10-01');

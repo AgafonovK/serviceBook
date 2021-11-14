@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+<body>
+<div class="container" th:fragment="ticketsTable">
+    <div class=" = row">
+        <div class="col-lg-10 mt-5 mb-5">
+            <table id="tickets" class="table table-bordered table-responsive-sm">
+                <thead>
+                <tr>
+                    <th>Id заявки</th>
+                    <th>Описание заявки</th>
+                    <th>Клиент</th>
+                    <th>Отдел</th>
+                    <th>Оборудование</th>
+                    <th>приоритет заявки</th>
+                    <th>Status</th>
+                    <th>Open date</th>
+                    <th>close Date</th>
+                    <th>Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(tickets.content)}">
+                    <td colspan="10"> No Tickets Available</td>
+                </tr>
+                <tr th:each="ticket : ${tickets.content}">
+                    <td><span th:text="${tickets.getReportId()}">...</span></td>
+                    <td><span th:utext="${ticket.getTicketDescription()}">...</span></td>
+                    <td><span th:utext="${ticket.getClientDepartment().name}">...</span></td>
+                    <td><span th:utext="${ticket.getClientDepartment().getName()}"></span></td>
+                    <td><span th:utext="${ticket.getEquipment().getName()}">...</span></td>
+                    <td><span th:utext="${ticket.getPriority().getPriorityName()}">...</span></td>
+                    <td><span th:utext="${ticket.getStatus().getStatusName()}">...</span></td>
+                    <td><span th:utext="${ticket.getStartDateTicket()}">...</span></td>
+                    <td><span th:utext="${ticket.getEndDateTicket()}">...</span></td>
+                    <td><a th:href="'/web/tickets/' + ${ticket.getId()}"> Option </a> </td>
+                </tr>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagination-div">
+                <span th:if="${tickets.hasPrevious()}">
+                         <a th:href="@{/web/tickets(page=${tickets.number-1},size=${tickets.size})}">Previous</a>
+                </span>
+                <th:block th:each="i: ${#numbers.sequence(0, tickets.totalPages - 1)}">
+                    <span th:if="${tickets.number == i}" class="selected">[[${i}+1]]</span>
+                    <span th:unless="${tickets.number == i}">
+                        <a th:href="@{/web/tickets(page=${i},size=${tickets.size})}">[[${i}+1]]</a>
+                    </span>
+                </th:block>
+                <span th:if="${tickets.hasNext()}">
+                    <a th:href="@{/web/tickets(page=${tickets.number+1},size=${tickets.size})}">Next</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

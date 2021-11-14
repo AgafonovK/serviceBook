@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -71,9 +72,10 @@ public class DepartmentController {
     @PostMapping
     public String saveDepartment(@Validated @ModelAttribute("departmentForm") DepartmentForm departmentForm,
                                  final RedirectAttributes redirectAttributes,
+                                 BindingResult bindingResult,
                                  Model model) {
 
-        if (departmentForm.getName().isEmpty()) {
+        if (bindingResult.hasErrors()) {
             redirectAttributes.addAttribute("nameError", "Error: name is Empty");
             return "redirect:/web/departments/create-department";
         }

@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "web/equipment")
+@RequestMapping(value = "web/equipments")
 public class EquipmentController {
 
     private final EquipmentRepository equipmentRepository;
@@ -32,7 +32,7 @@ public class EquipmentController {
         this.departmentService = departmentService;
     }
 
-    @RequestMapping(value = "equipment", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String viewEquipment(Model model) {
 
         List<Equipment> list = equipmentRepository.findAll();

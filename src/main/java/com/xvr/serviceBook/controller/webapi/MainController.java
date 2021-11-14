@@ -21,19 +21,11 @@ import java.security.Principal;
 public class MainController {
 
 
-    @Autowired
-    public MainController(WorkerServiceImpl workerService, DepartmentServiceImpl departmentService) {
-    }
-
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
         model.addAttribute("message", "We waiting you.");
         return "welcomePage";
-    }
-    @RequestMapping(value = {"/test"}, method = RequestMethod.GET)
-    public String test (){
-        return "Test";
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -75,12 +67,17 @@ public class MainController {
         return "403Page";
     }
 
-    //TODO Show register page
+
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String viewRegister(Model model) {
-        AppUserForm form = new AppUserForm();
-        model.addAttribute("appUserForm", form);
-        model.addAttribute("userName", "Fedya");
+        AppUserForm appUserForm = new AppUserForm();
+        model.addAttribute("title", "Application Users List");
+        if (appUserForm.getUserName() == null) {
+            model.addAttribute("appUserForm", appUserForm);
+        }else {
+            model.addAttribute("appUSerForm", appUserForm);
+            model.addAttribute("ok", true);
+        }
         return "registerPage";
     }
 

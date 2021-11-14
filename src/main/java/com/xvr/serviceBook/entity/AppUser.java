@@ -1,8 +1,14 @@
 package com.xvr.serviceBook.entity;
 
+import lombok.*;
+
 import javax.persistence.*;
 
-
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Builder
 @Entity
 @Table(name = "app_user")
 public class AppUser {
@@ -24,43 +30,4 @@ public class AppUser {
     @ManyToOne(fetch = FetchType.LAZY)
     private Worker worker;
 
-    public Long getId() {
-        return userId;
-    }
-
-    public void setId(Long id) {
-        userId = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
-    }
-
-    public int isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(int enabled) {
-        this.enabled = enabled;
-    }
-
-    public Worker getWorker() {
-        return worker;
-    }
-
-    public void setWorker(Worker worker) {
-        this.worker = worker;
-    }
 }

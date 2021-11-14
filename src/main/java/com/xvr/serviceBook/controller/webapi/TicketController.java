@@ -4,7 +4,14 @@ import com.xvr.serviceBook.entity.Report;
 import com.xvr.serviceBook.entity.Ticket;
 import com.xvr.serviceBook.form.TicketForm;
 import com.xvr.serviceBook.repository.*;
+import com.xvr.serviceBook.service.DepartmentService;
+import com.xvr.serviceBook.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,15 +19,16 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "/web/tickets")
+@RequestMapping(value = "web/tickets")
 public class TicketController {
 
+    private final TicketService ticketService;
+
     @Autowired
-    TicketRepository ticketRepository;
-    @Autowired
-    DepartmentRepository departmentRepository;
+    DepartmentService departmentService;
     @Autowired
     EquipmentRepository equipmentRepository;
     @Autowired
@@ -28,17 +36,24 @@ public class TicketController {
     @Autowired
     StatusTicketRepository statusTicketRepository;
 
+    @Autowired
+    public TicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
+
+
     @RequestMapping (method = RequestMethod.GET)
-    public String ticketsView(@RequestParam(value = "error", required = false) String error,
-                              @RequestParam(value = "result", required = false) String result,
+    public String ticketsView(@RequestParam(value = "page") Optional<Integer> page,
+                              @RequestParam(value = "size") Optional<Integer> size,
                               Model model){
-        List<Ticket> list = ticketRepository.findAll();
-        model.addAttribute("tickets",list);
-        if (error!=null){
-            System.out.println("Sorryan error " + result + " error="+error);
-            model.addAttribute("error", result);
-            return "ticket/ticketPage";
-        }
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+        //TODO don't work page
+        Page<Ticket> ticketsPaginated = ticketService.findAllTicketsPaginated(PageRequest.of(1,5));
+        List<Ticket> list = ticketService.findAllTicketsList();
+        System.out.println("TICKETS " + list.size());
+        System.out.println("TICKETS PAGE " + ticketsPaginated.getContent().size());
+        model.addAttribute("tickets",ticketsPaginated);
         return "ticket/ticketPage";
     }
 
@@ -47,7 +62,7 @@ public class TicketController {
         TicketForm ticketForm = new TicketForm();
         model.addAttribute("listWorker", workerRepository.findAll());
         model.addAttribute("listEquipment",equipmentRepository.findAll());
-        model.addAttribute("listDepartment", departmentRepository.findAll());
+        model.addAttribute("listDepartment", departmentService.findAllDepartmentsList());
         model.addAttribute("listStatus", statusTicketRepository.findAll());
         model.addAttribute("ticketForm", ticketForm);
         return "ticket/createTicketPage";
@@ -58,11 +73,10 @@ public class TicketController {
     public String saveTickets(@Valid @ModelAttribute (value = "ticketForm") TicketForm ticketForm,
                               BindingResult result,
                               Model model){
-        System.out.println(ticketForm.toString());
         if (result.hasErrors()){
             model.addAttribute("listWorker", workerRepository.findAll());
             model.addAttribute("listEquipment",equipmentRepository.findAll());
-            model.addAttribute("listDepartment", departmentRepository.findAll());
+            model.addAttribute("listDepartment", departmentService.findAllDepartmentsList());
             model.addAttribute("listStatus", statusTicketRepository.findAll());
             model.addAttribute("ticketForm", ticketForm);
             return "ticket/createTicketPage";
@@ -79,7 +93,7 @@ public class TicketController {
             try {
                 //TODO check ticket id
                 System.out.println("TICKET " + ticket.toString());
-                ticketRepository.saveAndFlush(ticket);
+                //ticketRepository.saveAndFlush(ticket);
             }catch (Exception e){
                 System.out.println(e.getMessage());
                 model.addAttribute("errorSave", e.getMessage());

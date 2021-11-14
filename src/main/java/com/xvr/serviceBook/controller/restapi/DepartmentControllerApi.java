@@ -42,7 +42,7 @@ public class DepartmentControllerApi {
                 .map(department -> {
                     department.add(linkTo(methodOn(DepartmentControllerApi.class).getAllDepartments(pageRequest)).withSelfRel());
                     department.add(linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.getId())).withRel("department"));
-                    //department.add(linkTo(methodOn(DepartmentControllerApi.class).newDepartment())).withRel("create_new_department"));
+                    //department.add(linkTo(methodOn(DepartmentControllerApi.class).saveDepartment())).withRel("create_new_department"));
                     department.add(linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(department.getId())).withRel("delete_department"));
                     return department;
                 });
@@ -60,7 +60,7 @@ public class DepartmentControllerApi {
         return department.isEmpty()
                 ? ResponseEntity.ok(new EntityModel<Department>(department.get(),
                 linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(id)).withSelfRel(),
-                //linkTo(methodOn(DepartmentControllerApi.class).newDepartment()).withRel("create_new_department"),
+                //linkTo(methodOn(DepartmentControllerApi.class).saveDepartment()).withRel("create_new_department"),
                 linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(id)).withRel("delete_department")))
                 : ResponseEntity.notFound().build();
     }
@@ -79,7 +79,7 @@ public class DepartmentControllerApi {
     }
 
     @PostMapping
-    public ResponseEntity<EntityModel<Department>> newDepartment(@RequestParam(value = "name") String departmentName) {
+    public ResponseEntity<EntityModel<Department>> saveDepartment(@RequestParam(value = "name") String departmentName) {
         if (departmentService.findFirstDepartmentByName(DepartmentServiceDto.of(departmentName).getName()).isPresent()) {
             //Unprocessable Entity
             return ResponseEntity.status(422).build();
