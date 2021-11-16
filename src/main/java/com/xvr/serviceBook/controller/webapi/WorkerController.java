@@ -33,7 +33,7 @@ public class WorkerController {
 
     @GetMapping
     public String viewWorkers(Model model){
-        List<Worker> list = workerService.getAllWorker();
+        List<Worker> list = workerService.findAllWorker();
         for (Worker w: list){
             System.out.println(w.toString());
         }

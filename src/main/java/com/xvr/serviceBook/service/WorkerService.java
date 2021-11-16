@@ -8,7 +8,7 @@ import java.util.List;
 public interface WorkerService {
 
 
-    List<Worker> getAllWorker();
+    List<Worker> findAllWorker();
     Long getMaxUserId();
     Worker createWorker(WorkerForm worker);
 

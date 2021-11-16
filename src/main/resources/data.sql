@@ -22,7 +22,7 @@ INSERT INTO department (name) values
 INSERT INTO worker (first_name, last_name, patronymic,
 phone, email, date_accept, date_fired, position_worker_id, department_id) values
 ('Ivanov', 'Ivan', 'Ivanovich', 3654643, null, null, null, 1, 1),
-('Petrov', 'Petr', 'Petrovich', 1234567, null, null, null, 1, 1);
+('Petrov', 'Petr', 'Petrovich', 1234567, null, null, null, 2, 1);
 INSERT INTO equipment (name, description, location) values
 ('sert', ' frez', '37'),
 ('kotr', ' frez', '45');
@@ -35,7 +35,9 @@ INSERT INTO status_ticket (status_name) values
 INSERT INTO priority (priority_name) values
 ('High'),
 ('Medium');
-INSERT INTO ticket (status_ticket_id, priority_id, worker_id, description,
-client_department_id, equipment_id, start_date, end_date) values
-(1, 2, 1, 'Fault in air', 2, 2, '2021-10-14', '2021-10-18'),
-(1, 2, 1, 'Exception', 2, 2, '2021-09-12', '2021-10-01');
+INSERT INTO ticket (status_ticket_id, priority_id, description,
+department_id, equipment_id, start_date, end_date) values
+(1, 2, 'Fault in air', 2, 2, '2021-10-14', '2021-10-18'),
+(1, 2, 'Exception', 2, 2, '2021-09-12', '2021-10-01');
+INSERT INTO worker_ticket (worker_id, ticket_id) values
+(1,1);

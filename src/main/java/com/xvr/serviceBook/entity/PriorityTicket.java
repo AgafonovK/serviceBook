@@ -11,30 +11,31 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "status_ticket")
-public class StatusTicket {
+@Table(name = "priority")
+public class PriorityTicket {
 
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "status_name")
-    private String statusName;
+    @Column(name = "priority_name", nullable = false)
+    private String priorityName;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "statusTicket")
-    private Set<Ticket> tickets;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "priorityTicket")
+    private Set<Ticket> ticket;
 
-    public StatusTicket(Long id, String statusName) {
+
+    public PriorityTicket(Long id, String priorityName) {
         this.id = id;
-        this.statusName = statusName;
+        this.priorityName = priorityName;
     }
 
     @Override
     public String toString() {
-        return "StatusTicket{" +
+        return "Priority{" +
                 "id=" + id +
-                ", statusName='" + statusName + '\'' +
+                ", priorityName='" + priorityName + '\'' +
                 '}';
     }
 }

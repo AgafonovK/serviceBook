@@ -6,10 +6,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
-// @Builder not worked
 @RequiredArgsConstructor
 @ToString
 public class TicketForm {
@@ -17,20 +17,19 @@ public class TicketForm {
 
     private Long reportId;
 
-    @NotEmpty
+    @NotNull
     private StatusTicket status;
 
-    @NotEmpty
-    private Priority priority;
+    private PriorityTicket priorityTicket;
 
-    private Worker client;
+    private Set<Worker> workers;
 
     @NotEmpty
     private String ticketDescription;
 
     private Department clientDepartment;
 
-    @NotEmpty
+    //@NotNull
     private Equipment equipment;
 
     @PastOrPresent

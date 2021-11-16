@@ -1,10 +1,16 @@
 package com.xvr.serviceBook.entity;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "position_worker")
 public class PositionWorker {
@@ -18,14 +24,21 @@ public class PositionWorker {
     @Column(name = "position_name")
     private String positionName;
 
-    public PositionWorker() {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "positionWorker")
+    private Set<Worker> worker;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        PositionWorker that = (PositionWorker) o;
+        return id != null && Objects.equals(id, that.id);
     }
 
-    public PositionWorker(Long id, String positionName) {
-        this.id = id;
-        this.positionName = positionName;
+    @Override
+    public int hashCode() {
+        return 0;
     }
-
 }
 
 

@@ -2,51 +2,29 @@ package com.xvr.serviceBook.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "ticket")
-public class Ticket {
+public class Ticket extends RepresentationModel<Ticket> {
 
     @Id
     @Column(name = "id", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_ticket_id")
-    @ToString.Exclude
-    private StatusTicket status;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
-    //@JoinColumn(name = "priority_id" )
-    private Priority priority;
-
-    //TODO
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worker_id")
-    @ToString.Exclude
-    private Worker client;
-
     @Column(name = "description")
     private String ticketDescription;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private Department clientDepartment;
-    //TODO
-    @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private Equipment equipment;
 
     @Column(name = "start_date")
     private LocalDate startDateTicket;
@@ -54,12 +32,51 @@ public class Ticket {
     @Column(name = "end_date")
     private LocalDate endDateTicket;
 
-    public Department getClientDepartment() {
-        return clientDepartment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_ticket_id",nullable = false)
+    private StatusTicket statusTicket;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "priority_id", nullable = false)
+    private PriorityTicket priorityTicket;
+
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tickets")
+    private Set<Worker> workers;
+
+    public void addWorker(Worker worker) {
+        this.workers.add(worker);
+        worker.getTickets().add(this);
     }
 
-    public void setClientDepartment(Department clientDepartment) {
-        this.clientDepartment = clientDepartment;
+    public void removeWorker(Worker worker) {
+        this.workers.remove(worker);
+        worker.getTickets().remove(this);
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department clientDepartment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "equipment_id")
+    private Equipment equipment;
+
+
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", status=" + statusTicket.getStatusName() +
+                ", priority=" + priorityTicket.getPriorityName() +
+                ", client=" + workers.toString() +
+                ", ticketDescription='" + ticketDescription + '\'' +
+                ", clientDepartment=" + clientDepartment.getName() +
+                ", equipment=" + equipment.getName() +
+                ", startDateTicket=" + startDateTicket +
+                ", endDateTicket=" + endDateTicket +
+                '}';
     }
 
     @Override

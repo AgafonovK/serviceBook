@@ -5,6 +5,15 @@
     <title>Title</title>
 </head>
 <body>
+<div th:if="${#request.getParameter('error') == 'true'}"
+     style="color:red;margin:10px 0px;">
+    Тикет не добавлен!!!<br/>
+    Причина :
+    <span th:utext="${#session.getAttribute('error').message}">
+                Static summary
+         </span>
+
+</div>
 <h2>Форма подачи заявки</h2>
 
 <form th:action="@{/web/tickets}" th:object="${ticketForm}" method="POST">
@@ -55,18 +64,18 @@
             <td><span th:if="${#fields.hasErrors('equipment')}" th:errors="*{equipment}">..</span></td>
         </tr>
         <tr>
-            <td>Worker</td>
+            <td>Client</td>
             <td>
-                <select th:field="*{client}">
+                <select th:field="*{workers}">
                     <option value=""> -- </option>
-                    <option th:each="worker : ${listWorker}"
+                    <option th:each="worker, row : ${listWorkers}"
                             th:value="${worker.getId()}"
                             th:utext="${worker.getFirstName()}"></option>
                 </select>
-            <td><span th:if="${#fields.hasErrors('client')}" th:errors="*{client}">..</span></td>
+            <td><span th:if="${#fields.hasErrors('workers')}" th:errors="*{workers}">..</span></td>
         </tr>
         <tr>
-            <td>Status</td>
+            <td>Статус оборудования: </td>
             <td>
                 <select th:field="*{status}">
                     <option value=""> -- </option>
@@ -75,6 +84,17 @@
                             th:utext="${status.getStatusName()}"></option>
                 </select>
             <td><span th:if="${#fields.hasErrors('status')}" th:errors="*{status}">..</span></td>
+        </tr>
+        <tr>
+            <td>Приоритет заявки: </td>
+            <td>
+                <select th:field="*{priorityTicket}">
+                    <option value=""> -- </option>
+                    <option th:each="priority : ${listPriority}"
+                            th:value="${priority.getId()}"
+                            th:utext="${priority.getPriorityName()}"></option>
+                </select>
+            <td><span th:if="${#fields.hasErrors('priorityTicket')}" th:errors="*{priorityTicket}">..</span></td>
         </tr>
         <tr>
             <td>&nbsp;</td>

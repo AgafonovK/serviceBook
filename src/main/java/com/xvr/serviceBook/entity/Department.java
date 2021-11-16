@@ -6,13 +6,12 @@ import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "department")
 public class Department extends RepresentationModel<Department> {
@@ -25,6 +24,10 @@ public class Department extends RepresentationModel<Department> {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientDepartment")
+    private Set<Ticket> tickets;
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,5 +39,13 @@ public class Department extends RepresentationModel<Department> {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

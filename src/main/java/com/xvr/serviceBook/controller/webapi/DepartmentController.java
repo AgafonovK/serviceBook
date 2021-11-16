@@ -42,7 +42,7 @@ public class DepartmentController {
                                   Model model) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
-        Page<Department> departmentPage = departmentService.findAllDepartments(PageRequest.of(currentPage,pageSize));
+        Page<Department> departmentPage = departmentService.findAllDepartments(PageRequest.of(currentPage-1,pageSize));
         model.addAttribute("title", "Department List");
         model.addAttribute("departments", departmentPage);
         return "department/departmentsPage";

@@ -15,7 +15,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     EquipmentRepository equipmentRepository;
 
     @Override
-    public List<Equipment> getAllEquipment() {
+    public List<Equipment> findAllEquipment() {
         return equipmentRepository.findAll();
     }
 }
