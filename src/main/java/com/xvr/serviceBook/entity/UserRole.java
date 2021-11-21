@@ -1,11 +1,17 @@
 package com.xvr.serviceBook.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.Set;
 
-@Entity
-@Table(name = "user_role")
+@Getter
+@Setter
+//@Entity
+//@Table(name = "user_role")
 public class UserRole {
-
+/*
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_Role_id", nullable = false)
@@ -15,31 +21,8 @@ public class UserRole {
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser appUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
-    private AppRole appRole;
+    private Set<AppRole> appRole;*/
 
-    public Long getUserRoleId() {
-        return userRoleId;
-    }
-
-    public void setUserRoleId(Long userRoleId) {
-        this.userRoleId = userRoleId;
-    }
-
-    public AppUser getAppUser() {
-        return appUser;
-    }
-
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
-    }
-
-    public AppRole getAppRole() {
-        return appRole;
-    }
-
-    public void setAppRole(AppRole appRole) {
-        this.appRole = appRole;
-    }
 }

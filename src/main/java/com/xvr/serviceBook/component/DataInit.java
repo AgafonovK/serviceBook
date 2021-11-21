@@ -8,6 +8,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+@Deprecated
 public class DataInit implements ApplicationRunner {
 
     private AppUserRepository appUserRepository;

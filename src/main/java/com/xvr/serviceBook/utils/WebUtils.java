@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
+@Deprecated
 public class WebUtils {
 
     public static String toString(User user){

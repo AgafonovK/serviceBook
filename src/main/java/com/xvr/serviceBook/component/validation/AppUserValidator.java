@@ -9,11 +9,12 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
+@Deprecated
 public class AppUserValidator implements Validator {
 
-    @Autowired
-    private AppUserService userDetailService;
+    private final AppUserService userDetailService;
 
+    @Autowired
     public AppUserValidator(AppUserService userDetailService) {
         this.userDetailService = userDetailService;
     }

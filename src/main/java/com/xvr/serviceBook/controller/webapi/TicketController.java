@@ -69,7 +69,6 @@ public class TicketController {
                               Model model) {
         if (result.hasErrors()) {
             redirectAttributes.addAttribute("error", "Error: " + result.getFieldError());
-            System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG " + result.getFieldError());
             return "redirect:/web/tickets/create-ticket?error=true";
         } else {
             try {

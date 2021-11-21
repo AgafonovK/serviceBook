@@ -1,6 +1,7 @@
 package com.xvr.serviceBook.form;
 
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -9,19 +10,19 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-@ToString
 @EqualsAndHashCode
 @Builder
 public class AppUserForm {
-
-    private Long userId;
 
     @NotEmpty
     private String userName;
 
     @NotEmpty
-    @Min(6)
+    //@Min(6)
     private String password;
+
+    @NotEmpty
+    private String confirmPassword;
 
     private boolean enabled;
 

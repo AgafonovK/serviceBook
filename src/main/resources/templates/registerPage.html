@@ -28,8 +28,10 @@
 <main>
     <h2>Register</h2>
 
-    <div th:if="${errorMessage != null}"
-         th:utext="${errorMessage}" class="error">...
+    <div th:if="${#request.getParameter('error') == 'true'}"
+         style="color:red;margin:10px 0px;">
+        Пользователь не добавлен!!!<br/>
+        Причина :
     </div>
 
     <div th:if="${ok != null}">
@@ -41,7 +43,7 @@
     </div>
 
     <div>
-        <form th:action="@{/web/appusers/}" th:object="${appUserForm}" method="POST">
+        <form th:action="@{/web/appusers}" th:object="${appUserForm}" method="POST">
             <table>
                 <tr>
                     <td>User Name</td>
@@ -52,7 +54,7 @@
                 </tr>
                 <tr>
                     <td>Password</td>
-                    <td><input type="password" th:field="*{password}"/></td>
+                    <td><input type="password" placeholder="Minimum 6 char's" th:field="*{password}"/></td>
                     <td>
                         <span th:if="${#fields.hasErrors('password')}"
                               th:errors="*{password}">..</span>
@@ -60,10 +62,10 @@
                 </tr>
                 <tr>
                     <td>Confirm</td>
-                    <td><input type="password" th:field="*{password}"/></td>
+                    <td><input type="password" th:field="*{confirmPassword}"/></td>
                     <td>
-                        <span th:if="${#fields.hasErrors('password')}"
-                              th:errors="*{password}">..</span>
+                        <span th:if="${#fields.hasErrors('confirmPassword')}"
+                              th:errors="*{confirmPassword}">..</span>
                     </td>
                 </tr>
                 <tr>

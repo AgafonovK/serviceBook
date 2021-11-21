@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
@@ -35,7 +36,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public List<AppUser> findAllAppUsers(){
+    public List<AppUser> findAllAppUsers() {
         return appUserRepository.findAll();
 
     }
@@ -50,9 +51,9 @@ public class AppUserServiceImpl implements AppUserService {
     public void saveUser(AppUserServiceDto appUserServiceDto) {
 
         AppUser appUser = AppUser.builder()
-                        .userName(appUserServiceDto.getUserName())
-                        .encryptedPassword(bCryptPasswordEncoder.encode(appUserServiceDto.getPassword()))
-                        .enabled(appUserServiceDto.isEnabled()? 1 : 0)
+                .userName(appUserServiceDto.getUserName())
+                .encryptedPassword(bCryptPasswordEncoder.encode(appUserServiceDto.getPassword()))
+                .enabled(appUserServiceDto.isEnabled() ? 1 : 0)
                 .build();
         appUserRepository.saveAndFlush(appUser);
     }
@@ -61,9 +62,9 @@ public class AppUserServiceImpl implements AppUserService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         System.out.println("username " + userName);
         AppUser appUser = this.appUserRepository.findUserAccount(userName);
-        if (appUser==null){
+        if (appUser == null) {
             System.out.println("AppUser not found " + appUser);
-            throw new UsernameNotFoundException("User "+
+            throw new UsernameNotFoundException("User " +
                     userName + "was not found ");
         }
         System.out.println("Found user " + appUser.getUserName() + " idUser " + appUser.getUserId());
@@ -71,17 +72,17 @@ public class AppUserServiceImpl implements AppUserService {
         List<String> roleNames = this.appRoleRepository.getRoleNames(appUser.getUserId());
         System.out.println("size= " + roleNames.size());
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
-        if (roleNames!=null){
-            for (String role: roleNames ){
+        if (roleNames != null) {
+            for (String role : roleNames) {
                 System.out.println("role = " + role);
-                GrantedAuthority authority =new SimpleGrantedAuthority(role);
+                GrantedAuthority authority = new SimpleGrantedAuthority(role);
                 grantedAuthorityList.add(authority);
             }
-        }else {
+        } else {
             System.out.println("roleNames = null");
         }
 
-        return new User(appUser.getUserName(), appUser.getEncryptedPassword(),grantedAuthorityList);
+        return new User(appUser.getUserName(), appUser.getEncryptedPassword(), grantedAuthorityList);
     }
 
 }

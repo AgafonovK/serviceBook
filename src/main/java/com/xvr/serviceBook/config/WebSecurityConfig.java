@@ -1,7 +1,6 @@
 package com.xvr.serviceBook.config;
 
 import com.xvr.serviceBook.service.AppUserService;
-import com.xvr.serviceBook.service.impl.AppUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,10 +51,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/web/appusers/register").permitAll()
-                    .antMatchers("/admins/**", "/h2-console/**").hasRole("ADMIN")
+                    .antMatchers("/", "/web/appusers","/create-user","/web/appusers/user-add-successful").permitAll()
+                    .antMatchers("/h2-console/**").hasRole("ADMIN")
                     .antMatchers("/users/**").hasRole("USER")
-                    //.antMatchers("/h2-console","/h2-console/**").access("hasRole('ADMIN')")
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()

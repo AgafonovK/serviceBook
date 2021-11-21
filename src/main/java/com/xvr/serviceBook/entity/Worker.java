@@ -1,6 +1,7 @@
 package com.xvr.serviceBook.entity;
 
 import lombok.*;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;

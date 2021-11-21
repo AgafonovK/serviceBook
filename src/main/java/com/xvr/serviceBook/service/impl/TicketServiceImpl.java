@@ -1,10 +1,12 @@
 package com.xvr.serviceBook.service.impl;
 
 import com.xvr.serviceBook.entity.Ticket;
+import com.xvr.serviceBook.event.TicketCreateEvent;
 import com.xvr.serviceBook.repository.TicketRepository;
 import com.xvr.serviceBook.service.TicketService;
 import com.xvr.serviceBook.service.servicedto.TicketServiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,13 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
 
     private final TicketRepository ticketRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public TicketServiceImpl(TicketRepository ticketRepository) {
+    public TicketServiceImpl(TicketRepository ticketRepository, ApplicationEventPublisher applicationEventPublisher) {
         this.ticketRepository = ticketRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
-
 
     @Override
     public Page<Ticket> findAllTicketsPaginated(Pageable pageable) {
@@ -48,5 +51,7 @@ public class TicketServiceImpl implements TicketService {
                 .workers(ticketServiceDto.getWorker())
                 .build();
         ticketRepository.save(ticket);
+        TicketCreateEvent ticketCreateEvent = new TicketCreateEvent(this, ticket);
+        applicationEventPublisher.publishEvent(ticketCreateEvent);
     }
 }

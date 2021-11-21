@@ -42,17 +42,8 @@ public class Ticket extends RepresentationModel<Ticket> {
 
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tickets")
+    @Singular
     private Set<Worker> workers;
-
-    public void addWorker(Worker worker) {
-        this.workers.add(worker);
-        worker.getTickets().add(this);
-    }
-
-    public void removeWorker(Worker worker) {
-        this.workers.remove(worker);
-        worker.getTickets().remove(this);
-    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")

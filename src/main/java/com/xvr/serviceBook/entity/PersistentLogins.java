@@ -1,10 +1,14 @@
 package com.xvr.serviceBook.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.annotation.Primary;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "persistent_logins")
 public class PersistentLogins {

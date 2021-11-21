@@ -3,6 +3,8 @@ package com.xvr.serviceBook.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,7 +29,23 @@ public class AppUser {
     @Column(name = "enable_user", length = 1, nullable = false)
     private int enabled;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<AppRole> appRole = new HashSet<>();
+
+    public void addAppRole(AppRole appRole){
+        this.appRole.add(appRole);
+        appRole.getAppUsers().add(this);
+    }
+
+    public void deleteAppRole(AppRole appRole){
+        this.appRole.remove(appRole);
+        appRole.getAppUsers().remove(this);
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
     private Worker worker;
 
 }
