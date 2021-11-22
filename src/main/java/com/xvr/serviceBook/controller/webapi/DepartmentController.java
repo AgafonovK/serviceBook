@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,7 +50,7 @@ public class DepartmentController {
     }
 
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.GET)
-    public String viewDepartmentById(@RequestParam("departmentId") Long departmentId,
+    public String viewDepartmentById(@PathVariable("departmentId") Long departmentId,
                                      Model model) {
         Optional<Department> department = departmentService.findDepartmentById(departmentId);
         if (department.isEmpty()) throw new EntityNotFoundException("id-" + departmentId);
@@ -57,6 +58,7 @@ public class DepartmentController {
         return department.toString();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "create-department", method = RequestMethod.GET)
     public String createDepartment(Model model) {
         DepartmentForm departmentForm = new DepartmentForm();
@@ -69,6 +71,7 @@ public class DepartmentController {
         return "department/createDepartmentPage";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public String saveDepartment(@Validated @ModelAttribute("departmentForm") DepartmentForm departmentForm,
                                  final RedirectAttributes redirectAttributes,
@@ -92,6 +95,7 @@ public class DepartmentController {
         return "redirect:/web/departments/department-add-successful";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "department-add-successful", method = RequestMethod.GET)
     public String viewDepartmentAddSuccessful(Model model) {
         Pageable pageable = PageRequest.of(0, 5);

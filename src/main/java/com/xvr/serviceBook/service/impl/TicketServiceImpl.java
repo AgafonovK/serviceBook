@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -53,5 +54,10 @@ public class TicketServiceImpl implements TicketService {
         ticketRepository.save(ticket);
         TicketCreateEvent ticketCreateEvent = new TicketCreateEvent(this, ticket);
         applicationEventPublisher.publishEvent(ticketCreateEvent);
+    }
+
+    @Override
+    public Optional<Ticket> getTicketById(Long id) {
+        return ticketRepository.findById(id);
     }
 }

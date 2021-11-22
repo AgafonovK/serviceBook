@@ -44,9 +44,48 @@ public class TicketController {
     public String ticketsView(@RequestParam(value = "page") Optional<Integer> page,
                               @RequestParam(value = "size") Optional<Integer> size,
                               Model model) {
-        Page<Ticket> ticketsPaginated = ticketService.findAllTicketsPaginated(PageRequest.of(page.orElse(1)-1, size.orElse(5)));
+        Page<Ticket> ticketsPaginated = ticketService.findAllTicketsPaginated(PageRequest.of(page.orElse(1) - 1, size.orElse(5)));
         model.addAttribute("tickets", ticketsPaginated);
+        return "ticket/ticketsPage";
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String ticketView(@PathVariable Long id,
+                             Model model) {
+        System.out.println("IDIDID " + id);
+        model.addAttribute("ticket", ticketService.getTicketById(id).get());
         return "ticket/ticketPage";
+    }
+
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+    public String ticketUpdate(@PathVariable Long id,
+                               @Validated @ModelAttribute(value = "ticketForm") TicketForm ticketForm,
+                               BindingResult result,
+                               RedirectAttributes redirectAttributes,
+                               Model model) {
+
+        if (result.hasErrors()) {
+            redirectAttributes.addAttribute("error", "Error: " + result.getFieldError());
+            return "redirect:/web/tickets/create-ticket?error=true";
+        } else {
+            try {
+                ticketService.save(TicketServiceDto.builder()
+                        .ticketDescription(ticketForm.getTicketDescription())
+                        .startDateTicket(ticketForm.getStartDateTicket())
+                        .endDateTicket(ticketForm.getEndDateTicket())
+                        .worker(ticketForm.getWorkers())
+                        .clientDepartment(ticketForm.getClientDepartment())
+                        .equipment(ticketForm.getEquipment())
+                        .priorityTicket(ticketForm.getPriorityTicket())
+                        .status(ticketForm.getStatus())
+                        .build());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                model.addAttribute("errorSave", e.getMessage());
+                return "ticket/createTicketPage";
+            }
+        }
+        return "redirect:/web/tickets";
     }
 
     @RequestMapping(value = "create-ticket", method = RequestMethod.GET)

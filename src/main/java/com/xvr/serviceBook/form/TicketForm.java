@@ -15,7 +15,7 @@ import java.util.Set;
 public class TicketForm {
 
 
-    private Long reportId;
+    private Long ticketId;
 
     @NotNull
     private StatusTicket status;
