@@ -4,6 +4,7 @@ import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.repository.DepartmentRepository;
 import com.xvr.serviceBook.service.DepartmentService;
 import com.xvr.serviceBook.service.servicedto.DepartmentServiceDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final EntityManagerFactory entityManagerFactory;
 
+    @Autowired
     public DepartmentServiceImpl(DepartmentRepository departmentRepository, EntityManagerFactory entityManagerFactory) {
         this.departmentRepository = departmentRepository;
         this.entityManagerFactory = entityManagerFactory;

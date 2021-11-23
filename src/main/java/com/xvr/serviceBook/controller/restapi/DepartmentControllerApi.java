@@ -1,5 +1,6 @@
 package com.xvr.serviceBook.controller.restapi;
 
+import com.xvr.serviceBook.controller.restapi.assemblers.DepartmentPaginationModelAssembler;
 import com.xvr.serviceBook.controller.restapi.dtorepresentation.DepartmentRepresentation;
 import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.entity.Ticket;
@@ -12,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
@@ -21,7 +21,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -34,30 +33,23 @@ public class DepartmentControllerApi {
 
     private final DepartmentService departmentService;
     private final PagedResourcesAssembler<Department> departmentPagedResourcesAssembler;
-    private final PaginationModelAssembler paginationModelAssembler;
+    private final DepartmentPaginationModelAssembler departmentPaginationModelAssembler;
     private final TicketService ticketService;
 
     public DepartmentControllerApi(DepartmentService departmentService, PagedResourcesAssembler<Department> departmentPagedResourcesAssembler,
-                                   TicketService ticketService,PaginationModelAssembler paginationModelAssembler) {
+                                   TicketService ticketService, DepartmentPaginationModelAssembler departmentPaginationModelAssembler) {
         this.departmentService = departmentService;
         this.departmentPagedResourcesAssembler = departmentPagedResourcesAssembler;
         this.ticketService = ticketService;
-        this.paginationModelAssembler = paginationModelAssembler;
+        this.departmentPaginationModelAssembler = departmentPaginationModelAssembler;
     }
 //https://computingfacts.com/post/Spring-HATEOAS-Adding-Pagination-Links-To-RESTful-API
     @GetMapping //https://grapeup.com/blog/how-to-build-hypermedia-api-with-spring-hateoas/
-    public ResponseEntity<PagedModel<DepartmentRepresentation>> getAllDepartments(@PageableDefault(page = 0, size = 10) Pageable pageRequest) {
+    public ResponseEntity<PagedModel<DepartmentRepresentation>> getAllDepartments(@PageableDefault(page = 0, size = 5) Pageable pageRequest) {
         Page<Department> departments = departmentService.findAllDepartments(pageRequest);
-                /**.map(department -> {
-                    department.add(linkTo(methodOn(DepartmentControllerApi.class).getAllDepartments(pageRequest)).withSelfRel());
-                    department.add(linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.getId())).withRel("department"));
-                    department.add(linkTo(methodOn(DepartmentControllerApi.class).getDepartmentTickets(pageRequest, department.getId())).withRel("department_tickets"));
-                    department.add(linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(department.getId())).withRel("delete_department"));
-                    return department;
-                });**/
+
         PagedModel<DepartmentRepresentation> model = departmentPagedResourcesAssembler
-                .toModel(departments, paginationModelAssembler);
-        //System.out.println(model);
+                .toModel(departments, departmentPaginationModelAssembler);
         return !departments.isEmpty()
                 ? ResponseEntity.ok(model)
                 : ResponseEntity.notFound().build();
