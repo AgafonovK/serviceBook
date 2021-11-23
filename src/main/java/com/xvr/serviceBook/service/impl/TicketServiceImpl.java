@@ -60,4 +60,10 @@ public class TicketServiceImpl implements TicketService {
     public Optional<Ticket> getTicketById(Long id) {
         return ticketRepository.findById(id);
     }
+
+    //TODO
+    @Override
+    public Page<Ticket> findTicketsByDepartmentId(Pageable pageable, Long departmentId) {
+        return null;
+    }
 }

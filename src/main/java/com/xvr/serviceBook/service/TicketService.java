@@ -16,4 +16,5 @@ public interface TicketService {
     List<Ticket> findAllTicketsList();
     void save(TicketServiceDto ticketServiceDto);
     Optional<Ticket> getTicketById(Long id);
+    Page<Ticket> findTicketsByDepartmentId(Pageable pageable, Long departmentId);
 }

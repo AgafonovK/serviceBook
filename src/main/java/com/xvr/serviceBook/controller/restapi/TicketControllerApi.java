@@ -21,7 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Controller
 @ExposesResourceFor(Ticket.class)
-@RequestMapping(value = "/rest/controllers")
+@RequestMapping(value = "/rest/tickets")
 public class TicketControllerApi {
 
     private final TicketService ticketService;
@@ -51,4 +51,6 @@ public class TicketControllerApi {
                 ? ResponseEntity.ok(model)
                 : ResponseEntity.notFound().build();
     }
+
+
 }

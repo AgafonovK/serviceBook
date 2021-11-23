@@ -1,6 +1,7 @@
 package com.xvr.serviceBook.entity;
 
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.Hibernate;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -24,7 +25,7 @@ public class Department extends RepresentationModel<Department> {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientDepartment")
+    @OneToMany(mappedBy = "clientDepartment")
     private Set<Ticket> tickets;
 
 

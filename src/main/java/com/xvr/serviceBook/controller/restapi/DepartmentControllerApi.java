@@ -1,14 +1,18 @@
 package com.xvr.serviceBook.controller.restapi;
 
+import com.xvr.serviceBook.controller.restapi.dtorepresentation.DepartmentRepresentation;
 import com.xvr.serviceBook.entity.Department;
+import com.xvr.serviceBook.entity.Ticket;
 import com.xvr.serviceBook.form.DepartmentForm;
 import com.xvr.serviceBook.service.DepartmentService;
+import com.xvr.serviceBook.service.TicketService;
 import com.xvr.serviceBook.service.servicedto.DepartmentServiceDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
@@ -17,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -29,25 +34,30 @@ public class DepartmentControllerApi {
 
     private final DepartmentService departmentService;
     private final PagedResourcesAssembler<Department> departmentPagedResourcesAssembler;
+    private final PaginationModelAssembler paginationModelAssembler;
+    private final TicketService ticketService;
 
-    public DepartmentControllerApi(DepartmentService departmentService, PagedResourcesAssembler<Department> departmentPagedResourcesAssembler) {
+    public DepartmentControllerApi(DepartmentService departmentService, PagedResourcesAssembler<Department> departmentPagedResourcesAssembler,
+                                   TicketService ticketService,PaginationModelAssembler paginationModelAssembler) {
         this.departmentService = departmentService;
         this.departmentPagedResourcesAssembler = departmentPagedResourcesAssembler;
+        this.ticketService = ticketService;
+        this.paginationModelAssembler = paginationModelAssembler;
     }
-
-    @GetMapping
-    public ResponseEntity<PagedModel<EntityModel<Department>>> getAllDepartments(@PageableDefault(page = 1, size = 10) Pageable pageRequest) {
-
-        Page<Department> departments = departmentService.findAllDepartments(pageRequest)
-                .map(department -> {
+//https://computingfacts.com/post/Spring-HATEOAS-Adding-Pagination-Links-To-RESTful-API
+    @GetMapping //https://grapeup.com/blog/how-to-build-hypermedia-api-with-spring-hateoas/
+    public ResponseEntity<PagedModel<DepartmentRepresentation>> getAllDepartments(@PageableDefault(page = 0, size = 10) Pageable pageRequest) {
+        Page<Department> departments = departmentService.findAllDepartments(pageRequest);
+                /**.map(department -> {
                     department.add(linkTo(methodOn(DepartmentControllerApi.class).getAllDepartments(pageRequest)).withSelfRel());
                     department.add(linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.getId())).withRel("department"));
-                    //department.add(linkTo(methodOn(DepartmentControllerApi.class).saveDepartment())).withRel("create_new_department"));
+                    department.add(linkTo(methodOn(DepartmentControllerApi.class).getDepartmentTickets(pageRequest, department.getId())).withRel("department_tickets"));
                     department.add(linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(department.getId())).withRel("delete_department"));
                     return department;
-                });
-        PagedModel<EntityModel<Department>> model = departmentPagedResourcesAssembler
-                .toModel(departments);
+                });**/
+        PagedModel<DepartmentRepresentation> model = departmentPagedResourcesAssembler
+                .toModel(departments, paginationModelAssembler);
+        //System.out.println(model);
         return !departments.isEmpty()
                 ? ResponseEntity.ok(model)
                 : ResponseEntity.notFound().build();
@@ -97,17 +107,25 @@ public class DepartmentControllerApi {
     // TODO check request if error
     @PutMapping(value = "/{id}")
     public ResponseEntity<EntityModel<Department>> updateDepartment(@Validated @RequestBody DepartmentForm departmentForm,
-                                                                    @PathVariable (value = "id") Long id) {
-        if (departmentService.findDepartmentById(id).isPresent()){
-            departmentService.updateDepartment(DepartmentServiceDto.of(departmentForm.getName()),id);
+                                                                    @PathVariable(value = "id") Long id) {
+        if (departmentService.findDepartmentById(id).isPresent()) {
+            departmentService.updateDepartment(DepartmentServiceDto.of(departmentForm.getName()), id);
             Optional<Department> department = departmentService.findDepartmentById(id);
-            department.get().add(
-                    linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.get().getId())).withSelfRel(),
-                    linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(department.get().getId())).withRel("delete_department")
-            );
+            department.ifPresent(depart -> depart.add(
+                    linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(depart.getId())).withSelfRel(),
+                    linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(depart.getId())).withRel("delete_department")
+            ));
             return ResponseEntity.ok().body(new EntityModel<>(department.get()));
-        }else {
-            return ResponseEntity.badRequest().build();}
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
 
+    }
+    //TODO
+    @GetMapping(value = "/{id}/tickets")
+    public ResponseEntity<PagedModel<EntityModel<Ticket>>> getDepartmentTickets(@PageableDefault(page = 0, size = 10) Pageable pageRequest,
+                                                                                @PathVariable(name = "id") Long departmentId) {
+        Page<Ticket> ticketsByDepartmentId = ticketService.findTicketsByDepartmentId(pageRequest, departmentId);
+        return null;
     }
 }

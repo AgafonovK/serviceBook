@@ -45,7 +45,7 @@ public class Ticket extends RepresentationModel<Ticket> {
     @Singular
     private Set<Worker> workers;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "department_id")
     private Department clientDepartment;
 
