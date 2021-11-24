@@ -45,7 +45,7 @@ public class DepartmentControllerApi {
     }
 //https://computingfacts.com/post/Spring-HATEOAS-Adding-Pagination-Links-To-RESTful-API
     @GetMapping //https://grapeup.com/blog/how-to-build-hypermedia-api-with-spring-hateoas/
-    public ResponseEntity<PagedModel<DepartmentRepresentation>> getAllDepartments(@PageableDefault(page = 0, size = 5) Pageable pageRequest) {
+    public ResponseEntity<PagedModel<DepartmentRepresentation>> getAllDepartments(@PageableDefault(size = 5) Pageable pageRequest) {
         Page<Department> departments = departmentService.findAllDepartments(pageRequest);
 
         PagedModel<DepartmentRepresentation> model = departmentPagedResourcesAssembler
@@ -115,7 +115,7 @@ public class DepartmentControllerApi {
     }
     //TODO
     @GetMapping(value = "/{id}/tickets")
-    public ResponseEntity<PagedModel<EntityModel<Ticket>>> getDepartmentTickets(@PageableDefault(page = 0, size = 10) Pageable pageRequest,
+    public ResponseEntity<PagedModel<Ticket>> getDepartmentTickets(@PageableDefault(size = 5) Pageable pageRequest,
                                                                                 @PathVariable(name = "id") Long departmentId) {
         Page<Ticket> ticketsByDepartmentId = ticketService.findTicketsByDepartmentId(pageRequest, departmentId);
         return null;

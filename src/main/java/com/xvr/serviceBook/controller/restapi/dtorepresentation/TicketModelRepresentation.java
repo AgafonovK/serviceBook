@@ -1,23 +1,19 @@
 package com.xvr.serviceBook.controller.restapi.dtorepresentation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xvr.serviceBook.entity.*;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Singular;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Set;
 
 @Getter
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Relation(itemRelation = "ticket", collectionRelation = "tickets")
-public class TicketModel extends RepresentationModel<TicketModel> {
+public class TicketModelRepresentation extends RepresentationModel<TicketModelRepresentation> {
 
     private Long id;
 
@@ -27,8 +23,10 @@ public class TicketModel extends RepresentationModel<TicketModel> {
 
     private LocalDate endDateTicket;
 
-   /* private StatusTicket statusTicket;
+    @JsonProperty("statusTicket")
+    private String statusTicket;
 
+    /*
     private PriorityTicket priorityTicket;
 
 

@@ -25,7 +25,7 @@ public class DepartmentPaginationModelAssembler implements RepresentationModelAs
     @Override
     public DepartmentRepresentation toModel(Department department) {
         DepartmentRepresentation departmentRepresentation = buildDepartmentRepresentation(department);
-        departmentRepresentation.add(WebMvcLinkBuilder.linkTo(methodOn(DepartmentControllerApi.class).getAllDepartments(PageRequest.of(0,5))).withSelfRel());
+        departmentRepresentation.add(linkTo(methodOn(DepartmentControllerApi.class).getAllDepartments(PageRequest.of(0,5))).withSelfRel());
         departmentRepresentation.add(linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.getId())).withRel("department"));
         departmentRepresentation.add(linkTo(methodOn(DepartmentControllerApi.class).getDepartmentTickets(PageRequest.of(0,5), department.getId())).withRel("department_tickets"));
         departmentRepresentation.add(linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(department.getId())).withRel("delete_department"));

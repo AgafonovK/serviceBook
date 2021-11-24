@@ -1,6 +1,7 @@
 package com.xvr.serviceBook.entity;
 
 import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "app_user")
-public class AppUser {
+public class AppUser extends RepresentationModel<AppUser> {
 
     @Id
     @Column(name = "user_id", nullable = false)

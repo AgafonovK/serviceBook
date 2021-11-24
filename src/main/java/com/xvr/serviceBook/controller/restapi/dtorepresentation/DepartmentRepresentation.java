@@ -15,6 +15,6 @@ public class DepartmentRepresentation extends RepresentationModel<DepartmentRepr
 
     private final Long id;
     private final String name;
-    private CollectionModel<TicketModel> departmentTickets;
+    private CollectionModel<TicketModelRepresentation> departmentTickets;
 
 }
