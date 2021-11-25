@@ -31,6 +31,7 @@ public class AppUserController {
         this.appUserService = appUserService;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String getAppUsers(@PageableDefault(size = 5) Pageable pageRequest, Model model) {
         Page<AppUser> appUsers = appUserService.findAllAppUsersPaginated(pageRequest);
@@ -45,6 +46,7 @@ public class AppUserController {
         return String.valueOf(id);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public String saveAppUser(@Validated @ModelAttribute(value = "appUserForm") AppUserForm appUserForm,
                               BindingResult bindingResult,
@@ -75,6 +77,7 @@ public class AppUserController {
         }
         return "redirect:/web/appusers/user-add-successful";
     }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create-user", method = RequestMethod.GET)
     public String viewRegister(Model model) {
@@ -85,7 +88,8 @@ public class AppUserController {
         } else {
             model.addAttribute("appUSerForm", appUserForm);
             model.addAttribute("ok", true);
-            model.addAttribute("roleLabels", PositionRole.values());
+            //TODO check list in html page
+            model.addAttribute("appRoles", PositionRole.values());
         }
         return "registerPage";
     }

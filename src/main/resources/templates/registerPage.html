@@ -87,8 +87,8 @@
     </div>
     <div>
         <h2>Описание ролей</h2>
-        <div th:each="appRole : ${appRoles}">
-            <span th:text="${appRole}"> Role</span>
+        <div th:each="appRole : ${appRoles.values()}">
+            <span th:value="${appRole}" th:text="${appRole.label}"> Role</span>
         </div>
     </div>
 </main>
