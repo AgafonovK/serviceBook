@@ -22,9 +22,11 @@
 </header>
 
 <main>
-    <h2>Пользователь</h2>
-    <h3>Приветствуем тебя: <span th:utext="${#request.userPrincipal.name}"></span></h3>
-    <br/><br/>
+    <h3>Пользователь приветствуем тебя: <span th:utext="${#request.userPrincipal.name}"></span></h3>
+    <h3>Текущие права: <span th:if="${userRole != null}"
+                             th:utext="${userRole}"></span></h3>
+    <h3>Последняя регистрация в системе: <span th:if="${lastDateRegistration != null}"
+                                               th:utext="${lastDateRegistration}"></span></h3>
 
 
 </main>

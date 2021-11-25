@@ -4,15 +4,44 @@
 <head>
 
 </head>
+<footer>
+
+</footer>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid" sec:authorize="isAuthenticated()">
-        <a th:href="@{/web/tickets/create-ticket}" class="btn btn-primary mt-5">Создать тикет</a>
+    <div class="container" sec:authorize="isAuthenticated()">
+
+        <a th:href="@{/userInfo}" class="btn btn-success btn-lg">
+            <span class="glyphicon glyphicon-home"></span> Начало</a>
+
+        <a th:href="@{/web/tickets/create-ticket}" class="btn btn-primary mt-5">
+            <span class="glyphicon glyphicon-home"></span> Заявки</a>
+
+        <a th:href="@{/web/equipments}" class="btn btn-primary mt-5">
+            <span class="glyphicon glyphicon-home"></span> Станочный парк</a>
+
+        <a th:href="@{/web/tickets/create-ticket}" class="btn btn-primary mt-5">
+            <span class="glyphicon glyphicon-home"></span> Информация</a>
+
+        <a th:href="@{/web/tickets/create-ticket}" class="btn btn-primary mt-5">
+            <span class="glyphicon glyphicon-home"></span> Настройки</a>
+        <a>
+        Logged user: <span sec:authentication="name">...</span>
+        </a>
+
+        Roles: <span sec:authentication="principal.authorities">...</span>
+
+        <div sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Logout"/>
+            </form>
+        </div>
     </div>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent" sec:authorize="hasAnyAuthority('USER')">
+        <a th:href="@{/userInfo}" class="btn btn-primary mt-5">Начало</a>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/web/tickets}">Ticket</a>
+                <a class="nav-link" th:href="@{/web/tickets}">Заявки</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/web/workers}">Worker</a>
@@ -20,17 +49,26 @@
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/web/departments}">Departments</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/web/equipments}">Станочный парк</a>
+            </li>
         </ul>
-        <form class="d-flex">
+        <!--form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        </form-->
+        <div>
+            Logged user: <span sec:authentication="name">...</span>
+        </div>
+        <div>
+            Roles: <span sec:authentication="principal.authorities">...</span>
+        </div>
         <div sec:authorize="isAuthenticated()">
             <form th:action="@{/logout}" method="post">
                 <input type="submit" value="Logout"/>
             </form>
         </div>
     </div>
-</nav>
+
 </body>
 </html>

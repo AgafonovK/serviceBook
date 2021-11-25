@@ -23,10 +23,11 @@
 
         </th:block>
     </div>
+
 </header>
 
 <main>
-    <h2>Register</h2>
+    <h2>Создать пользователя</h2>
 
     <div th:if="${#request.getParameter('error') == 'true'}"
          style="color:red;margin:10px 0px;">
@@ -46,14 +47,14 @@
         <form th:action="@{/web/appusers}" th:object="${appUserForm}" method="POST">
             <table>
                 <tr>
-                    <td>User Name</td>
+                    <td>Имя пользователя</td>
                     <td><input type="text" placeholder="Enter User Name" th:field="*{userName}"/></td>
                     <td>
                         <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">..</span>
                     </td>
                 </tr>
                 <tr>
-                    <td>Password</td>
+                    <td>Пароль</td>
                     <td><input type="password" placeholder="Minimum 6 char's" th:field="*{password}"/></td>
                     <td>
                         <span th:if="${#fields.hasErrors('password')}"
@@ -61,7 +62,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Confirm</td>
+                    <td>Подтверждение пароля</td>
                     <td><input type="password" th:field="*{confirmPassword}"/></td>
                     <td>
                         <span th:if="${#fields.hasErrors('confirmPassword')}"
@@ -69,7 +70,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Enabled User</td>
+                    <td>Пользователь активен</td>
                     <td><input type="checkbox" th:field="*{enabled}"/></td>
                     <td>
                         <span th:if="${#fields.hasErrors('enabled')}" th:errors="*{enabled}">..</span>
@@ -78,11 +79,17 @@
                 <tr>
                     <td>
                         <input type="submit" value="Submit"/>
-                        <button><a th:href="@{/}">Cancel</a></button>
+                        <button><a th:href="@{/}">Отмена</a></button>
                     </td>
                 </tr>
             </table>
         </form>
+    </div>
+    <div>
+        <h2>Описание ролей</h2>
+        <div th:each="appRole : ${appRoles}">
+            <span th:text="${appRole}"> Role</span>
+        </div>
     </div>
 </main>
 </body>

@@ -27,6 +27,7 @@ public class EquipmentController {
     private final EquipmentRepository equipmentRepository;
     private final DepartmentServiceImpl departmentService;
 
+    @Autowired
     public EquipmentController(EquipmentRepository equipmentRepository, DepartmentServiceImpl departmentService) {
         this.equipmentRepository = equipmentRepository;
         this.departmentService = departmentService;

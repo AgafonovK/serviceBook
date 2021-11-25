@@ -1,27 +1,17 @@
 package com.xvr.serviceBook.controller.webapi;
 
-import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.form.AppUserForm;
-import com.xvr.serviceBook.service.AppUserService;
-import com.xvr.serviceBook.service.impl.DepartmentServiceImpl;
-import com.xvr.serviceBook.service.impl.WorkerServiceImpl;
-import com.xvr.serviceBook.service.servicedto.AppUserServiceDto;
-import com.xvr.serviceBook.service.servicedto.DepartmentServiceDto;
 import com.xvr.serviceBook.utils.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
-import java.util.List;
+import java.time.Instant;
+import java.util.Date;
 
 @Controller
 public class MainController {
@@ -62,7 +52,6 @@ public class MainController {
     public String accessDenied(Model model, Principal principal) {
         if (principal != null) {
             User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
             String userInfo = WebUtils.toString(loginedUser);
             model.addAttribute("userInfo", userInfo);
             String message = "hi " + principal.getName() + "<br> You do not have permission to access this page! " +
@@ -74,27 +63,16 @@ public class MainController {
     }
 
 
-    @RequestMapping(value = "/create-user", method = RequestMethod.GET)
-    public String viewRegister(Model model) {
-        AppUserForm appUserForm = new AppUserForm();
-        model.addAttribute("title", "Application Users List");
-        if (appUserForm.getUserName() == null) {
-            model.addAttribute("appUserForm", appUserForm);
-        }else {
-            model.addAttribute("appUSerForm", appUserForm);
-            model.addAttribute("ok", true);
-        }
-        return "registerPage";
-    }
-
 
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
     public String userInfo(Model model, Principal principal) {
         String userName = principal.getName();
-        System.out.println("UserName " + userName);
         User loginedUser = (User) ((Authentication) principal).getPrincipal();
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
+        model.addAttribute("userRole", ((Authentication) principal).getAuthorities());
+        model.addAttribute("lastDateRegistration", Date.from(Instant.now().minusSeconds(10000)));
+
         return "userInfoPage";
     }
 

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface AppUserService extends UserDetailsService {
@@ -17,6 +18,8 @@ public interface AppUserService extends UserDetailsService {
 
     List<AppUser> findAllAppUsers();
     Page<AppUser> findAllAppUsersPaginated(Pageable pageable);
+
+    Optional<AppUser> findAppUserById(Long id);
 
     @Override
     UserDetails loadUserByUsername(String s) throws UsernameNotFoundException;

@@ -12,5 +12,4 @@ public class TicketCreateEvent {
         this.ticket = ticket;
     }
 
-
 }

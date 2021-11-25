@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +48,10 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public Optional<AppUser> findAppUserById(Long id){
+        return appUserRepository.findById(id);
+    }
+    @Override
     @Transactional
     public void saveUser(AppUserServiceDto appUserServiceDto) {
 
@@ -71,7 +76,7 @@ public class AppUserServiceImpl implements AppUserService {
         //Role USER, ROLE ADMIN
         List<String> roleNames = this.appRoleRepository.getRoleNames(appUser.getUserId());
         System.out.println("size= " + roleNames.size());
-        List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
         if (roleNames != null) {
             for (String role : roleNames) {
                 System.out.println("role = " + role);
