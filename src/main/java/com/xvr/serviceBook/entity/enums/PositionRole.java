@@ -9,13 +9,13 @@ import lombok.Getter;
  */
 @Getter
 public enum PositionRole {
-    ADMIN("ADMIN: + \n" +  "все права."),
+    ADMIN("ADMIN: + \n" + "все права."),
     USER("USER: + \n" + " Обзор и редактирование меню справочников."),
     VIEWER("VIEWER: + \n" + "наблюдатель.");
 
     public final String label;
 
-    private PositionRole(String label) {
-        this.label=label;
+    PositionRole(String label) {
+        this.label = label;
     }
 }

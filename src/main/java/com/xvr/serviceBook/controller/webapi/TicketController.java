@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,12 +55,13 @@ public class TicketController {
         return "ticket/ticketsPage";
     }
 
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'VIEWER')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String ticketView(@PathVariable Long id,
                              Model model) {
         Optional<Ticket> ticket = ticketService.getTicketById(id);
         if (ticket.isPresent()) {
-            model.addAttribute("ticket", ticket);
+            model.addAttribute("ticket", ticket.get());
             return "ticket/ticketPage";
         } else {
             model.addAttribute("error", "WTF");

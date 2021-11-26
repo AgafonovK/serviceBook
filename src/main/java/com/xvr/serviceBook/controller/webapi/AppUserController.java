@@ -21,6 +21,7 @@ import java.util.List;
 
 
 @Controller
+@PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping(value = "web/appusers")
 public class AppUserController {
 
@@ -31,7 +32,6 @@ public class AppUserController {
         this.appUserService = appUserService;
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String getAppUsers(@PageableDefault(size = 5) Pageable pageRequest, Model model) {
         Page<AppUser> appUsers = appUserService.findAllAppUsersPaginated(pageRequest);

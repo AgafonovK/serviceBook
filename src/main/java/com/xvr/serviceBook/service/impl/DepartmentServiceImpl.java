@@ -6,16 +6,13 @@ import com.xvr.serviceBook.service.DepartmentService;
 import com.xvr.serviceBook.service.servicedto.DepartmentServiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,9 +31,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Page<Department> findAllDepartments(Pageable pageable) {
 
-        Page<Department> allDepartment = departmentRepository.findAll(pageable);
-
-        return allDepartment;
+        return departmentRepository.findAll(pageable);
     }
 
     @Override
@@ -62,16 +57,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<Department> findPaginated(Pageable pageable) {
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-
         Page<Department> allDepartment = departmentRepository.findAll(pageable);
         if (allDepartment.hasContent()){
             return allDepartment.getContent();
         }else{
-            return new ArrayList<Department>();
+            throw new EntityNotFoundException();
+            //return new ArrayList<>();
         }
-
     }
 
     @Override

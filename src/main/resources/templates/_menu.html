@@ -22,13 +22,26 @@
         <a th:href="@{/web/tickets/create-ticket}" class="btn btn-primary mt-5">
             <span class="glyphicon glyphicon-home"></span> Информация</a>
 
-        <a th:href="@{/web/tickets/create-ticket}" class="btn btn-primary mt-5">
-            <span class="glyphicon glyphicon-home"></span> Настройки</a>
+        <a th:href="@{/web/departments}" class="btn btn-primary mt-5">
+            <span class="glyphicon glyphicon-home"></span> Департаменты</a>
+
+        <div sec:authorize="hasAuthority('ADMIN')" class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                Настройки администратора
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" th:href="@{/web/appusers}">Список пользователей</a></li>
+                <li><a class="dropdown-item" href="#">Удалить пользователя</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
         <a>
         Logged user: <span sec:authentication="name">...</span>
         </a>
-
+        <a>
         Roles: <span sec:authentication="principal.authorities">...</span>
+        </a>
 
         <div sec:authorize="isAuthenticated()">
             <form th:action="@{/logout}" method="post">
@@ -37,7 +50,7 @@
         </div>
     </div>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" sec:authorize="hasAnyAuthority('USER')">
+    <!--div class="collapse navbar-collapse" id="navbarSupportedContent" sec:authorize="hasAnyAuthority('USER')">
         <a th:href="@{/userInfo}" class="btn btn-primary mt-5">Начало</a>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
@@ -49,14 +62,14 @@
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/web/departments}">Departments</a>
             </li>
-            <li class="nav-item">
+            <li  class="nav-item">
                 <a class="nav-link" th:href="@{/web/equipments}">Станочный парк</a>
             </li>
         </ul>
-        <!--form class="d-flex">
+        <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
-        </form-->
+        </form>
         <div>
             Logged user: <span sec:authentication="name">...</span>
         </div>
@@ -68,7 +81,7 @@
                 <input type="submit" value="Logout"/>
             </form>
         </div>
-    </div>
+    </div-->
 
 </body>
 </html>

@@ -83,12 +83,18 @@
         <tr>
             <td>Client</td>
             <td>
-                <select th:field="*{workers}">
+                <select id="workers" th:field="*{workers}" size="3" multiple="multiple">
+                    <option th:each="worker : ${listWorkers}"
+                            th:value="${{worker}}"
+                            th:text="${worker.getFirstName()}">
+                    </option>
+                </select>
+                <!--select th:field="*{workers}">
                     <option value=""> --</option>
                     <option th:each="worker, row : ${listWorkers}"
                             th:value="${worker.getId()}"
                             th:utext="${worker.getFirstName()}"></option>
-                </select>
+                </select-->
             <td><span th:if="${#fields.hasErrors('workers')}" th:errors="*{workers}">..</span></td>
         </tr>
         <tr>

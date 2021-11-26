@@ -2,12 +2,12 @@ package com.xvr.serviceBook.controller.webapi;
 
 import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.form.DepartmentForm;
-import com.xvr.serviceBook.repository.DepartmentRepository;
 import com.xvr.serviceBook.service.impl.DepartmentServiceImpl;
 import com.xvr.serviceBook.service.servicedto.DepartmentServiceDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,84 +20,99 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-//TODO add delete-department
+
 @Controller
 @RequestMapping(value = "web/departments")
 public class DepartmentController {
 
 
     private final DepartmentServiceImpl departmentService;
+    private static final Logger logger = LoggerFactory.getLogger(DepartmentController.class);
 
     @Autowired
     public DepartmentController(DepartmentServiceImpl departmentService) {
         this.departmentService = departmentService;
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.GET)
-    public String viewDepartments(@RequestParam(value = "page") Optional<Integer> page,
-                                  @RequestParam(value = "size") Optional<Integer> size,
+    public String viewDepartments(@PageableDefault(size = 5) Pageable pageable,
                                   Model model) {
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(5);
-        Page<Department> departmentPage = departmentService.findAllDepartments(PageRequest.of(currentPage-1,pageSize));
+        Page<Department> departmentPage = departmentService.findAllDepartments(pageable);
         model.addAttribute("title", "Department List");
         model.addAttribute("departments", departmentPage);
         return "department/departmentsPage";
     }
 
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.GET)
     public String viewDepartmentById(@PathVariable("departmentId") Long departmentId,
                                      Model model) {
-        Optional<Department> department = departmentService.findDepartmentById(departmentId);
-        if (department.isEmpty()) throw new EntityNotFoundException("id-" + departmentId);
-        model.addAttribute("department", department);
-        return department.toString();
+
+        Optional<Department> department;
+        try {
+            department = departmentService.findDepartmentById(departmentId);
+        }catch (Exception e){
+            //TODO
+            model.addAttribute("errorFindDepartment", "");
+            logger.error("Exception in department service, findById: " + Arrays.toString(e.getStackTrace()));
+            return "department/departmentPage";
+        }
+        model.addAttribute("department", department.get());
+        //TODO refactor page
+        return "department/departmentPage";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USERPLUS', 'ADMIN')")
     @RequestMapping(value = "create-department", method = RequestMethod.GET)
     public String createDepartment(Model model) {
         DepartmentForm departmentForm = new DepartmentForm();
         Pageable pageable = PageRequest.of(0, 5);
-        List<Department> departments = departmentService.findPaginated(pageable);
+        List<Department> departments;
+        try {
+            departments = departmentService.findPaginated(pageable);
+        }catch (Exception e){
+            //TODO add to model attribute
+            model.addAttribute("errorGetDepartment", " ");
+            logger.error("Exception on get all departments service: " + Arrays.toString(e.getStackTrace()));
+            return "department/createDepartmentPage";
+        }
         model.addAttribute("title", "Department List");
         model.addAttribute("departments", departments);
         model.addAttribute("departmentForm", departmentForm);
-
         return "department/createDepartmentPage";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USERPLUS','ADMIN')")
     @PostMapping
     public String saveDepartment(@Validated @ModelAttribute("departmentForm") DepartmentForm departmentForm,
-                                 final RedirectAttributes redirectAttributes,
                                  BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes,
                                  Model model) {
-
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addAttribute("nameError", "Error: name is Empty");
-            return "redirect:/web/departments/create-department";
+            model.addAttribute("departmentForm", departmentForm);
+            model.addAttribute("nameError", "Не верно заполнены поля");
+            logger.warn("Check validation in department Form: " + Objects.requireNonNull(bindingResult.getFieldError()).getField());
+            return "department/create-department";
         }
         try {
             departmentService.saveDepartment(DepartmentServiceDto.of(departmentForm.getName()));
-        }
-        // Other error!!
-        catch (Exception e) {
+        } catch (Exception e) {
+            logger.error("Some error in saveDepartmentService: " + Arrays.toString(e.getStackTrace()));
             model.addAttribute("errorMessage", "Error: " + e.getMessage());
             return "department/createDepartmentPage";
         }
-
+        logger.info("New department " + departmentForm.getName() + " as added to DB.");
         redirectAttributes.addFlashAttribute("flashDep", departmentForm);
         return "redirect:/web/departments/department-add-successful";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USERPLUS','ADMIN')")
     @RequestMapping(value = "department-add-successful", method = RequestMethod.GET)
     public String viewDepartmentAddSuccessful(Model model) {
         Pageable pageable = PageRequest.of(0, 5);
@@ -106,10 +121,18 @@ public class DepartmentController {
         return "department/departmentAddSuccessfulPage";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{departmentId}", method = RequestMethod.DELETE)
-    public String viewDeleteDepartment(@RequestParam(value = "departmentId") Long departmentId){
-        System.out.println("DEPARTMENT ID " + departmentId);
-        departmentService.deleteDepartmentById(departmentId);
+    public String viewDeleteDepartment(@RequestParam(value = "departmentId") Long departmentId,
+                                       Model model) {
+        try {
+            departmentService.deleteDepartmentById(departmentId);
+        }catch (Exception e) {
+            logger.info("Delete department saveDepartmentService: " + Arrays.toString(e.getStackTrace()));
+            //TODO
+            model.addAttribute("errorDeleteDepartment",  "Department not delete");
+            return "department/departmentsPage";
+        }
         return "redirect:/web/departments";
     }
 

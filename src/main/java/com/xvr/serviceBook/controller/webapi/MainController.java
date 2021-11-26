@@ -2,6 +2,7 @@ package com.xvr.serviceBook.controller.webapi;
 
 import com.xvr.serviceBook.form.AppUserForm;
 import com.xvr.serviceBook.utils.WebUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -65,7 +66,7 @@ public class MainController {
     }
 
 
-
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
     public String userInfo(Model model, Principal principal) {
         String userName = principal.getName();
