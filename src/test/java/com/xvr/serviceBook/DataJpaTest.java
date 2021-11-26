@@ -4,9 +4,13 @@ import com.xvr.serviceBook.entity.Ticket;
 import com.xvr.serviceBook.entity.Worker;
 import com.xvr.serviceBook.repository.TicketRepository;
 import com.xvr.serviceBook.repository.WorkerRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Commit;
+
+import java.time.Instant;
+import java.util.Date;
 
 @org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 @Commit
@@ -19,7 +23,7 @@ public class DataJpaTest {
 /*
         @BeforeEach
         public void booksShouldBeAdded() {
-            Ticket ticket1 = new Ticket();
+            Ticket ticket1 = Ticket.builder().build();
             Worker w1 = new Worker();
             Worker w2 = new Worker("b2");
             ticket1.set(b1);

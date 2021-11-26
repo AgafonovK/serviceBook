@@ -8,6 +8,7 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -19,9 +20,9 @@ public class TicketModelRepresentation extends RepresentationModel<TicketModelRe
 
     private String ticketDescription;
 
-    private LocalDate startDateTicket;
+    private LocalDateTime startDateTicket;
 
-    private LocalDate endDateTicket;
+    private LocalDateTime endDateTicket;
 
     @JsonProperty("statusTicket")
     private String statusTicket;

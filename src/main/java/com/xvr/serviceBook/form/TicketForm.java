@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -25,11 +26,11 @@ public class TicketForm {
     private Set<Worker> workers;
 
     @NotEmpty
+    @Size(min = 10, max = 500, message = "Не правильный размер сообщения")
     private String ticketDescription;
 
     private Department clientDepartment;
 
-    //@NotNull
     private Equipment equipment;
 
     @PastOrPresent

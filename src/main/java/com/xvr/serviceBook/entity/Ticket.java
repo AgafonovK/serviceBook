@@ -6,6 +6,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,10 +28,10 @@ public class Ticket extends RepresentationModel<Ticket> {
     private String ticketDescription;
 
     @Column(name = "start_date")
-    private LocalDate startDateTicket;
+    private LocalDateTime startDateTicket;
 
     @Column(name = "end_date")
-    private LocalDate endDateTicket;
+    private LocalDateTime endDateTicket;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_ticket_id",nullable = false)

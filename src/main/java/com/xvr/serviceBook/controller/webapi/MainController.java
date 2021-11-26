@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Controller
@@ -71,10 +73,9 @@ public class MainController {
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
         model.addAttribute("userRole", ((Authentication) principal).getAuthorities());
-        model.addAttribute("lastDateRegistration", Date.from(Instant.now().minusSeconds(10000)));
+        model.addAttribute("lastDateRegistration", LocalDateTime.now(ZoneId.systemDefault()).minusDays(2));
 
         return "userInfoPage";
     }
-
 
 }

@@ -4,6 +4,8 @@ import com.xvr.serviceBook.entity.Ticket;
 import com.xvr.serviceBook.form.TicketForm;
 import com.xvr.serviceBook.service.*;
 import com.xvr.serviceBook.service.servicedto.TicketServiceDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 
 @Controller
@@ -26,6 +30,7 @@ public class TicketController {
     private final WorkerService workerService;
     private final StatusTicketService statusTicketService;
     private final PriorityTicketService priorityTicketService;
+    private static final Logger logger = LoggerFactory.getLogger(TicketController.class);
 
     @Autowired
     public TicketController(TicketService ticketService, DepartmentService departmentService,
@@ -52,27 +57,32 @@ public class TicketController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String ticketView(@PathVariable Long id,
                              Model model) {
-        System.out.println("IDIDID " + id);
-        model.addAttribute("ticket", ticketService.getTicketById(id).get());
-        return "ticket/ticketPage";
+        Optional<Ticket> ticket = ticketService.getTicketById(id);
+        if (ticket.isPresent()) {
+            model.addAttribute("ticket", ticket);
+            return "ticket/ticketPage";
+        } else {
+            model.addAttribute("error", "WTF");
+            return "ticket/ticketPage";
+        }
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public String ticketUpdate(@PathVariable Long id,
                                @Validated @ModelAttribute(value = "ticketForm") TicketForm ticketForm,
                                BindingResult result,
-                               RedirectAttributes redirectAttributes,
                                Model model) {
 
         if (result.hasErrors()) {
-            redirectAttributes.addAttribute("error", "Error: " + result.getFieldError());
-            return "redirect:/web/tickets/create-ticket?error=true";
+            model.addAttribute("ticketForm", ticketForm);
+            model.addAttribute("nameError", "see down");
+            return "ticket/createTicketPage";
         } else {
             try {
                 ticketService.save(TicketServiceDto.builder()
                         .ticketDescription(ticketForm.getTicketDescription())
-                        .startDateTicket(ticketForm.getStartDateTicket())
-                        .endDateTicket(ticketForm.getEndDateTicket())
+                        .startDateTicket(LocalDateTime.of(ticketForm.getStartDateTicket(), LocalTime.now()))
+                        .endDateTicket(LocalDateTime.of(ticketForm.getEndDateTicket(),LocalTime.now()))
                         .worker(ticketForm.getWorkers())
                         .clientDepartment(ticketForm.getClientDepartment())
                         .equipment(ticketForm.getEquipment())
@@ -80,7 +90,6 @@ public class TicketController {
                         .status(ticketForm.getStatus())
                         .build());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 model.addAttribute("errorSave", e.getMessage());
                 return "ticket/createTicketPage";
             }
@@ -91,12 +100,12 @@ public class TicketController {
     @RequestMapping(value = "create-ticket", method = RequestMethod.GET)
     public String addTicket(Model model) {
         TicketForm ticketForm = new TicketForm();
+        model.addAttribute("ticketForm", ticketForm);
         model.addAttribute("listWorkers", workerService.findAllWorker());
         model.addAttribute("listEquipment", equipmentService.findAllEquipment());
         model.addAttribute("listDepartment", departmentService.findAllDepartmentsList());
         model.addAttribute("listStatus", statusTicketService.findAllStatusTicketList());
         model.addAttribute("listPriority", priorityTicketService.findAllPriorityTicketList());
-        model.addAttribute("ticketForm", ticketForm);
         return "ticket/createTicketPage";
     }
 
@@ -104,17 +113,17 @@ public class TicketController {
     @PostMapping()
     public String saveTickets(@Validated @ModelAttribute(value = "ticketForm") TicketForm ticketForm,
                               BindingResult result,
-                              RedirectAttributes redirectAttributes,
                               Model model) {
         if (result.hasErrors()) {
-            redirectAttributes.addAttribute("error", "Error: " + result.getFieldError());
-            return "redirect:/web/tickets/create-ticket?error=true";
+            model.addAttribute("ticketForm", ticketForm);
+            model.addAttribute("nameError", "Не верно заполнены поля");
+            return "ticket/createTicketPage";
         } else {
             try {
                 ticketService.save(TicketServiceDto.builder()
                         .ticketDescription(ticketForm.getTicketDescription())
-                        .startDateTicket(ticketForm.getStartDateTicket())
-                        .endDateTicket(ticketForm.getEndDateTicket())
+                        .startDateTicket(LocalDateTime.of(ticketForm.getStartDateTicket(), LocalTime.now()))
+                        .endDateTicket(LocalDateTime.of(ticketForm.getEndDateTicket(),LocalTime.now()))
                         .worker(ticketForm.getWorkers())
                         .clientDepartment(ticketForm.getClientDepartment())
                         .equipment(ticketForm.getEquipment())
@@ -122,7 +131,6 @@ public class TicketController {
                         .status(ticketForm.getStatus())
                         .build());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 model.addAttribute("errorSave", e.getMessage());
                 return "ticket/createTicketPage";
             }
