@@ -33,10 +33,11 @@ public class AppUserController {
     }
 
     @GetMapping
-    public String getAppUsers(@PageableDefault(size = 5) Pageable pageRequest, Model model) {
+    public String getAppUsers(@PageableDefault(size = 5) Pageable pageRequest,
+                              Model model) {
         Page<AppUser> appUsers = appUserService.findAllAppUsersPaginated(pageRequest);
-        model.addAttribute("AppUsers", appUsers);
-        return "/";
+        model.addAttribute("appUsers", appUsers);
+        return "users/usersPage";
     }
 
     //TODO

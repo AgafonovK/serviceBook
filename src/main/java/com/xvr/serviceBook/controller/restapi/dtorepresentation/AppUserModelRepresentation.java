@@ -20,6 +20,9 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false)
 public class AppUserModelRepresentation extends RepresentationModel<AppUserModelRepresentation> {
 
+    @JsonProperty("App User Id")
+    private Long id;
+
     @NotEmpty
     private String userName;
 

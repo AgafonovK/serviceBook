@@ -16,8 +16,8 @@ public class TicketEventPublisher {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    void publishEvent(TicketCreateEvent ticketCreateEventcket){
-        applicationEventPublisher.publishEvent(ticketCreateEventcket);
+    void publishEvent(TicketCreateEvent ticketCreateEvent){
+        applicationEventPublisher.publishEvent(ticketCreateEvent);
     }
 }
 

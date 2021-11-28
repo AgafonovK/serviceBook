@@ -18,8 +18,22 @@
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
 
+<div th:if="${nameError != null}">
+    <br>Тикет не добавлен!!!
+    Причина: <br/>
+    <span th:utext="${nameError}">
+
+    </span>
+</div>
+<div th:if="${errorSave != null}">
+    <br>Тикет не добавлен в репозиторий!!!
+    Причина: <br/>
+
+    <span th:utext="${errorSave}">
+    </span>
+</div>
 <main>
-    <form th:action="@{/web/ticket/update/{id}(id=${ticket.getId()})}" th:object="${ticket}" th:method="put">
+    <form th:action="@{/web/tickets/update/{id}(id=${ticketForm.getId()})}" th:object="${ticketForm}" th:method="PUT">
         <div>
             <div class="container">
                 <table>
@@ -35,22 +49,36 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Описание заявки</td>
+                        <td><input type="text" th:field="*{ticketDescription}"/></td>
+                        <td>
+                            <span th:if="${#fields.hasErrors('ticketDescription')}" th:errors="*{ticketDescription}">..</span>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Департамент</td>
                         <td>
                             <select th:field="*{clientDepartment}">
-                                <option th:value="*{clientDepartment}"> --</option>
+                                <option th:value="*{clientDepartment}"> </option>
                                 <option th:each="departments : ${listDepartment}"
                                         th:value="${departments.getId()}"
                                         th:utext="${departments.getName()}"></option>
                             </select>
+                        </td>
+                        <td>
+
+                        </td>
                         <td><span th:if="${#fields.hasErrors('clientDepartment')}" th:errors="*{clientDepartment}">..</span></td>
                     </tr>
                     <tr>
                         <td>Дата подачи заявки</td>
-                        <td><input type="date" th:field="*{startDateTicket}" th:value="*{startDateTicket}"/></td>
+                        <td>
+                            <input type="date" th:field="*{startDateTicket}" th:value="${startDateTick}"/>
+                        </td>
                         <td>
                             <span th:if="${#fields.hasErrors('startDateTicket')}" th:errors="*{startDateTicket}">..</span>
                         </td>
+                        <td><p th:text="${startDateTick}"></p></td>
                     </tr>
                     <tr>
                         <td>Дата окончания заявки</td>
@@ -69,45 +97,49 @@
                                         th:value="${equipment.getId()}"
                                         th:utext="${equipment.getName()}"></option>
                             </select>
+                        </td>
                         <td><span th:if="${#fields.hasErrors('equipment')}" th:errors="*{equipment}">..</span></td>
                     </tr>
                     <tr>
                         <td>Назначенный сотрудник</td>
                         <td>
-                            <select th:field="*{workers}">
-                                <option th:value="*{workers}"> --</option>
-                                <option th:each="worker, row : ${listWorkers}"
-                                        th:value="${worker.getId()}"
-                                        th:utext="${worker.getFirstName()}"></option>
+                            <select id="workers" th:field="*{workers}" size="3" multiple="multiple">
+                                <option th:each="worker : ${listWorkers}"
+                                        th:value="${{worker}}"
+                                        th:text="${worker.getFirstName()}">
+                                </option>
                             </select>
+                        </td>
                         <td><span th:if="${#fields.hasErrors('workers')}" th:errors="*{workers}">..</span></td>
                     </tr>
                     <tr>
                         <td>Статус оборудования:</td>
                         <td>
                             <select th:field="*{statusTicket}">
-                                <option th:value="*{statusTicket}"> --</option>
+                                <!--option th:value=""> --</option-->
                                 <option th:each="status : ${listStatus}"
                                         th:value="${status.getId()}"
                                         th:utext="${status.getStatusName()}"></option>
                             </select>
-                        <td><span th:if="${#fields.hasErrors('status')}" th:errors="*{status}">..</span></td>
+                        </td>
+                        <td><span th:if="${#fields.hasErrors('statusTicket')}" th:errors="*{statusTicket}">..</span></td>
                     </tr>
                     <tr>
                         <td>Приоритет заявки:</td>
                         <td>
                             <select th:field="*{priorityTicket}">
-                                <option value=""> --</option>
+                                <!--option value=""> --</option-->
                                 <option th:each="priority : ${listPriority}"
                                         th:value="${priority.getId()}"
                                         th:utext="${priority.getPriorityName()}"></option>
                             </select>
+                        </td>
                         <td><span th:if="${#fields.hasErrors('priorityTicket')}" th:errors="*{priorityTicket}">..</span></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="submit" value="Добавить заявку"/>
+                            <input th:type="submit" value="Обновить заявку"/>
                             <a th:href="@{/}">Отмена</a>
                         </td>
                         <td>&nbsp;</td>
@@ -131,7 +163,7 @@
                                  </tbody>
                              </table>
                              -->
-                    <input type="submit" value="Update User">
+                    <!--input type="submit" value="Update User"-->
                 </table>
             </div>
         </div>

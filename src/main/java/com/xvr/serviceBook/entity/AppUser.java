@@ -14,7 +14,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "app_user")
-public class AppUser extends RepresentationModel<AppUser> {
+public class AppUser{
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -34,7 +34,7 @@ public class AppUser extends RepresentationModel<AppUser> {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<AppRole> appRole = new HashSet<>();
+    private Set<AppRole> appRole;
 
     public void addAppRole(AppRole appRole){
         this.appRole.add(appRole);
@@ -46,7 +46,19 @@ public class AppUser extends RepresentationModel<AppUser> {
         appRole.getAppUsers().remove(this);
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "worker_id")
     private Worker worker;
 
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
+                ", enabled=" + enabled +
+                ", appRole=" + appRole.toString() +
+                ", worker=" + worker.toString() +
+                '}';
+    }
 }

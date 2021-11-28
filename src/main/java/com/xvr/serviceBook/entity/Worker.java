@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "worker")
-public class Worker extends RepresentationModel<Worker> {
+public class Worker{
 
     @Id
     @Column(name = "id", nullable = false)
@@ -49,18 +49,6 @@ public class Worker extends RepresentationModel<Worker> {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    public Worker(Long id, PositionWorker positionWorker, String firstName, String lastName, String patronymic, Long phone, String email, LocalDate dateAccept, LocalDate dateFired, Department department) {
-        this.id = id;
-        this.positionWorker = positionWorker;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.patronymic = patronymic;
-        this.phone = phone;
-        this.email = email;
-        this.dateAccept = dateAccept;
-        this.dateFired = dateFired;
-        this.department = department;
-    }
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "worker_ticket",
@@ -77,6 +65,19 @@ public class Worker extends RepresentationModel<Worker> {
     public void removeTicket(Ticket ticket) {
         this.tickets.remove(ticket);
         ticket.getWorkers().remove(this);
+    }
+
+    public Worker(Long id, PositionWorker positionWorker, String firstName, String lastName, String patronymic, Long phone, String email, LocalDate dateAccept, LocalDate dateFired, Department department) {
+        this.id = id;
+        this.positionWorker = positionWorker;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.patronymic = patronymic;
+        this.phone = phone;
+        this.email = email;
+        this.dateAccept = dateAccept;
+        this.dateFired = dateFired;
+        this.department = department;
     }
 
     @Override

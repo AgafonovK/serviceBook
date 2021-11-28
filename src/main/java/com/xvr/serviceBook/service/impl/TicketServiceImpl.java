@@ -42,6 +42,7 @@ public class TicketServiceImpl implements TicketService {
     public void save(TicketServiceDto ticketServiceDto) {
 
         Ticket ticket = Ticket.builder()
+                .id(ticketServiceDto.getTicketId())
                 .endDateTicket(ticketServiceDto.getEndDateTicket())
                 .startDateTicket(ticketServiceDto.getStartDateTicket())
                 .ticketDescription(ticketServiceDto.getTicketDescription())

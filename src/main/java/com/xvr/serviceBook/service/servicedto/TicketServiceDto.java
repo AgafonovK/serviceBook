@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 @Getter
@@ -14,6 +15,7 @@ import java.util.Set;
 @Builder
 public class TicketServiceDto {
 
+    private Long ticketId;
 
     private Long reportId;
 
@@ -29,7 +31,7 @@ public class TicketServiceDto {
 
     private Equipment equipment;
 
-    private LocalDateTime startDateTicket;
+    private ZonedDateTime startDateTicket;
 
     private LocalDateTime endDateTicket;
 }

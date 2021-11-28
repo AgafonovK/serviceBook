@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "department")
-public class Department extends RepresentationModel<Department> {
+public class Department {
 
     @Id
     @Column(name = "id", nullable = false, unique = true)

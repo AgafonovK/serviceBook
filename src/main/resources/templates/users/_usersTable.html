@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
+<body>
+<div class="container" th:fragment="usersTable">
+    <div class=" = row">
+        <div class="col-lg-10 mt-5 mb-5">
+            <table id="users" class="table table-bordered table-responsive-sm">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>ФИО</th>
+                    <th>Активен</th>
+                    <th>Роли</th>
+                    <th>Сотрудник</th>
+                    <th>Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(appUsers.content)}">
+                    <td colspan="10"> No Tickets Available</td>
+                </tr>
+                <tr th:each="user : ${appUsers.content}">
+                    <td><span th:utext="${user.getUserId()}">...</span></td>
+                    <td><span th:utext="${user.getUserName()}">...</span></td>
+                    <td><span th:utext="${user.getEnabled()}">...</span></td>
+                    <td><span th:utext="${user.getAppRole()}"></span></td>
+                    <td><span th:utext="${user.getWorker()}">...</span></td>
+                    <td><a th:href="'/web/appusers/' + ${user.getUserId()}"> Изменить пользователя. </a> </td>
+                </tr>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagination-div">
+                <span th:if="${appUsers.hasPrevious()}">
+                         <a th:href="@{/web/appusers(page=${appUsers.number-1},size=${appUsers.size})}">Previous</a>
+                </span>
+                <th:block th:each="i: ${#numbers.sequence(0, appUsers.totalPages - 1)}">
+                    <span th:if="${appUsers.number == i}" class="selected">[[${i}+1]]</span>
+                    <span th:unless="${appUsers.number == i}">
+                        <a th:href="@{/web/appusers(page=${i},size=${appUsers.size})}">[[${i}+1]]</a>
+                    </span>
+                </th:block>
+                <span th:if="${appUsers.hasNext()}">
+                    <a th:href="@{/web/appusers(page=${appUsers.number+1},size=${appUsers.size})}">Next</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

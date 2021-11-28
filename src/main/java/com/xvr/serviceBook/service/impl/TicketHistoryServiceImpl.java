@@ -20,7 +20,7 @@ public class TicketHistoryServiceImpl implements TicketHistoryService {
     public void save(TicketServiceDto ticketServiceDto) {
         /** TicketHistory:
          *   private Long numberEvent;
-         *     private Long ticketId;
+         *     private Long id;
          *     private Long whatHappen;
          *     private Date changeTime;
          *     private Long whoChange;
@@ -29,7 +29,7 @@ public class TicketHistoryServiceImpl implements TicketHistoryService {
 
         TicketsHistory ticketsHistory = TicketsHistory.builder()
                 .numberEvent(2L)
-                .ticketId(ticketServiceDto.getReportId())
+                .id(ticketServiceDto.getReportId())
                 .whatHappen(3L)
                 .changeTime(Date.from(Instant.now()))
                 .whoChange(2L)

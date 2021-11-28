@@ -9,6 +9,7 @@ import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Getter
 @Builder
@@ -20,7 +21,7 @@ public class TicketModelRepresentation extends RepresentationModel<TicketModelRe
 
     private String ticketDescription;
 
-    private LocalDateTime startDateTicket;
+    private ZonedDateTime startDateTicket;
 
     private LocalDateTime endDateTicket;
 

@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import javax.sql.DataSource;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 

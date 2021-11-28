@@ -13,21 +13,24 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping(value = "/rest/users")
-public class UserControllerApi {
+public class AppUserControllerApi {
 
     private final AppUserServiceImpl userDetailService;
     private final PagedResourcesAssembler<AppUser> appUserPagedResourcesAssembler;
     private final AppUserPaginationModelAssembler appUserPaginationModelAssembler;
 
     @Autowired
-    public UserControllerApi(AppUserServiceImpl userDetailService,
-                             PagedResourcesAssembler<AppUser> appUserPagedResourcesAssembler,
-                             AppUserPaginationModelAssembler appUserPaginationModelAssembler) {
+    public AppUserControllerApi(AppUserServiceImpl userDetailService,
+                                PagedResourcesAssembler<AppUser> appUserPagedResourcesAssembler,
+                                AppUserPaginationModelAssembler appUserPaginationModelAssembler) {
         this.userDetailService = userDetailService;
         this.appUserPagedResourcesAssembler = appUserPagedResourcesAssembler;
         this.appUserPaginationModelAssembler = appUserPaginationModelAssembler;
@@ -40,5 +43,11 @@ public class UserControllerApi {
         return !appUsers.isEmpty()
                 ? ResponseEntity.ok(model)
                 : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AppUserModelRepresentation> getUserById(@PathVariable Long id){
+
+        return null;
     }
 }

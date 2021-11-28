@@ -1,5 +1,6 @@
 package com.xvr.serviceBook.controller.restapi.assemblers;
 
+import com.xvr.serviceBook.controller.restapi.AppUserControllerApi;
 import com.xvr.serviceBook.controller.restapi.dtorepresentation.AppUserModelRepresentation;
 import com.xvr.serviceBook.entity.AppRole;
 import com.xvr.serviceBook.entity.AppUser;
@@ -7,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class AppUserPaginationModelAssembler implements RepresentationModelAssembler<AppUser, AppUserModelRepresentation> {
@@ -21,11 +25,14 @@ public class AppUserPaginationModelAssembler implements RepresentationModelAssem
     //TODO
     @Override
     public AppUserModelRepresentation toModel(AppUser entity) {
+        System.out.println("ROLES " + entity.getAppRole().size());
         return AppUserModelRepresentation.builder()
+                .id(entity.getUserId())
                 .userName(entity.getUserName())
                 .enabled(intToBoolean(entity.getEnabled()))
                 .appRole(appRolePaginationModelAssembler.toCollectionModel(entity.getAppRole()))
-                .build();
+                .build().add(linkTo(methodOn(AppUserControllerApi.class).getUserById(entity.getUserId())).withSelfRel());
+
     }
 
     @Override

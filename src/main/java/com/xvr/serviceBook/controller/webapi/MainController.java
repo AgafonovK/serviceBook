@@ -14,6 +14,7 @@ import java.security.Principal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Controller
@@ -74,7 +75,7 @@ public class MainController {
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
         model.addAttribute("userRole", ((Authentication) principal).getAuthorities());
-        model.addAttribute("lastDateRegistration", LocalDateTime.now(ZoneId.systemDefault()).minusDays(2));
+        model.addAttribute("lastDateRegistration", ZonedDateTime.now().minusDays(2));
 
         return "userInfoPage";
     }

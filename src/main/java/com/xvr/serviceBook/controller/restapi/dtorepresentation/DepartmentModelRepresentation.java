@@ -11,7 +11,7 @@ import org.springframework.hateoas.server.core.Relation;
 @Builder
 @EqualsAndHashCode(callSuper = false)
 @Relation(itemRelation = "department", collectionRelation = "departments")
-public class DepartmentRepresentation extends RepresentationModel<DepartmentRepresentation> {
+public class DepartmentModelRepresentation extends RepresentationModel<DepartmentModelRepresentation> {
 
     private final Long id;
     private final String name;

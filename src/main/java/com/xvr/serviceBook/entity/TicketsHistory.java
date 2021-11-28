@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table
-public class TicketsHistory extends RepresentationModel<TicketsHistory> {
+public class TicketsHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

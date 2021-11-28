@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 @Getter
@@ -16,17 +17,18 @@ import java.util.Set;
 public class TicketForm {
 
 
-    private Long ticketId;
+    private Long id;
 
     @NotNull
-    private StatusTicket status;
+    private StatusTicket statusTicket;
 
     private PriorityTicket priorityTicket;
 
+    @NotNull
     private Set<Worker> workers;
 
     @NotEmpty
-    @Size(min = 10, max = 500, message = "Не правильный размер сообщения")
+    @Size(min = 4, max = 500, message = "Не правильный размер сообщения")
     private String ticketDescription;
 
     private Department clientDepartment;
@@ -37,7 +39,7 @@ public class TicketForm {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDateTicket;
 
-    @FutureOrPresent
+    //@FutureOrPresent
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDateTicket;
 }

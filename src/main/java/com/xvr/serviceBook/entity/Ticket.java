@@ -2,11 +2,13 @@ package com.xvr.serviceBook.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,7 +19,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "ticket")
-public class Ticket extends RepresentationModel<Ticket> {
+public class Ticket {
 
     @Id
     @Column(name = "id", nullable = false, unique = true)
@@ -28,9 +30,11 @@ public class Ticket extends RepresentationModel<Ticket> {
     private String ticketDescription;
 
     @Column(name = "start_date")
-    private LocalDateTime startDateTicket;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private ZonedDateTime startDateTicket;
 
     @Column(name = "end_date")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endDateTicket;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -60,7 +64,7 @@ public class Ticket extends RepresentationModel<Ticket> {
     public String toString() {
         return "Ticket{" +
                 "id=" + id +
-                ", status=" + statusTicket.getStatusName() +
+                ", statusTicket=" + statusTicket.getStatusName() +
                 ", priority=" + priorityTicket.getPriorityName() +
                 ", client=" + workers.toString() +
                 ", ticketDescription='" + ticketDescription + '\'' +

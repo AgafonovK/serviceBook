@@ -1,9 +1,8 @@
 package com.xvr.serviceBook.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,10 +10,12 @@ import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Builder
 @Entity
 @Table(name = "app_role")
-public class AppRole extends RepresentationModel<AppRole> {
+public class AppRole{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,13 @@ public class AppRole extends RepresentationModel<AppRole> {
     private String roleName;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "appRole")
-    private Set<AppUser> appUsers = new HashSet<>();
+    private Set<AppUser> appUsers;
 
+    @Override
+    public String toString() {
+        return "AppRole{" +
+                "appRoleId=" + appRoleId +
+                ", roleName='" + roleName + '\'' +
+                '}';
+    }
 }

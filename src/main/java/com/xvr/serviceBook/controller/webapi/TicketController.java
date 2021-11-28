@@ -9,16 +9,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Controller
@@ -61,7 +64,13 @@ public class TicketController {
                              Model model) {
         Optional<Ticket> ticket = ticketService.getTicketById(id);
         if (ticket.isPresent()) {
-            model.addAttribute("ticket", ticket.get());
+            model.addAttribute("ticketForm", ticket.get());
+            model.addAttribute("startDateTick", ticket.get().getStartDateTicket().toInstant());
+            model.addAttribute("listWorkers", workerService.findAllWorker());
+            model.addAttribute("listEquipment", equipmentService.findAllEquipment());
+            model.addAttribute("listDepartment", departmentService.findAllDepartmentsList());
+            model.addAttribute("listStatus", statusTicketService.findAllStatusTicketList());
+            model.addAttribute("listPriority", priorityTicketService.findAllPriorityTicketList());
             return "ticket/ticketPage";
         } else {
             model.addAttribute("error", "WTF");
@@ -69,36 +78,51 @@ public class TicketController {
         }
     }
 
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PutMapping(value = "/update/{id}")
     public String ticketUpdate(@PathVariable Long id,
                                @Validated @ModelAttribute(value = "ticketForm") TicketForm ticketForm,
                                BindingResult result,
                                Model model) {
-
+        System.out.println("TICKET " + ticketForm);
         if (result.hasErrors()) {
             model.addAttribute("ticketForm", ticketForm);
-            model.addAttribute("nameError", "see down");
-            return "ticket/createTicketPage";
+            model.addAttribute("listWorkers", workerService.findAllWorker());
+            model.addAttribute("listEquipment", equipmentService.findAllEquipment());
+            model.addAttribute("listDepartment", departmentService.findAllDepartmentsList());
+            model.addAttribute("listStatus", statusTicketService.findAllStatusTicketList());
+            model.addAttribute("listPriority", priorityTicketService.findAllPriorityTicketList());
+            model.addAttribute("nameError", "Не правильно заполнены поля! Смотри ниже.");
+            return "ticket/ticketPage";
         } else {
             try {
                 ticketService.save(TicketServiceDto.builder()
+                        .ticketId(ticketForm.getId())
                         .ticketDescription(ticketForm.getTicketDescription())
-                        .startDateTicket(LocalDateTime.of(ticketForm.getStartDateTicket(), LocalTime.now()))
+                        .startDateTicket(ticketForm.getStartDateTicket().atStartOfDay(ZoneId.systemDefault()))
                         .endDateTicket(LocalDateTime.of(ticketForm.getEndDateTicket(),LocalTime.now()))
                         .worker(ticketForm.getWorkers())
                         .clientDepartment(ticketForm.getClientDepartment())
                         .equipment(ticketForm.getEquipment())
                         .priorityTicket(ticketForm.getPriorityTicket())
-                        .status(ticketForm.getStatus())
+                        .status(ticketForm.getStatusTicket())
                         .build());
             } catch (Exception e) {
+                logger.error("Not UPDATE " + e.getStackTrace());
+                model.addAttribute("ticketForm", ticketForm);
+                model.addAttribute("listWorkers", workerService.findAllWorker());
+                model.addAttribute("listEquipment", equipmentService.findAllEquipment());
+                model.addAttribute("listDepartment", departmentService.findAllDepartmentsList());
+                model.addAttribute("listStatus", statusTicketService.findAllStatusTicketList());
+                model.addAttribute("listPriority", priorityTicketService.findAllPriorityTicketList());
                 model.addAttribute("errorSave", e.getMessage());
-                return "ticket/createTicketPage";
+                return "ticket/ticketPage";
             }
         }
         return "redirect:/web/tickets";
     }
 
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @RequestMapping(value = "create-ticket", method = RequestMethod.GET)
     public String addTicket(Model model) {
         TicketForm ticketForm = new TicketForm();
@@ -111,26 +135,31 @@ public class TicketController {
         return "ticket/createTicketPage";
     }
 
-
     @PostMapping()
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public String saveTickets(@Validated @ModelAttribute(value = "ticketForm") TicketForm ticketForm,
                               BindingResult result,
                               Model model) {
         if (result.hasErrors()) {
             model.addAttribute("ticketForm", ticketForm);
+            model.addAttribute("listWorkers", workerService.findAllWorker());
+            model.addAttribute("listEquipment", equipmentService.findAllEquipment());
+            model.addAttribute("listDepartment", departmentService.findAllDepartmentsList());
+            model.addAttribute("listStatus", statusTicketService.findAllStatusTicketList());
+            model.addAttribute("listPriority", priorityTicketService.findAllPriorityTicketList());
             model.addAttribute("nameError", "Не верно заполнены поля");
             return "ticket/createTicketPage";
         } else {
             try {
                 ticketService.save(TicketServiceDto.builder()
                         .ticketDescription(ticketForm.getTicketDescription())
-                        .startDateTicket(LocalDateTime.of(ticketForm.getStartDateTicket(), LocalTime.now()))
+                        .startDateTicket(ticketForm.getStartDateTicket().atStartOfDay(ZoneId.systemDefault()))
                         .endDateTicket(LocalDateTime.of(ticketForm.getEndDateTicket(),LocalTime.now()))
                         .worker(ticketForm.getWorkers())
                         .clientDepartment(ticketForm.getClientDepartment())
                         .equipment(ticketForm.getEquipment())
                         .priorityTicket(ticketForm.getPriorityTicket())
-                        .status(ticketForm.getStatus())
+                        .status(ticketForm.getStatusTicket())
                         .build());
             } catch (Exception e) {
                 model.addAttribute("errorSave", e.getMessage());

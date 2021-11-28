@@ -18,18 +18,6 @@
 
     </th:block>
 </footer>
-<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Действия с заявками.
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item" th:href="@{/web/tickets/create-ticket}">Создать заявку</a></li>
-        <li sec:authorize="hasAuthority('ADMIN')">
-            <a class="dropdown-item" href="@{/web/tickets/delete-ticket}">Удалить заявку</a>
-        </li>
-    </ul>
-</div>
 
 <main>
     <div th:if="${#request.getParameter('error') == 'true'}"
@@ -42,7 +30,7 @@
          </span>
     </div>
     <div class="container">
-        <th:block th:insert="/ticket/_ticketsTable">
+        <th:block th:insert="/users/_usersTable">
 
         </th:block>
 
