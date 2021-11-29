@@ -2,88 +2,95 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:utext="${title}"></title>
-    <style>
-        th, td {
-            padding: 5px;
-        }
-        td span  {
-            font-size:90%;
-            font-style: italic;
-            color: red;
-        }
-        .error {
-            color: red;
-            font-style: italic;
-        }
-    </style>
+    <div>
+        <!-- this is header-css -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+              crossorigin="anonymous">
+    </div>
 </head>
 <body>
-<!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+<header>
+    <div>
+        <!-- Include _menu.html -->
+        <th:block th:include="/_menu">
 
-<h2>Register</h2>
+        </th:block>
+    </div>
 
-<div th:if="${errorMessage != null}"
-     th:utext="${errorMessage}" class="error">...</div>
+</header>
 
-<form th:action="@{/users/}" th:object="${appUserForm}" method="POST">
-    <table>
-        <tr>
-            <td>User Name</td>
-            <td><input type="text" placeholder="Enter User Name"  th:field="*{userName}" /></td>
-            <td>
-                <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">..</span>
-            </td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td><input type="password" th:field="*{encryptedPassword}" /> </td>
-            <td>
-                <span th:if="${#fields.hasErrors('encryptedPassword')}" th:errors="*{encryptedPassword}">..</span>
-            </td>
-        </tr>
-        <tr>
-            <td>Confirm</td>
-            <td><input type="password" th:field="*{encryptedPassword}" /> </td>
-            <td>
-                <span th:if="${#fields.hasErrors('encryptedPassword')}" th:errors="*{encryptedPassword}">..</span>
-            </td>
-        </tr>
-        <tr>
-            <td>Enabled User</td>
-            <td><input type="text" th:field="*{enabled}" /> </td>
-            <td>
-                <span th:if="${#fields.hasErrors('enabled')}" th:errors="*{enabled}">..</span>
-            </td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>
-                <input type="submit" value="Submit" />
-                <a th:href="@{/}">Cancel</a>
-            </td>
-            <td>&nbsp;</td>
-        </tr>
-    </table>
-</form>
-<table class="table table-striped table-bordered">
-    <tr>
-        <th>userId</th>
-        <th>User Name</th>
-        <th>encrypted password</th>
-        <th>enabled</th>
-        <!--<th>Created At</th>-->
-    </tr>
-    <tr th:if="${#lists.isEmpty(users)}">
-        <td colspan="5">No Records found. Add some...!</td>
-    </tr>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.firstName}"></td>
-        <td th:text="${user.lastName}"></td>
-        <td th:text="${user.role}"></td>
-        <td th:text="${user.createdAt}"></td>
-    </tr>
-</table>
+<main>
+    <h2>Создать пользователя</h2>
+
+    <div th:if="${#request.getParameter('error') == 'true'}"
+         style="color:red;margin:10px 0px;">
+        Пользователь не добавлен!!!<br/>
+        Причина :
+    </div>
+
+    <div th:if="${ok != null}">
+        <h2>Вы добавили нового пользователя </h2>
+        <ul>
+            <li>Имя сотрудника: <span th:utext="${appUserForm.getUserName()}">..</span></li>
+            <li>Пароль: <span th:utext="${appUserForm.getPassword()}">..</span></li>
+        </ul>
+    </div>
+
+    <div>
+        <form th:action="@{/web/appusers}" th:object="${appUserForm}" method="POST">
+            <table>
+                <tr>
+                    <td>Имя пользователя</td>
+                    <td><input type="text" placeholder="Enter User Name" th:field="*{userName}"/></td>
+                    <td>
+                        <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">..</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Пароль</td>
+                    <td><input type="password" placeholder="Minimum 6 char's" th:field="*{password}"/></td>
+                    <td>
+                        <span th:if="${#fields.hasErrors('password')}"
+                              th:errors="*{password}">..</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Подтверждение пароля</td>
+                    <td><input type="password" th:field="*{confirmPassword}"/></td>
+                    <td>
+                        <span th:if="${#fields.hasErrors('confirmPassword')}"
+                              th:errors="*{confirmPassword}">..</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Пользователь активен</td>
+                    <td><input type="checkbox" th:field="*{enabled}"/></td>
+                    <td>
+                        <span th:if="${#fields.hasErrors('enabled')}" th:errors="*{enabled}">..</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Submit"/>
+                        <button><a th:href="@{/}">Отмена</a></button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div>
+        <h2>Описание ролей</h2>
+        <div th:each="appRole : ${appRoles.values()}">
+            <span th:value="${appRole}" th:text="${appRole.label}"> Role</span>
+        </div>
+    </div>
+</main>
 </body>
 </html>

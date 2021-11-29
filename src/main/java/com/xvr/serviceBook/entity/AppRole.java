@@ -1,19 +1,24 @@
 package com.xvr.serviceBook.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.GenerationType;
+import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Builder
 @Entity
 @Table(name = "app_role")
-public class AppRole {
+public class AppRole{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", nullable = false)
     private Long appRoleId;
 
@@ -21,19 +26,14 @@ public class AppRole {
     @Column(name = "role_name", nullable = false, length = 30)
     private String roleName;
 
-    public Long getRoleId() {
-        return appRoleId;
-    }
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "appRole")
+    private Set<AppUser> appUsers;
 
-    public void setRoleId(Long roleId) {
-        this.appRoleId = roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    @Override
+    public String toString() {
+        return "AppRole{" +
+                "appRoleId=" + appRoleId +
+                ", roleName='" + roleName + '\'' +
+                '}';
     }
 }

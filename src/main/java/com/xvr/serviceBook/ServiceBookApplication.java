@@ -2,6 +2,8 @@ package com.xvr.serviceBook;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.FileInputStream;
@@ -18,13 +20,15 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
+@EnableSpringDataWebSupport
+@EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL_FORMS)
 public class ServiceBookApplication {
 
 	public static void main(String[] args) throws IOException {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
 		String pass = bCryptPasswordEncoder.encode("user");
-		Path path = Paths.get("./src/main/resources/data.sql");
+		/*Path path = Paths.get("./src/main/resources/data.sql");
 		String os = System.getProperty("os.name");
 		try (RandomAccessFile f = new RandomAccessFile(path.toFile(), "rw")) {
 			long aPositionWhereIWantToGo;
@@ -42,7 +46,7 @@ public class ServiceBookApplication {
 			}
 			f.write(pass.getBytes());
 			f.close();
-		}
+		}*/
 		/*if (Files.exists(path)){
 			try {
 				List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);

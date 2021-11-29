@@ -35,7 +35,7 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<Worker> getAllWorker() {
+    public List<Worker> findAllWorker() {
         return workerRepository.findAll();
     }
 

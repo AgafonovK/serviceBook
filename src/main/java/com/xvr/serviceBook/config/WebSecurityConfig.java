@@ -1,10 +1,12 @@
 package com.xvr.serviceBook.config;
 
-import com.xvr.serviceBook.service.impl.UserDetailServiceImpl;
+import com.xvr.serviceBook.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,20 +18,19 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import javax.sql.DataSource;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
+
     private final AccessDeniedHandler accessDeniedHandler;
-    @Autowired
     private final DataSource dataSource;
-    @Autowired
-    private final UserDetailServiceImpl userDetailService;
+    private final AppUserService appUserService;
 
     @Autowired
-    public WebSecurityConfig(AccessDeniedHandler accessDeniedHandler, DataSource dataSource, UserDetailServiceImpl userDetailService) {
+    public WebSecurityConfig(AccessDeniedHandler accessDeniedHandler, DataSource dataSource,@Lazy AppUserService appUserService) {
         this.accessDeniedHandler = accessDeniedHandler;
         this.dataSource = dataSource;
-        this.userDetailService = userDetailService;
+        this.appUserService = appUserService;
     }
 
     @Bean
@@ -42,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Setting Authentication Manager Service to find User in the database.
         // And Setting PasswordEncoder
-        auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(appUserService).passwordEncoder(passwordEncoder());
 
     }
 
@@ -52,10 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/register").permitAll()
-                    .antMatchers("/admins/**", "/h2-console/**").hasRole("ADMIN")
+                    .antMatchers("/", "/web/appusers","web/appusers/create-user","/web/appusers/user-add-successful").permitAll()
+                    .antMatchers("/h2-console/**").hasRole("ADMIN")
                     .antMatchers("/users/**").hasRole("USER")
-                    //.antMatchers("/h2-console","/h2-console/**").access("hasRole('ADMIN')")
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .logout()
                     //.logoutUrl("/logout")
-                    //.logoutSuccessUrl("/")
+                    .logoutSuccessUrl("/login")
                     .invalidateHttpSession(true)        // set invalidation state when logout
                     .deleteCookies("JSESSIONID")
                     .permitAll()

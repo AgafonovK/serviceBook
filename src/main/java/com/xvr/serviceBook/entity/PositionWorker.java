@@ -1,44 +1,43 @@
 package com.xvr.serviceBook.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.*;
+import org.hibernate.Hibernate;
 
+import javax.persistence.*;
+import java.util.Objects;
+import java.util.Set;
+
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
-@Table(name = "positionWorker")
+@Table(name = "position_worker")
 public class PositionWorker {
 
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "position_name")
     private String positionName;
 
-    public PositionWorker() {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "positionWorker")
+    private Set<Worker> worker;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        PositionWorker that = (PositionWorker) o;
+        return id != null && Objects.equals(id, that.id);
     }
 
-    public PositionWorker(Long id, String positionName) {
-        this.id = id;
-        this.positionName = positionName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPositionName() {
-        return positionName;
-    }
-
-    public void setPositionName(String positionName) {
-        this.positionName = positionName;
+    @Override
+    public int hashCode() {
+        return 0;
     }
 }
 

@@ -4,9 +4,12 @@ import com.xvr.serviceBook.entity.AppRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
+@Repository
 public interface AppRoleRepository extends JpaRepository <AppRole, Long> {
 
     /** work query
@@ -15,7 +18,8 @@ public interface AppRoleRepository extends JpaRepository <AppRole, Long> {
      * inner join app_user au ON ur.user_id = au.user_id where au.user_id=2
      */
     //@Query("select ur.appRole.roleName from UserRole ur where ur.appUser.userId = :userId")
-    @Query("select ar.roleName from AppRole ar inner join UserRole ur on ar.appRoleId = ur.userRoleId " +
-            "inner join AppUser au ON ur.userRoleId = au.userId where au.userId= :userId")
+//    @Query("select ar.roleName from AppRole ar inner join UserRole ur on ar.appRoleId = ur.userRoleId " +
+ //           "inner join AppUser au ON ur.userRoleId = au.userId where au.userId= :userId")
+    @Query("select ar.roleName from AppRole ar join ar.appUsers au where au.userId = :userId")
     List<String> getRoleNames(@Param("userId") Long userId);
 }

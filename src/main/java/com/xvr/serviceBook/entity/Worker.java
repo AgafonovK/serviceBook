@@ -1,23 +1,30 @@
 package com.xvr.serviceBook.entity;
 
+import lombok.*;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.hateoas.RepresentationModel;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "worker")
-public class Worker {
+public class Worker{
 
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Column(name = "position_name", length = 32, nullable = false)
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_worker_id")
     private PositionWorker positionWorker;
 
-    @Column(name = "first_name",length = 32, nullable = false)
+    @Column(name = "first_name", length = 32, nullable = false)
     private String firstName;
 
     @Column(name = "last_name", length = 32, nullable = false)
@@ -43,8 +50,21 @@ public class Worker {
     private Department department;
 
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "worker_ticket",
+            joinColumns = @JoinColumn(name = "worker_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id")
+    )
+    private Set<Ticket> tickets;
 
-    public Worker() {
+    public void addTicket(Ticket ticket) {
+        this.tickets.add(ticket);
+        ticket.getWorkers().add(this);
+    }
+
+    public void removeTicket(Ticket ticket) {
+        this.tickets.remove(ticket);
+        ticket.getWorkers().remove(this);
     }
 
     public Worker(Long id, PositionWorker positionWorker, String firstName, String lastName, String patronymic, Long phone, String email, LocalDate dateAccept, LocalDate dateFired, Department department) {
@@ -60,92 +80,11 @@ public class Worker {
         this.department = department;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public PositionWorker getPositionWorker() {
-        return positionWorker;
-    }
-
-    public void setPositionWorker(PositionWorker positionWorker) {
-        this.positionWorker = positionWorker;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-    public Long getPhone() {
-        return phone;
-    }
-
-    public void setPhone(Long phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDate getDateAccept()
-    {
-        return dateAccept;
-    }
-
-    public void setDateAccept(LocalDate dateAccept) {
-        this.dateAccept = dateAccept;
-    }
-
-    public LocalDate getDateFired() {
-        return dateFired;
-    }
-
-    public void setDateFired(LocalDate dateFired) {
-        this.dateFired = dateFired;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
     @Override
     public String toString() {
         return "Worker{" +
                 "id=" + id +
-                ", positionWorker=" + positionWorker +
+                ", positionWorker=" + positionWorker.getPositionName() +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", patronymic='" + patronymic + '\'' +
@@ -153,7 +92,7 @@ public class Worker {
                 ", email='" + email + '\'' +
                 ", dateAccept=" + dateAccept +
                 ", dateFired=" + dateFired +
-                ", department=" + department +
+                ", department=" + department.getName() +
                 '}';
     }
 }

@@ -1,27 +1,40 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Successfully registered</title>
-    <style>
-        span {color: blue;}
-    </style>
+    <title>Successfully add Department</title>
+    <div>
+        <!-- this is header-css -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+              crossorigin="anonymous">
+    </div>
 </head>
-
 <body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+<header>
+    <!-- Include _menu.html -->
+    <th:block th:include="/_menu">
 
-<!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+    </th:block>
+</header>
+<main>
+    <h2>Вы успешно добавили департамент!</h2>
 
-<h2>Вы успешно добавили департамент!</h2>
+    <div th:if="${flashDep != null}">
+        <ul>
+            <li>Название департамента: <span th:utext="${flashDep.name}">..</span></li>
+        </ul>
+    </div>
+    <div>
+        <th:block th:insert="/department/_departmentsTable">
 
-<div th:if="${flashUser != null}">
-    <ul>
-        <li>Название департамента: <span th:utext="${flashUser.name}">..</span></li>
-    </ul>
-</div>
-<div>
-    <th:block th:include="/department/_departmentsTable"></th:block>
-</div>
-
+        </th:block>
+    </div>
+</main>
 </body>
 </html>

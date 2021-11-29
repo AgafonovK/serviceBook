@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Login</title>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -46,8 +46,8 @@
     </table>
 </form>
 </div>
-<div>
-    <a class="btn btn-primary" th:href="@{/register}" role="button">Link</a>
+<div sec:authorize="hasAnyAuthority('ADMIN')">
+    <a class="btn btn-primary" th:href="@{/web/appusers/create-user}" role="button">Регистрация</a>
 </div>
 <br>
 

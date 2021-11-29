@@ -1,50 +1,173 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <div>
+        <!-- this is header-css -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+              crossorigin="anonymous">
+    </div>
 </head>
 <body>
-<!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
 
-<div class="container">
-    <div class="card">
-        <div class="card-block">
-            <table class="table table-hover">
-                <thead>
-                 <tr>
-                     <th>Номер заявки</th>
-                     <th>Тема заявки</th>
-                     <th>Департамент</th>
-                     <th>Дата подачи</th>
-                     <th>Дата окончания</th>
-                     <th>Наименование оборудования</th>
-                     <th>Статус</th>
-                 </tr>
-                </thead>
-                <tbody>
-                <tr th:each ="tickets : ${ticket}">
-                    <td th:utext="${tickets.getId()}">...</td>
-                    <td th:utext="${tickets.getTicketDescription()}">...</td>
-                    <td th:utext="${tickets.getClientDepartment().name}">...</td>
-                    <td th:utext="${tickets.getStartDateTicket()}">...</td>
-                    <td th:utext="${tickets.getEndDateTicket()}">...</td>
-                    <td th:utext="${tickets.getClient().getFirstName()}">...</td>
-                    <td th:utext="${tickets.getStatus().getStatusName()}">...</td>
+<div th:if="${nameError != null}">
+    <br>Тикет не добавлен!!!
+    Причина: <br/>
+    <span th:utext="${nameError}">
 
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-
+    </span>
 </div>
+<div th:if="${errorSave != null}">
+    <br>Тикет не добавлен в репозиторий!!!
+    Причина: <br/>
+
+    <span th:utext="${errorSave}">
+    </span>
+</div>
+<main>
+    <form th:action="@{/web/tickets/update/{id}(id=${ticketForm.getId()})}" th:object="${ticketForm}" th:method="PUT">
+        <div>
+            <div class="container">
+                <table>
+                    <tr>
+                        <td>
+                            <label>Номер заявки (Только для чтения)</label>
+                        </td>
+                        <td>
+                            <input readonly=readonly th:field="*{id}" id="id" placeholder="*{getId()}">
+                        </td>
+                        <td>
+                            <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Описание заявки</td>
+                        <td><input type="text" th:field="*{ticketDescription}"/></td>
+                        <td>
+                            <span th:if="${#fields.hasErrors('ticketDescription')}" th:errors="*{ticketDescription}">..</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Департамент</td>
+                        <td>
+                            <select th:field="*{clientDepartment}">
+                                <option th:value="*{clientDepartment}"> </option>
+                                <option th:each="departments : ${listDepartment}"
+                                        th:value="${departments.getId()}"
+                                        th:utext="${departments.getName()}"></option>
+                            </select>
+                        </td>
+                        <td>
+
+                        </td>
+                        <td><span th:if="${#fields.hasErrors('clientDepartment')}" th:errors="*{clientDepartment}">..</span></td>
+                    </tr>
+                    <tr>
+                        <td>Дата подачи заявки</td>
+                        <td>
+                            <input type="date" th:field="*{startDateTicket}" th:value="${startDateTick}"/>
+                        </td>
+                        <td>
+                            <span th:if="${#fields.hasErrors('startDateTicket')}" th:errors="*{startDateTicket}">..</span>
+                        </td>
+                        <td><p th:text="${startDateTick}"></p></td>
+                    </tr>
+                    <tr>
+                        <td>Дата окончания заявки</td>
+                        <td><input type="date" th:field="*{endDateTicket}"/></td>
+                        <td>
+                            <span th:if="${#fields.hasErrors('endDateTicket')}" th:errors="*{endDateTicket}">..</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Оборудование</td>
+                        <td>
+                            <select th:field="*{equipment}">
+                                <option th:value="*{equipment}"> --</option>
+                                <option th:each="equipment : ${listEquipment}"
+                                        th:value="${equipment.getId()}"
+                                        th:utext="${equipment.getName()}"></option>
+                            </select>
+                        </td>
+                        <td><span th:if="${#fields.hasErrors('equipment')}" th:errors="*{equipment}">..</span></td>
+                    </tr>
+                    <tr>
+                        <td>Назначенный сотрудник</td>
+                        <td>
+                            <select id="workers" th:field="*{workers}" size="3" multiple="multiple">
+                                <option th:each="worker : ${listWorkers}"
+                                        th:value="${{worker}}"
+                                        th:text="${worker.getFirstName()}">
+                                </option>
+                            </select>
+                        </td>
+                        <td><span th:if="${#fields.hasErrors('workers')}" th:errors="*{workers}">..</span></td>
+                    </tr>
+                    <tr>
+                        <td>Статус оборудования:</td>
+                        <td>
+                            <select th:field="*{statusTicket}">
+                                <!--option th:value=""> --</option-->
+                                <option th:each="status : ${listStatus}"
+                                        th:value="${status.getId()}"
+                                        th:utext="${status.getStatusName()}"></option>
+                            </select>
+                        </td>
+                        <td><span th:if="${#fields.hasErrors('statusTicket')}" th:errors="*{statusTicket}">..</span></td>
+                    </tr>
+                    <tr>
+                        <td>Приоритет заявки:</td>
+                        <td>
+                            <select th:field="*{priorityTicket}">
+                                <!--option value=""> --</option-->
+                                <option th:each="priority : ${listPriority}"
+                                        th:value="${priority.getId()}"
+                                        th:utext="${priority.getPriorityName()}"></option>
+                            </select>
+                        </td>
+                        <td><span th:if="${#fields.hasErrors('priorityTicket')}" th:errors="*{priorityTicket}">..</span></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>
+                            <input th:type="submit" value="Обновить заявку"/>
+                            <a th:href="@{/}">Отмена</a>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <!-- <label for="email">Email</label>
+                     <input type="text" th:field="*{email}" id="email" placeholder="Email">
+                     <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
 
 
+                                 <tr>
+                                     <td><span th:utext="*{getId()}">...</span></td>
+                                     <td><span th:utext="${ticket.getTicketDescription()}">...</span></td>
+                                     <td><span th:utext="${ticket.getClientDepartment().name}">...</span></td>
+                                     <td><span th:utext="${ticket.getClientDepartment().getName()}"></span></td>
+                                     <td><span th:utext="${ticket.getEquipment().getName()}">...</span></td>
+                                     <td><span th:utext="${ticket.getPriorityTicket().getPriorityName()}">...</span></td>
+                                     <td><span th:utext="${ticket.getStatusTicket().getStatusName()}">...</span></td>
+                                     <td><span th:utext="${ticket.getStartDateTicket()}">...</span></td>
+                                     <td><span th:utext="${ticket.getEndDateTicket()}">...</span></td>
+                                 </tr>
+                                 </tbody>
+                             </table>
+                             -->
+                    <!--input type="submit" value="Update User"-->
+                </table>
+            </div>
+        </div>
+    </form>
+</main>
 </body>
 </html>

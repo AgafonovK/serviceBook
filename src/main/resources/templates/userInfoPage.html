@@ -2,24 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>User Info</title>
+    <div>
+        <!-- this is header-css -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+              crossorigin="anonymous">
+    </div>
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+
 <!-- Include _menu.html -->
 <header>
-<th:block th:include="/_menu"></th:block>
+    <th:block th:include="/_menu">
+
+    </th:block>
 </header>
 
 <main>
-    <h2>Пользователь</h2>
-    <h3>Приветствуем тебя: <span th:utext="${#request.userPrincipal.name}"></span></h3>
-    <br/><br/>
+    <h3>Пользователь приветствуем тебя: <span th:utext="${#request.userPrincipal.name}"></span></h3>
+    <h3>Текущие права: <span th:if="${userRole != null}"
+                             th:utext="${userRole}"></span></h3>
+    <h3>Последняя регистрация в системе: <span th:if="${lastDateRegistration != null}"
+                                               th:utext="${lastDateRegistration}"></span></h3>
 
 
 </main>
 <footer>
     <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
-    <div> <a th:href="@{/reports/reportAdd}">Добавить отчет</a></div>
-    <div> <a th:href="@{/reports}">Показать все отчеты</a></div>
+    <div><a th:href="@{/reports/reportAdd}">Добавить отчет</a></div>
+    <div><a th:href="@{/reports}">Показать все отчеты</a></div>
 </footer>
 </body>
 

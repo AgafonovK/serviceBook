@@ -1,34 +1,27 @@
 package com.xvr.serviceBook.form;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
+import lombok.*;
+import org.springframework.hateoas.server.core.Relation;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+@Data
+@Getter
+@Setter
+@Builder
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@Relation(collectionRelation = "department")
 public class DepartmentForm {
 
+    @NotNull
+    @Min(1)
     private Long id;
+
+    @NotEmpty
     private String name;
 
-    public DepartmentForm() {
-    }
-
-    public DepartmentForm(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

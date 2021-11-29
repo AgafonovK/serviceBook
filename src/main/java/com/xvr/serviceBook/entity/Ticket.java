@@ -1,129 +1,90 @@
 package com.xvr.serviceBook.entity;
 
+import lombok.*;
+import org.hibernate.Hibernate;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.hateoas.RepresentationModel;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.Objects;
+import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "ticket")
 public class Ticket {
 
     @Id
-    @Column(name = "id",nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    private StatusTicket status;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    private Priority priority;
-
-    //TODO
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Worker client;
 
     @Column(name = "description")
     private String ticketDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Department clientDepartment;
-    //TODO
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Equipment equipment;
-
-    @Column(name = "start_date")
-    private LocalDate startDateTicket;
+    @Column(name = "start_date", updatable = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private ZonedDateTime startDateTicket;
 
     @Column(name = "end_date")
-    private LocalDate endDateTicket;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime endDateTicket;
 
-    public Ticket() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_ticket_id",nullable = false)
+    private StatusTicket statusTicket;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "priority_id", nullable = false)
+    private PriorityTicket priorityTicket;
+
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tickets")
+    @Singular
+    private Set<Worker> workers;
+
+    @ManyToOne()
+    @JoinColumn(name = "department_id")
+    private Department clientDepartment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "equipment_id")
+    private Equipment equipment;
+
+
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", statusTicket=" + statusTicket.getStatusName() +
+                ", priority=" + priorityTicket.getPriorityName() +
+                ", client=" + workers.toString() +
+                ", ticketDescription='" + ticketDescription + '\'' +
+                ", clientDepartment=" + clientDepartment.getName() +
+                ", equipment=" + equipment.getName() +
+                ", startDateTicket=" + startDateTicket +
+                ", endDateTicket=" + endDateTicket +
+                '}';
     }
 
-    public Department getClientDepartment() {
-        return clientDepartment;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Ticket ticket = (Ticket) o;
+        return id != null && Objects.equals(id, ticket.id);
     }
 
-    public void setClientDepartment(Department clientDepartment) {
-        this.clientDepartment = clientDepartment;
-    }
-
-    public Ticket(Long id, StatusTicket status, Priority priority,
-                  Worker client,
-                  String ticketDescription,
-                  Department clientDepartment, Equipment equipment, LocalDate startDateTicket, LocalDate endDateTicket) {
-        this.id = id;
-        this.status = status;
-        this.priority = priority;
-        this.client = client;
-        this.ticketDescription = ticketDescription;
-        this.clientDepartment = clientDepartment;
-        this.equipment = equipment;
-        this.startDateTicket = startDateTicket;
-        this.endDateTicket = endDateTicket;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public StatusTicket getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusTicket status) {
-        this.status = status;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
-
-    public Worker getClient() {
-        return client;
-    }
-
-    public void setClient(Worker client) {
-        this.client = client;
-    }
-
-    public String getTicketDescription() {
-        return ticketDescription;
-    }
-
-    public void setTicketDescription(String ticketDescription) {
-        this.ticketDescription = ticketDescription;
-    }
-
-    public Equipment getEquipment() {
-        return equipment;
-    }
-
-    public void setEquipment(Equipment equipment) {
-        this.equipment = equipment;
-    }
-
-    public LocalDate getStartDateTicket() {
-        return startDateTicket;
-    }
-
-    public void setStartDateTicket(LocalDate startDateTicket) {
-        this.startDateTicket = startDateTicket;
-    }
-
-    public LocalDate getEndDateTicket() {
-        return endDateTicket;
-    }
-
-    public void setEndDateTicket(LocalDate endDateTicket) {
-        this.endDateTicket = endDateTicket;
+    @Override
+    public int hashCode() {
+        return 0;
     }
 }
