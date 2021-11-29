@@ -29,7 +29,7 @@ public class Ticket {
     @Column(name = "description")
     private String ticketDescription;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", updatable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime startDateTicket;
 
