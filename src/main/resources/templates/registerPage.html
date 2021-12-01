@@ -38,13 +38,13 @@
     <div th:if="${ok != null}">
         <h2>Вы добавили нового пользователя </h2>
         <ul>
-            <li>Имя сотрудника: <span th:utext="${appUserForm.getUserName()}">..</span></li>
-            <li>Пароль: <span th:utext="${appUserForm.getPassword()}">..</span></li>
+            <li>Имя сотрудника: <span th:utext="${appUserRegistrationForm.getUserName()}">..</span></li>
+            <li>Пароль: <span th:utext="${appUserRegistrationForm.getPassword()}">..</span></li>
         </ul>
     </div>
 
     <div>
-        <form th:action="@{/web/appusers}" th:object="${appUserForm}" method="POST">
+        <form th:action="@{/web/appusers}" th:object="${appUserRegistrationForm}" method="POST">
             <table>
                 <tr>
                     <td>Имя пользователя</td>
@@ -77,17 +77,29 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Выберите права доступа сотрудника:</td>
+                    <td>
+                        <select th:name="appRole" th:field="*{appRole}" >
+                            <option th:each="appRole : ${appRoles}"
+                                    th:value="${appRole}"
+                                    th:text="${appRole}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td>
                         <input type="submit" value="Submit"/>
                         <button><a th:href="@{/}">Отмена</a></button>
                     </td>
                 </tr>
+
             </table>
         </form>
     </div>
     <div>
         <h2>Описание ролей</h2>
-        <div th:each="appRole : ${appRoles.values()}">
+        <div th:each="appRole : ${appRoles}">
             <span th:value="${appRole}" th:text="${appRole.label}"> Role</span>
         </div>
     </div>

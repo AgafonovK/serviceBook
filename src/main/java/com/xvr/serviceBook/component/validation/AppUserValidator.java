@@ -1,8 +1,7 @@
 package com.xvr.serviceBook.component.validation;
 
-import com.xvr.serviceBook.form.AppUserForm;
+import com.xvr.serviceBook.form.AppUserRegistrationForm;
 import com.xvr.serviceBook.service.AppUserService;
-import com.xvr.serviceBook.service.impl.AppUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -21,7 +20,7 @@ public class AppUserValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return aClass == AppUserForm.class;
+        return aClass == AppUserRegistrationForm.class;
     }
 
     @Override

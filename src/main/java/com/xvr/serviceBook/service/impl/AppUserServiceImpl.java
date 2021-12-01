@@ -48,6 +48,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public Page<AppUser> findAllAppUsersPaginated(Pageable pageable) {
+
         return appUserRepository.findAll(pageable);
     }
 

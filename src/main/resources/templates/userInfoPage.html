@@ -16,9 +16,13 @@
 
 <!-- Include _menu.html -->
 <header>
-    <th:block th:include="/_menu">
 
-    </th:block>
+    <div>
+        <th:block th:include="/_menu">
+
+        </th:block>
+    </div>
+
 </header>
 
 <main>
@@ -32,8 +36,8 @@
 </main>
 <footer>
     <div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
-    <div><a th:href="@{/reports/reportAdd}">Добавить отчет</a></div>
-    <div><a th:href="@{/reports}">Показать все отчеты</a></div>
+    <div><a th:href="@{/web/reports/reportAdd}">Добавить отчет</a></div>
+    <div><a th:href="@{/web/reports}">Показать все отчеты</a></div>
 </footer>
 </body>
 

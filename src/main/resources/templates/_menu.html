@@ -18,9 +18,7 @@
 
         <a th:href="@{/web/equipments}" class="btn btn-primary mt-5">
             <span class="glyphicon glyphicon-home"></span> Станочный парк</a>
-
-
-
+        
         <a th:href="@{/web/departments}" class="btn btn-primary mt-5">
             <span class="glyphicon glyphicon-home"></span> Департаменты</a>
 
@@ -31,8 +29,8 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item" th:href="@{/web/appusers}">Список пользователей</a></li>
-                <li><a class="dropdown-item" href="#">Удалить пользователя</a></li>
-                <li><a class="dropdown-item" href="#">Добавить пользователя</a></li>
+                <li><a class="dropdown-item" th:href="@{/web/}">Удалить пользователя</a></li>
+                <li><a class="dropdown-item" th:href="@{/web/appusers/create-user}">Добавить пользователя</a></li>
             </ul>
         </div>
         <a>

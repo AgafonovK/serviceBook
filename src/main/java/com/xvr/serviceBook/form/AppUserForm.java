@@ -1,33 +1,31 @@
 package com.xvr.serviceBook.form;
 
-import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
+import com.xvr.serviceBook.entity.AppRole;
+import com.xvr.serviceBook.entity.Worker;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @Builder
 public class AppUserForm {
 
-    @NotEmpty
+    private Long userId;
+
     private String userName;
-
-    @NotEmpty
-    @Size(min = 6, max = 15)
-    private String password;
-
-    @NotEmpty
-    @Size(min = 6, max = 15)
-    private String confirmPassword;
 
     private boolean enabled;
 
+    private Set<AppRole> appRole;
+
+    private Worker worker;
 
 }
