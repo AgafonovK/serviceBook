@@ -27,7 +27,7 @@ import java.util.Optional;
 
 
 @Controller
-@RequestMapping(value = "web/departments")
+@RequestMapping(value = "/web/departments")
 public class DepartmentController {
 
 

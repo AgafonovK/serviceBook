@@ -16,9 +16,11 @@ public class TicketPaginationModelAssembler implements RepresentationModelAssemb
                 .id(entity.getId())
                 .startDateTicket(entity.getStartDateTicket())
                 .endDateTicket(entity.getEndDateTicket())
-                .statusTicket(entity.getStatusTicket().getStatusName())
+                //TODO create toStatus
+                //.statusTicket(entity.getStatusTicket().getStatusName())
                 .ticketDescription(entity.getTicketDescription())
-                .clientDepartmentRepresentation(entity.getClientDepartment().getName())
+                //TODO create toClientDepartment
+                //.clientDepartmentRepresentation(entity.getClientDepartment().getName())
                 .build();
         return ticketModelRepresentation;
     }

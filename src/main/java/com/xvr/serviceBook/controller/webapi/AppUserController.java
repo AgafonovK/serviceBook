@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -26,8 +25,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -47,6 +46,7 @@ public class AppUserController {
         this.appRoleService = appRoleService;
         this.modelMapper = modelMapper;
     }
+
     //TODO Mapping form
     @GetMapping
     public String getAppUsers(@PageableDefault(size = 5) Pageable pageRequest,
@@ -63,8 +63,14 @@ public class AppUserController {
     //TODO
     @GetMapping(value = "/{id}")
     public String getAppUserById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("AppUser", appUserService.findAppUserById(id));
-        return String.valueOf(id);
+        Optional<AppUser> appUser = appUserService.findAppUserById(id);
+        appUser.ifPresent(user -> model.addAttribute("appUser",AppUserForm.builder()
+                .userId(id)
+                .userName(user.getUserName())
+                .enabled(user.getEnabled() == 1)
+                .appRole(user.getAppRole())
+                .build()));
+        return "userInfoPage";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

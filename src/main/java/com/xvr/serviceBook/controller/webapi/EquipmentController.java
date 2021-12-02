@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "web/equipments")
+@RequestMapping(value = "/web/equipments")
 public class EquipmentController {
 
     private final EquipmentRepository equipmentRepository;

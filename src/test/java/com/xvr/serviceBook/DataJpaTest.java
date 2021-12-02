@@ -1,13 +1,18 @@
 package com.xvr.serviceBook;
 
+import com.xvr.serviceBook.controller.restapi.assemblers.DepartmentPaginationModelAssembler;
+import com.xvr.serviceBook.controller.restapi.dtorepresentation.DepartmentModelRepresentation;
 import com.xvr.serviceBook.entity.AppUser;
+import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.repository.AppRoleRepository;
 import com.xvr.serviceBook.repository.TicketRepository;
 import com.xvr.serviceBook.repository.WorkerRepository;
+import com.xvr.serviceBook.service.DepartmentService;
 import com.xvr.serviceBook.service.impl.AppUserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Commit;
 
@@ -25,7 +30,12 @@ public class DataJpaTest {
     private AppRoleRepository appRoleRepository;
     @Autowired
     private AppUserServiceImpl appUserService;
-
+    @Autowired
+    private DepartmentPaginationModelAssembler departmentPaginationModelAssembler;
+    @Autowired
+    private DepartmentService departmentService;
+    @Autowired
+    private ModelMapper modelMapper;
     @BeforeEach
     public void booksShouldBeAdded() {
         /*AppRole appRoleAdmin = AppRole.builder()
@@ -56,5 +66,15 @@ public class DataJpaTest {
             for (AppUser appRole : appRoleList){
                 System.out.println(appRole.toString());
             }
+        }
+
+        @Test
+    public void checkModel(){
+            Department department = departmentService.findDepartmentById(2L).get();
+            System.out.println(department.getTickets());
+            System.out.println(modelMapper.map(department,DepartmentModelRepresentation.class));
+        DepartmentModelRepresentation departmentModelRepresentation = departmentPaginationModelAssembler.toModel(department);
+            System.out.println();
+
         }
 }

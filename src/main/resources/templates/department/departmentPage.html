@@ -24,7 +24,7 @@
 </header>
 <main>
     <div th:object="${department}">
-        <a th:value="*{name}"></a>
+        <a th:value="*{name}" th:utext="*{name}"></a>
     </div>
 </main>
 </body>

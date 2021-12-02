@@ -1,11 +1,10 @@
 package com.xvr.serviceBook.controller.restapi.dtorepresentation;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xvr.serviceBook.entity.AppRole;
 import com.xvr.serviceBook.entity.Worker;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -16,9 +15,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AppUserModelRepresentation extends RepresentationModel<AppUserModelRepresentation> {
 
     @JsonProperty("App User Id")
@@ -30,7 +32,7 @@ public class AppUserModelRepresentation extends RepresentationModel<AppUserModel
     private boolean enabled;
 
     @JsonProperty("User Role")
-    private List<AppRoleModelRepresentation> appRole;
+    private Set<AppRoleModelRepresentation> appRole;
 
     /* TODO
     @OneToOne(fetch = FetchType.LAZY)

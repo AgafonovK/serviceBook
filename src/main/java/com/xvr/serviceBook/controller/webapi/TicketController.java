@@ -23,7 +23,7 @@ import java.time.ZoneId;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "web/tickets")
+@RequestMapping(value = "/web/tickets")
 public class TicketController {
 
     private final TicketService ticketService;

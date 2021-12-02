@@ -110,21 +110,18 @@ public class DepartmentControllerApi {
     // TODO check request if error
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<EntityModel<DepartmentModelRepresentation>> updateDepartment(@Validated @RequestBody DepartmentForm departmentForm,
-                                                                    @PathVariable(value = "id") Long id) {
+                                                                                       @PathVariable(value = "id") Long id) {
         if (departmentService.findDepartmentById(id).isPresent()) {
             departmentService.updateDepartment(DepartmentServiceDto.of(departmentForm.getName()), id);
             Optional<Department> department = departmentService.findDepartmentById(id);
-            if (department.isPresent()){
-                DepartmentModelRepresentation departmentModelRepresentation = DepartmentModelRepresentation.builder()
-                        .id(department.get().getId())
-                        .name(department.get().getName())
-                        .departmentTickets(ticketPaginationModelAssembler.toCollectionModel(department.get().getTickets()))
-                        .build().add(
+
+            if (department.isPresent()) {
+                return ResponseEntity.ok().body(new EntityModel<>(departmentPaginationModelAssembler.toModel(department.get())
+                        .add(
                                 linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.get().getId())).withSelfRel(),
                                 linkTo(methodOn(DepartmentControllerApi.class).deleteDepartmentById(department.get().getId())).withRel("delete_department")
-                        );
-                return ResponseEntity.ok().body(new EntityModel<>(departmentModelRepresentation));
-            }else {
+                        )));
+            } else {
                 return ResponseEntity.badRequest().build();
             }
         } else {

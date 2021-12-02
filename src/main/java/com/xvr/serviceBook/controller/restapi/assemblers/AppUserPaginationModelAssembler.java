@@ -7,6 +7,7 @@ import com.xvr.serviceBook.controller.restapi.dtorepresentation.AppUserModelRepr
 import com.xvr.serviceBook.entity.AppRole;
 import com.xvr.serviceBook.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -22,16 +23,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class AppUserPaginationModelAssembler implements RepresentationModelAssembler<AppUser, AppUserModelRepresentation> {
 
-    private final AppRolePaginationModelAssembler appRolePaginationModelAssembler;
-
-    @Autowired
-    public AppUserPaginationModelAssembler(AppRolePaginationModelAssembler appRolePaginationModelAssembler) {
-        this.appRolePaginationModelAssembler = appRolePaginationModelAssembler;
-    }
 
     //TODO
     @Override
     public AppUserModelRepresentation toModel(AppUser appUser) {
+
+
         return AppUserModelRepresentation.builder()
                 .id(appUser.getUserId())
                 .userName(appUser.getUserName())
@@ -43,29 +40,27 @@ public class AppUserPaginationModelAssembler implements RepresentationModelAssem
 
     @Override
     public CollectionModel<AppUserModelRepresentation> toCollectionModel(Iterable<? extends AppUser> entities) {
-        return RepresentationModelAssembler.super.toCollectionModel(entities);
+        return RepresentationModelAssembler.super.toCollectionModel(entities)
+                .add(linkTo(methodOn(AppUserControllerApi.class).getUsers(PageRequest.of(0, 5))).withSelfRel());
     }
 
-    private List<AppRoleModelRepresentation> toAppRoleModels(Set<AppRole> appRoles) {
+    private Set<AppRoleModelRepresentation> toAppRoleModels(Set<AppRole> appRoles) {
         if (appRoles.isEmpty())
-            return Collections.emptyList();
+            return Collections.emptySet();
 
         return appRoles.stream()
                 .map(appRole -> AppRoleModelRepresentation.builder()
                         .appRoleId(appRole.getAppRoleId())
                         .roleName(appRole.getRoleName())
                         .build()
-                        .add(linkTo(
-                                methodOn(AppRoleControllerApi.class)
-                                        .getRoleById(appRole.getAppRoleId()))
-                                .withSelfRel()))
-                .collect(Collectors.toList());
+                        .add(linkTo(methodOn(AppRoleControllerApi.class).getRoleById(appRole.getAppRoleId())).withSelfRel()))
+                .collect(Collectors.toSet());
     }
 
     private boolean intToBoolean(int input) {
-        if((input==0)||(input==1)) {
-            return input!=0;
-        }else {
+        if ((input == 0) || (input == 1)) {
+            return input != 0;
+        } else {
             throw new IllegalArgumentException("Входное значение может быть равно только 0 или 1 !");
         }
     }

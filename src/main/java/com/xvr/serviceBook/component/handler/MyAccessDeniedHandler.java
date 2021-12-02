@@ -1,4 +1,4 @@
-package com.xvr.serviceBook.controller.handler;
+package com.xvr.serviceBook.component.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
