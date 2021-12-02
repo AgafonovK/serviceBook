@@ -1,29 +1,22 @@
-package com.xvr.serviceBook.event.component;
+package com.xvr.serviceBook.event.listener;
 
-import com.xvr.serviceBook.entity.TicketsHistory;
 import com.xvr.serviceBook.entity.Worker;
 import com.xvr.serviceBook.event.TicketCreateEvent;
 import com.xvr.serviceBook.service.TicketHistoryService;
-import com.xvr.serviceBook.service.TicketService;
 import com.xvr.serviceBook.service.email.DefaultEmailService;
 import com.xvr.serviceBook.service.servicedto.TicketHistoryServiceDto;
-import com.xvr.serviceBook.service.servicedto.TicketServiceDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.trace.http.HttpTrace;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
-import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +28,8 @@ public class TicketCreateEventListener {
     private final DefaultEmailService defaultEmailService;
     private final TicketHistoryService ticketHistoryService;
     private final UserDetailsService userDetailsService;
+    private static final Logger logger = LoggerFactory.getLogger(TicketCreateEventListener.class);
+
 
     @Autowired
     public TicketCreateEventListener(DefaultEmailService defaultEmailService, TicketHistoryService ticketHistoryService,
@@ -54,9 +49,10 @@ public class TicketCreateEventListener {
                 .collect(Collectors.toList());
         String ticketMessage = ticketCreateEvent.getTicket().getTicketDescription();
         //TODO load user by Principal
-        System.out.println("TEST");//  userDetailsService.loadUserByUsername(""));
+        logger.info("Create event send Notification email to worker's.");
+        //  userDetailsService.loadUserByUsername(""));
         workersMailList.forEach(sendToWorker -> {
-            defaultEmailService.sendSimpleMessage(sendToWorker, "from: noreply@fo.ru",
+            defaultEmailService.sendSimpleMessage(sendToWorker, "from: noreply@foo.ru",
                     "Создана заявка с темой: " + ticketMessage);
         });
     }
@@ -66,13 +62,17 @@ public class TicketCreateEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Order(2)
     public void addTicketHistoryByTicketCreateEventListener(TicketCreateEvent ticketCreateEvent){
+        //TODO fill dto to the end
         TicketHistoryServiceDto ticketHistoryServiceDto = TicketHistoryServiceDto.builder()
                 .ticketId(ticketCreateEvent.getTicket().getId())
                 .changeTime(ZonedDateTime.now())
                 .build();
-
-        System.out.println("SECOOOND LISTENEEEEEEERRR");
-        //ticketHistoryService.save(ticketCreateEvent.getTicket());
+        logger.info("Success add ticket history to DB");
+        try {
+            ticketHistoryService.save(ticketHistoryServiceDto);
+        }catch (Exception e){
+            logger.error("Can not create ticket History entity in DB. ");
+        }
     }
 
 }

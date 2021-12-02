@@ -14,6 +14,8 @@ import java.util.Set;
 @Builder
 public class AppUserServiceDto {
 
+    private Long id;
+
     private String userName;
 
     private String password;
@@ -23,5 +25,4 @@ public class AppUserServiceDto {
     private Set<AppRole> appRole;
 
     private Worker worker;
-
 }

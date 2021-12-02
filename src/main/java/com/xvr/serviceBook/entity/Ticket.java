@@ -30,12 +30,14 @@ public class Ticket {
     private String ticketDescription;
 
     @Column(name = "start_date", updatable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime startDateTicket;
+    //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDateTicket;
 
     @Column(name = "end_date")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime endDateTicket;
+    //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDateTicket;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_ticket_id",nullable = false)

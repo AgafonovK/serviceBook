@@ -4,12 +4,12 @@ import com.xvr.serviceBook.entity.Ticket;
 import com.xvr.serviceBook.form.TicketForm;
 import com.xvr.serviceBook.service.*;
 import com.xvr.serviceBook.service.servicedto.TicketServiceDto;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Controller
@@ -34,18 +32,20 @@ public class TicketController {
     private final WorkerService workerService;
     private final StatusTicketService statusTicketService;
     private final PriorityTicketService priorityTicketService;
+    private final ModelMapper modelMapper;
     private static final Logger logger = LoggerFactory.getLogger(TicketController.class);
 
     @Autowired
     public TicketController(TicketService ticketService, DepartmentService departmentService,
                             EquipmentService equipmentService, WorkerService workerService,
-                            StatusTicketService statusTicketService, PriorityTicketService priorityTicketService) {
+                            StatusTicketService statusTicketService, PriorityTicketService priorityTicketService, ModelMapper modelMapper) {
         this.ticketService = ticketService;
         this.departmentService = departmentService;
         this.equipmentService = equipmentService;
         this.workerService = workerService;
         this.statusTicketService = statusTicketService;
         this.priorityTicketService = priorityTicketService;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -63,9 +63,10 @@ public class TicketController {
     public String ticketView(@PathVariable Long id,
                              Model model) {
         Optional<Ticket> ticket = ticketService.getTicketById(id);
+        logger.info("INFOOOO " + ticket.get().getStartDateTicket());
         if (ticket.isPresent()) {
-            model.addAttribute("ticketForm", ticket.get());
-            model.addAttribute("startDateTick", ticket.get().getStartDateTicket().toInstant());
+            model.addAttribute("ticketForm", modelMapper.map(ticket.get(), TicketForm.class));
+            model.addAttribute("startDateTick", ticket.get().getStartDateTicket());
             model.addAttribute("listWorkers", workerService.findAllWorker());
             model.addAttribute("listEquipment", equipmentService.findAllEquipment());
             model.addAttribute("listDepartment", departmentService.findAllDepartmentsList());
@@ -84,7 +85,7 @@ public class TicketController {
                                @Validated @ModelAttribute(value = "ticketForm") TicketForm ticketForm,
                                BindingResult result,
                                Model model) {
-        System.out.println("TICKET " + ticketForm);
+        logger.debug("TICKET " + ticketForm);
         if (result.hasErrors()) {
             model.addAttribute("ticketForm", ticketForm);
             model.addAttribute("listWorkers", workerService.findAllWorker());
@@ -99,8 +100,8 @@ public class TicketController {
                 ticketService.save(TicketServiceDto.builder()
                         .ticketId(ticketForm.getId())
                         .ticketDescription(ticketForm.getTicketDescription())
-                        .startDateTicket(ticketForm.getStartDateTicket().atStartOfDay(ZoneId.systemDefault()))
-                        .endDateTicket(LocalDateTime.of(ticketForm.getEndDateTicket(),LocalTime.now()))
+                        .startDateTicket(ticketForm.getStartDateTicket())
+                        .endDateTicket(ticketForm.getEndDateTicket())
                         .worker(ticketForm.getWorkers())
                         .clientDepartment(ticketForm.getClientDepartment())
                         .equipment(ticketForm.getEquipment())
@@ -153,8 +154,8 @@ public class TicketController {
             try {
                 ticketService.save(TicketServiceDto.builder()
                         .ticketDescription(ticketForm.getTicketDescription())
-                        .startDateTicket(ticketForm.getStartDateTicket().atStartOfDay(ZoneId.systemDefault()))
-                        .endDateTicket(LocalDateTime.of(ticketForm.getEndDateTicket(),LocalTime.now()))
+                        .startDateTicket(ticketForm.getStartDateTicket())
+                        .endDateTicket(ticketForm.getEndDateTicket())
                         .worker(ticketForm.getWorkers())
                         .clientDepartment(ticketForm.getClientDepartment())
                         .equipment(ticketForm.getEquipment())

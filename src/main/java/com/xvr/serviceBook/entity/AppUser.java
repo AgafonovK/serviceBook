@@ -46,7 +46,7 @@ public class AppUser{
         appRole.getAppUsers().remove(this);
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worker_id")
     private Worker worker;
 

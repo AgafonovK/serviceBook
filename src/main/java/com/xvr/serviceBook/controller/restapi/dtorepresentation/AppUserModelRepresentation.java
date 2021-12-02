@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -29,7 +30,7 @@ public class AppUserModelRepresentation extends RepresentationModel<AppUserModel
     private boolean enabled;
 
     @JsonProperty("User Role")
-    private CollectionModel<AppRoleModelRepresentation> appRole;
+    private List<AppRoleModelRepresentation> appRole;
 
     /* TODO
     @OneToOne(fetch = FetchType.LAZY)

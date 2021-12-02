@@ -11,6 +11,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "worker")
 public class Worker{
@@ -20,17 +22,21 @@ public class Worker{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne(mappedBy = "worker")
+    private AppUser appUser;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "position_worker_id")
     private PositionWorker positionWorker;
 
-    @Column(name = "first_name", length = 32, nullable = false)
+    @Column(name = "first_name", length = 32)
     private String firstName;
 
-    @Column(name = "last_name", length = 32, nullable = false)
+    @Column(name = "last_name", length = 32)
     private String lastName;
 
-    @Column(name = "patronymic", length = 32, nullable = false)
+    @Column(name = "patronymic", length = 32)
     private String patronymic;
 
     @Column(name = "phone")
@@ -48,6 +54,7 @@ public class Worker{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
+
 
 
     @ManyToMany(fetch = FetchType.LAZY)

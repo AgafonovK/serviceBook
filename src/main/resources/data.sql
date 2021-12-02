@@ -17,7 +17,7 @@ phone, email, date_accept, date_fired, position_worker_id, department_id) values
 ('Petrov', 'Petr', 'Petrovich', 1234567, null, null, null, 2, 1);
 INSERT INTO app_user (enable_user, encrypted_password, username, worker_id) VALUES
 (1,'$2a$10$jVeQwMRXJIdrHwEdn9bUwO/CWkPTBxoSBSnczbQrxjoq4aSKBss0O', 'dbadmin',1),
-(1,'$2a$10$jVeQwMRXJIdrHwEdn9bUwO/CWkPTBxoSBSnczbQrxjoq4aSKBss0O', 'user',1);
+(1,'$2a$10$jVeQwMRXJIdrHwEdn9bUwO/CWkPTBxoSBSnczbQrxjoq4aSKBss0O', 'user',2);
 
 INSERT INTO user_role (role_id, user_id) values
 (1,1),

@@ -21,9 +21,9 @@ public class TicketModelRepresentation extends RepresentationModel<TicketModelRe
 
     private String ticketDescription;
 
-    private ZonedDateTime startDateTicket;
+    private LocalDate startDateTicket;
 
-    private LocalDateTime endDateTicket;
+    private LocalDate endDateTicket;
 
     @JsonProperty("statusTicket")
     private String statusTicket;

@@ -1,10 +1,14 @@
 package com.xvr.serviceBook.service.impl;
 
+import com.xvr.serviceBook.entity.TicketsHistory;
 import com.xvr.serviceBook.repository.TicketHistoryRepository;
 import com.xvr.serviceBook.service.TicketHistoryService;
-import com.xvr.serviceBook.service.servicedto.TicketServiceDto;
+import com.xvr.serviceBook.service.servicedto.TicketHistoryServiceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.time.ZonedDateTime;
 
 @Service
 public class TicketHistoryServiceImpl implements TicketHistoryService {
@@ -17,23 +21,15 @@ public class TicketHistoryServiceImpl implements TicketHistoryService {
     }
 
     @Override
-    public void save(TicketServiceDto ticketServiceDto) {
-        /** TicketHistory:
-         *   private Long numberEvent;
-         *     private Long id;
-         *     private Long whatHappen;
-         *     private Date changeTime;
-         *     private Long whoChange;
-         *     private Long result;
-         *     private String comment;
-
+    public void save(TicketHistoryServiceDto ticketHistoryServiceDto) {
         TicketsHistory ticketsHistory = TicketsHistory.builder()
                 .numberEvent(2L)
-                .id(ticketServiceDto.getReportId())
+                .id(ticketHistoryServiceDto.getTicketId())
                 .whatHappen(3L)
-                .changeTime(Date.from(Instant.now()))
+                .changeTime(ZonedDateTime.from(Instant.now()))
                 .whoChange(2L)
                 .result(1L)
-                .comment("op").build();*/
+                .comment("op").build();
+        ticketHistoryRepository.save(ticketsHistory);
     }
 }

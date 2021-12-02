@@ -5,6 +5,5 @@ import com.xvr.serviceBook.service.servicedto.TicketServiceDto;
 
 public interface TicketHistoryService {
 
-    void save(TicketServiceDto ticketServiceDto);
-
+    void save(TicketHistoryServiceDto ticketHistoryServiceDto);
 }

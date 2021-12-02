@@ -1,12 +1,10 @@
 package com.xvr.serviceBook.controller.restapi.assemblers;
 
 import com.xvr.serviceBook.controller.restapi.AppRoleControllerApi;
-import com.xvr.serviceBook.controller.restapi.AppUserControllerApi;
 import com.xvr.serviceBook.controller.restapi.dtorepresentation.AppRoleModelRepresentation;
 import com.xvr.serviceBook.entity.AppRole;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -17,16 +15,16 @@ public class AppRolePaginationModelAssembler implements RepresentationModelAssem
     //TODO
 
     @Override
-    public AppRoleModelRepresentation toModel(AppRole entity) {
+    public AppRoleModelRepresentation toModel(AppRole appRole) {
 
         return AppRoleModelRepresentation.builder()
-                .appRoleId(entity.getAppRoleId())
-                .roleName(entity.getRoleName())
-                .build().add(linkTo(methodOn(AppRoleControllerApi.class).getRoleById(entity.getAppRoleId())).withSelfRel());
+                .appRoleId(appRole.getAppRoleId())
+                .roleName(appRole.getRoleName())
+                .build().add(linkTo(methodOn(AppRoleControllerApi.class).getRoleById(appRole.getAppRoleId())).withSelfRel());
     }
 
     @Override
-    public CollectionModel<AppRoleModelRepresentation> toCollectionModel(Iterable<? extends AppRole> entities) {
-        return RepresentationModelAssembler.super.toCollectionModel(entities);
+    public CollectionModel<AppRoleModelRepresentation> toCollectionModel(Iterable<? extends AppRole> appRoles) {
+        return RepresentationModelAssembler.super.toCollectionModel(appRoles);
     }
 }

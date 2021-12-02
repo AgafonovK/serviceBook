@@ -73,12 +73,11 @@
                     <tr>
                         <td>Дата подачи заявки</td>
                         <td>
-                            <input type="date" th:field="*{startDateTicket}" th:value="${startDateTick}"/>
+                            <input type="date" th:field="*{startDateTicket}" th:value="*{startDateTicket}"/>
                         </td>
                         <td>
                             <span th:if="${#fields.hasErrors('startDateTicket')}" th:errors="*{startDateTicket}">..</span>
                         </td>
-                        <td><p th:text="${startDateTick}"></p></td>
                     </tr>
                     <tr>
                         <td>Дата окончания заявки</td>

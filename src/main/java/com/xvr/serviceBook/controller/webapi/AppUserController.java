@@ -9,6 +9,8 @@ import com.xvr.serviceBook.service.AppUserService;
 import com.xvr.serviceBook.service.impl.AppRoleServiceImpl;
 import com.xvr.serviceBook.service.servicedto.AppUserServiceDto;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
@@ -37,6 +39,7 @@ public class AppUserController {
     private final AppUserService appUserService;
     private final AppRoleServiceImpl appRoleService;
     private final ModelMapper modelMapper;
+    private static final Logger logger = LoggerFactory.getLogger(AppUserController.class);
 
     @Autowired
     public AppUserController(AppUserService appUserService, AppRoleServiceImpl appRoleService, ModelMapper modelMapper) {
@@ -72,11 +75,14 @@ public class AppUserController {
                               Model model) {
         if (!appUserRegistrationForm.getPassword().equals(appUserRegistrationForm.getConfirmPassword())) {
             redirectAttributes.addFlashAttribute("errorMessage", "Пароли не идентичны");
-            return "redirect:/create-user";
+            logger.warn("App user will not create, password not equals.");
+            return "redirect:/web/appusers/create-user";
         }
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error: проверьте форму");
-            return "redirect:/create-user";
+            redirectAttributes.addFlashAttribute("appUserRegistrationForm", appUserRegistrationForm);
+            logger.warn("App user will not create, need check validation form: " + bindingResult.getFieldError());
+            return "redirect:/web/appusers/create-user";
         } else {
             try {
                 appUserService.saveUser(AppUserServiceDto.builder()
@@ -86,10 +92,12 @@ public class AppUserController {
                         .appRole(appUserRegistrationForm.getAppRole())
                         .build());
             } catch (Exception e) {
-                model.addAttribute("errorMessage", "Error: " + e.getMessage());
+                logger.error(e.getMessage());
+                model.addAttribute("errorMessage", "Error: sorry inside problem!");
                 return "registerPage";
             }
-            redirectAttributes.addFlashAttribute("appUserRegistrationForm", appUserRegistrationForm);
+            //redirectAttributes.addFlashAttribute("appUserRegistrationForm", appUserRegistrationForm);
+            redirectAttributes.addFlashAttribute("flashUser", appUserRegistrationForm);
         }
         return "redirect:/web/appusers/user-add-successful";
     }
@@ -101,8 +109,9 @@ public class AppUserController {
         Page<AppRole> appRoles = appRoleService.findAll(PageRequest.of(0, 5));
         model.addAttribute("title", "Create User");
         model.addAttribute("appUserRegistrationForm", appUserRegistrationForm);
-        model.addAttribute("appRoles", PositionRole.values());
-
+        //TODO change to Enum PositionRole
+        model.addAttribute("appRoles", appRoles);
+        model.addAttribute("appRolesEnum", PositionRole.values());
         return "registerPage";
     }
 

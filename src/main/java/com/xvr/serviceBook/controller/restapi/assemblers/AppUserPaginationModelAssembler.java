@@ -1,6 +1,8 @@
 package com.xvr.serviceBook.controller.restapi.assemblers;
 
+import com.xvr.serviceBook.controller.restapi.AppRoleControllerApi;
 import com.xvr.serviceBook.controller.restapi.AppUserControllerApi;
+import com.xvr.serviceBook.controller.restapi.dtorepresentation.AppRoleModelRepresentation;
 import com.xvr.serviceBook.controller.restapi.dtorepresentation.AppUserModelRepresentation;
 import com.xvr.serviceBook.entity.AppRole;
 import com.xvr.serviceBook.entity.AppUser;
@@ -8,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -24,14 +31,13 @@ public class AppUserPaginationModelAssembler implements RepresentationModelAssem
 
     //TODO
     @Override
-    public AppUserModelRepresentation toModel(AppUser entity) {
-        System.out.println("ROLES " + entity.getAppRole().size());
+    public AppUserModelRepresentation toModel(AppUser appUser) {
         return AppUserModelRepresentation.builder()
-                .id(entity.getUserId())
-                .userName(entity.getUserName())
-                .enabled(intToBoolean(entity.getEnabled()))
-                .appRole(appRolePaginationModelAssembler.toCollectionModel(entity.getAppRole()))
-                .build().add(linkTo(methodOn(AppUserControllerApi.class).getUserById(entity.getUserId())).withSelfRel());
+                .id(appUser.getUserId())
+                .userName(appUser.getUserName())
+                .enabled(intToBoolean(appUser.getEnabled()))
+                .appRole(toAppRoleModels(appUser.getAppRole()))
+                .build().add(linkTo(methodOn(AppUserControllerApi.class).getUserById(appUser.getUserId())).withSelfRel());
 
     }
 
@@ -40,6 +46,21 @@ public class AppUserPaginationModelAssembler implements RepresentationModelAssem
         return RepresentationModelAssembler.super.toCollectionModel(entities);
     }
 
+    private List<AppRoleModelRepresentation> toAppRoleModels(Set<AppRole> appRoles) {
+        if (appRoles.isEmpty())
+            return Collections.emptyList();
+
+        return appRoles.stream()
+                .map(appRole -> AppRoleModelRepresentation.builder()
+                        .appRoleId(appRole.getAppRoleId())
+                        .roleName(appRole.getRoleName())
+                        .build()
+                        .add(linkTo(
+                                methodOn(AppRoleControllerApi.class)
+                                        .getRoleById(appRole.getAppRoleId()))
+                                .withSelfRel()))
+                .collect(Collectors.toList());
+    }
 
     private boolean intToBoolean(int input) {
         if((input==0)||(input==1)) {

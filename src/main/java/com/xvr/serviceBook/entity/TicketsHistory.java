@@ -4,12 +4,15 @@ import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Builder
 @Table
 public class TicketsHistory {
 
@@ -21,8 +24,10 @@ public class TicketsHistory {
     private Long numberEvent;
     private Long ticketId;
     private Long whatHappen;
-    private Date changeTime;
+    private ZonedDateTime changeTime;
     private Long whoChange;
     private Long result;
     private String comment;
+
+
 }

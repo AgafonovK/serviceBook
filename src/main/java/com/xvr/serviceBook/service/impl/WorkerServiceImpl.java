@@ -1,10 +1,11 @@
 package com.xvr.serviceBook.service.impl;
 
 import com.xvr.serviceBook.entity.Worker;
-import com.xvr.serviceBook.form.WorkerForm;
 import com.xvr.serviceBook.repository.DepartmentRepository;
 import com.xvr.serviceBook.repository.WorkerRepository;
 import com.xvr.serviceBook.service.WorkerService;
+import com.xvr.serviceBook.service.servicedto.WorkerServiceDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ import java.util.List;
 public class WorkerServiceImpl implements WorkerService {
 
     private final WorkerRepository workerRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public WorkerServiceImpl(WorkerRepository workerRepository, DepartmentRepository departmentRepository) {
+    public WorkerServiceImpl(WorkerRepository workerRepository, DepartmentRepository departmentRepository, ModelMapper modelMapper) {
         this.workerRepository = workerRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -27,11 +30,8 @@ public class WorkerServiceImpl implements WorkerService {
 
 
     @Override
-    public Worker createWorker(WorkerForm form) {
-        Long id = getMaxUserId();
-        Worker worker = new Worker(id+1,form.getPositionWorker(),form.getFirstName(),form.getLastName(),form.getPatronymic(),form.getPhone(),
-                form.getEmail(),form.getDateAccept(), form.getDateFired(),form.getDepartment());
-        return workerRepository.saveAndFlush(worker);
+    public Worker createWorker(WorkerServiceDto workerServiceDto) {
+        return workerRepository.save(modelMapper.map(workerServiceDto, Worker.class));
     }
 
     @Override

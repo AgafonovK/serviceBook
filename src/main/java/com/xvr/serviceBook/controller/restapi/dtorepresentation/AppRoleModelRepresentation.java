@@ -4,8 +4,11 @@ import com.xvr.serviceBook.entity.AppUser;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.apache.catalina.LifecycleState;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -17,5 +20,5 @@ public class AppRoleModelRepresentation extends RepresentationModel<AppRoleModel
 
     private String roleName;
 
-    private CollectionModel<AppUserModelRepresentation> appUsers;
+    private List<AppUserModelRepresentation> appUsers;
 }

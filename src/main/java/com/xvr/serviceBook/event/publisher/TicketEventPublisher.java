@@ -1,6 +1,5 @@
-package com.xvr.serviceBook.event.component;
+package com.xvr.serviceBook.event.publisher;
 
-import com.xvr.serviceBook.entity.Ticket;
 import com.xvr.serviceBook.event.TicketCreateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;

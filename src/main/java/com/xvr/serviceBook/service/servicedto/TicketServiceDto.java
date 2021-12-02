@@ -31,7 +31,7 @@ public class TicketServiceDto {
 
     private Equipment equipment;
 
-    private ZonedDateTime startDateTicket;
+    private LocalDate startDateTicket;
 
-    private LocalDateTime endDateTicket;
+    private LocalDate endDateTicket;
 }

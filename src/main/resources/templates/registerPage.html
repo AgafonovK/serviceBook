@@ -34,7 +34,12 @@
         Пользователь не добавлен!!!<br/>
         Причина :
     </div>
-
+    <div th:if="${errorMessage != null}">
+        <br>Пользователь не добавлен!!!
+        Причина: <br/>
+        <span th:utext="${errorMessage}">
+    </span>
+    </div>
     <div th:if="${ok != null}">
         <h2>Вы добавили нового пользователя </h2>
         <ul>
@@ -81,15 +86,15 @@
                     <td>
                         <select th:name="appRole" th:field="*{appRole}" >
                             <option th:each="appRole : ${appRoles}"
-                                    th:value="${appRole}"
-                                    th:text="${appRole}">
+                                    th:value="${appRole.appRoleId}"
+                                    th:text="${appRole.roleName}">
                             </option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="submit" value="Submit"/>
+                        <input type="submit" th:value="Создать"/>
                         <button><a th:href="@{/}">Отмена</a></button>
                     </td>
                 </tr>
@@ -99,7 +104,7 @@
     </div>
     <div>
         <h2>Описание ролей</h2>
-        <div th:each="appRole : ${appRoles}">
+        <div th:each="appRole : ${appRolesEnum}">
             <span th:value="${appRole}" th:text="${appRole.label}"> Role</span>
         </div>
     </div>

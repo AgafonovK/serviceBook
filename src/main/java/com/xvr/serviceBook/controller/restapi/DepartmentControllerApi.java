@@ -50,8 +50,7 @@ public class DepartmentControllerApi {
         this.ticketPaginationModelAssembler = ticketPaginationModelAssembler;
     }
 
-    //https://computingfacts.com/post/Spring-HATEOAS-Adding-Pagination-Links-To-RESTful-API
-    @GetMapping //https://grapeup.com/blog/how-to-build-hypermedia-api-with-spring-hateoas/
+    @GetMapping
     public ResponseEntity<PagedModel<DepartmentModelRepresentation>> getAllDepartments(@PageableDefault(size = 5) Pageable pageRequest) {
         Page<Department> departments = departmentService.findAllDepartments(pageRequest);
 
@@ -98,7 +97,7 @@ public class DepartmentControllerApi {
             DepartmentModelRepresentation departmentModelRepresentation = DepartmentModelRepresentation.builder()
                     .id(department.getId())
                     .name(department.getName())
-                    .departmentTickets(ticketPaginationModelAssembler.toCollectionModel(department.getTickets()))
+                    //.departmentTickets(ticketPaginationModelAssembler.toCollectionModel(department.getTickets()))
                     .build();
             departmentModelRepresentation.add(
                     linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.getId())).withSelfRel(),
@@ -109,7 +108,7 @@ public class DepartmentControllerApi {
     }
 
     // TODO check request if error
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity<EntityModel<DepartmentModelRepresentation>> updateDepartment(@Validated @RequestBody DepartmentForm departmentForm,
                                                                     @PathVariable(value = "id") Long id) {
         if (departmentService.findDepartmentById(id).isPresent()) {

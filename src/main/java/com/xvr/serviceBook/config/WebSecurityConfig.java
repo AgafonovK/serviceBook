@@ -81,13 +81,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .httpBasic();
 
-        //Confgure Token Remember Me
-        /*http.authorizeRequests()
-                .and()
-                .rememberMe()
-                .tokenRepository(this.persistentTokenRepository())
-                .tokenValiditySeconds(60*60); // 1 hour token;*/
-        // http.headers().frameOptions().disable();
     }
 
     @Bean

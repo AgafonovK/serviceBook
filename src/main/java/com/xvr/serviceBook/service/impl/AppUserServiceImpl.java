@@ -1,14 +1,18 @@
 package com.xvr.serviceBook.service.impl;
 
-import com.xvr.serviceBook.controller.webapi.DepartmentController;
 import com.xvr.serviceBook.entity.AppUser;
+import com.xvr.serviceBook.entity.Worker;
+import com.xvr.serviceBook.event.AppUserCreateEvent;
 import com.xvr.serviceBook.repository.AppRoleRepository;
 import com.xvr.serviceBook.repository.AppUserRepository;
 import com.xvr.serviceBook.service.AppUserService;
 import com.xvr.serviceBook.service.servicedto.AppUserServiceDto;
+import com.xvr.serviceBook.service.servicedto.WorkerServiceDto;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,7 +27,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
@@ -31,13 +34,18 @@ public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
     private final AppRoleRepository appRoleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final ModelMapper modelMapper;
     private static final Logger logger = LoggerFactory.getLogger(AppUserServiceImpl.class);
 
+
     @Autowired
-    public AppUserServiceImpl(AppUserRepository appUserRepository, AppRoleRepository appRoleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AppUserServiceImpl(AppUserRepository appUserRepository, AppRoleRepository appRoleRepository, BCryptPasswordEncoder bCryptPasswordEncoder, ApplicationEventPublisher applicationEventPublisher, ModelMapper modelMapper) {
         this.appUserRepository = appUserRepository;
         this.appRoleRepository = appRoleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.applicationEventPublisher = applicationEventPublisher;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -56,6 +64,7 @@ public class AppUserServiceImpl implements AppUserService {
     public Optional<AppUser> findAppUserById(Long id){
         return appUserRepository.findById(id);
     }
+
     @Override
     @Transactional
     public void saveUser(AppUserServiceDto appUserServiceDto) {
@@ -66,6 +75,7 @@ public class AppUserServiceImpl implements AppUserService {
                 .enabled(appUserServiceDto.isEnabled() ? 1 : 0)
                 .build();
         appUserRepository.saveAndFlush(appUser);
+        applicationEventPublisher.publishEvent(new AppUserCreateEvent(this, appUser));
     }
 
     @Override
