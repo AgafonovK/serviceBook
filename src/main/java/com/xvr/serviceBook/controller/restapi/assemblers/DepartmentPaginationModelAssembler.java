@@ -1,6 +1,7 @@
 package com.xvr.serviceBook.controller.restapi.assemblers;
 
 import com.xvr.serviceBook.controller.restapi.DepartmentControllerApi;
+import com.xvr.serviceBook.controller.restapi.StatusTicketControllerApi;
 import com.xvr.serviceBook.controller.restapi.dtorepresentation.DepartmentModelRepresentation;
 import com.xvr.serviceBook.controller.restapi.dtorepresentation.StatusTicketModelRepresentation;
 import com.xvr.serviceBook.controller.restapi.dtorepresentation.TicketModelRepresentation;
@@ -9,6 +10,8 @@ import com.xvr.serviceBook.entity.StatusTicket;
 import com.xvr.serviceBook.entity.Ticket;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.Provider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.CollectionModel;
@@ -27,15 +30,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class DepartmentPaginationModelAssembler implements RepresentationModelAssembler<Department, DepartmentModelRepresentation> {
 
     private final ModelMapper modelMapper;
+    private final StatusTicketPaginationModelAssembler statusTicketPaginationModelAssembler;
+    public static final Logger logger = LoggerFactory.getLogger(DepartmentPaginationModelAssembler.class);
 
-    public DepartmentPaginationModelAssembler(ModelMapper modelMapper) {
+    public DepartmentPaginationModelAssembler(ModelMapper modelMapper, StatusTicketPaginationModelAssembler statusTicketPaginationModelAssembler) {
         this.modelMapper = modelMapper;
+        this.statusTicketPaginationModelAssembler = statusTicketPaginationModelAssembler;
     }
 
     @Override
     public DepartmentModelRepresentation toModel(Department department) {
         DepartmentModelRepresentation departmentModelRepresentation = buildDepartmentRepresentation(department);
-        departmentModelRepresentation.add(linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.getId())).withSelfRel());
+        logger.info(departmentModelRepresentation.toString());
         return departmentModelRepresentation;
     }
 
@@ -44,31 +50,32 @@ public class DepartmentPaginationModelAssembler implements RepresentationModelAs
                 .id(department.getId())
                 .name(department.getName())
                 .departmentTickets(toTicketRoleModel(department.getTickets()))
-                .build();
+                .build()
+                .add(linkTo(methodOn(DepartmentControllerApi.class).getDepartmentById(department.getId())).withSelfRel());
     }
 
     private Set<TicketModelRepresentation> toTicketRoleModel(Set<Ticket> tickets) {
         if (tickets.isEmpty()) {
             return Collections.emptySet();
         }
-        return tickets.stream().map(ticket -> {
-            return TicketModelRepresentation.builder()
-                    .id(ticket.getId())
-                    .startDateTicket(ticket.getStartDateTicket())
-                    .endDateTicket(ticket.getEndDateTicket())
-                    .statusTicket(toStatusTicketModel(ticket.getStatusTicket()))
-                    .ticketDescription(ticket.getTicketDescription())
-                    //.clientDepartmentRepresentation()
-                    .statusTicket(toStatusTicketModel(ticket.getStatusTicket()))
-                    .build();
-        }).collect(Collectors.toSet());
+        return tickets.stream().map(ticket -> TicketModelRepresentation.builder()
+                .id(ticket.getId())
+                .startDateTicket(ticket.getStartDateTicket())
+                .endDateTicket(ticket.getEndDateTicket())
+                .statusTicket(toStatusTicketModel(ticket.getStatusTicket()))
+                .ticketDescription(ticket.getTicketDescription())
+                //.clientDepartmentRepresentation()
+                .build()
+        ).collect(Collectors.toSet());
+
     }
 
     private StatusTicketModelRepresentation toStatusTicketModel(StatusTicket statusTicket) {
         return StatusTicketModelRepresentation.builder()
-                    .id(statusTicket.getId())
-                    .statusName(statusTicket.getStatusName())
-                    .build();
+                .id(statusTicket.getId())
+                .statusName(statusTicket.getStatusName())
+                .build()
+                .add(linkTo(methodOn(StatusTicketControllerApi.class).findAllStatusTickets(PageRequest.of(0, 5))).withSelfRel());
     }
     @Override
     public CollectionModel<DepartmentModelRepresentation> toCollectionModel(Iterable<? extends Department> entities) {

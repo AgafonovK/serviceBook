@@ -17,9 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Optional;
 
 @Controller
@@ -63,7 +60,7 @@ public class TicketController {
     public String ticketView(@PathVariable Long id,
                              Model model) {
         Optional<Ticket> ticket = ticketService.getTicketById(id);
-        logger.info("INFOOOO " + ticket.get().getStartDateTicket());
+        logger.info("INFO " + ticket.get().getStartDateTicket());
         if (ticket.isPresent()) {
             model.addAttribute("ticketForm", modelMapper.map(ticket.get(), TicketForm.class));
             model.addAttribute("startDateTick", ticket.get().getStartDateTicket());

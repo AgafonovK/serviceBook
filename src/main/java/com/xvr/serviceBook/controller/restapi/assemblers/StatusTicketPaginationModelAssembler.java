@@ -22,7 +22,7 @@ public class StatusTicketPaginationModelAssembler implements RepresentationModel
         return StatusTicketModelRepresentation.builder()
                 .id(entity.getId())
                 .statusName(entity.getStatusName())
-                .statusTickets(ticketPaginationModelAssembler.toCollectionModel(entity.getTickets()))
+                //.statusTickets(ticketPaginationModelAssembler.toCollectionModel(entity.getTickets()))
                 .build();
     }
 

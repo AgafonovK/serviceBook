@@ -32,7 +32,7 @@ public class AppUserPaginationModelAssembler implements RepresentationModelAssem
         return AppUserModelRepresentation.builder()
                 .id(appUser.getUserId())
                 .userName(appUser.getUserName())
-                .enabled(intToBoolean(appUser.getEnabled()))
+                .enabled(appUser.getEnabled()==1)
                 .appRole(toAppRoleModels(appUser.getAppRole()))
                 .build().add(linkTo(methodOn(AppUserControllerApi.class).getUserById(appUser.getUserId())).withSelfRel());
 
@@ -57,11 +57,11 @@ public class AppUserPaginationModelAssembler implements RepresentationModelAssem
                 .collect(Collectors.toSet());
     }
 
-    private boolean intToBoolean(int input) {
+    /*private boolean intToBoolean(int input) {
         if ((input == 0) || (input == 1)) {
             return input != 0;
         } else {
             throw new IllegalArgumentException("Входное значение может быть равно только 0 или 1 !");
         }
-    }
+    }*/
 }

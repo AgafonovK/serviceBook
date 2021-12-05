@@ -16,7 +16,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Relation(itemRelation = "ticket", collectionRelation = "tickets")
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TicketModelRepresentation extends RepresentationModel<TicketModelRepresentation> {
 
     private Long id;
@@ -38,5 +38,6 @@ public class TicketModelRepresentation extends RepresentationModel<TicketModelRe
 
    @JsonProperty("clientDepartment")
    private DepartmentModelRepresentation clientDepartmentRepresentation;
-    //private Equipment equipment;
+
+   //private Equipment equipment;
 }

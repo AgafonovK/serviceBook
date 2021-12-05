@@ -1,17 +1,16 @@
 package com.xvr.serviceBook.controller.restapi.dtorepresentation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class StatusTicketModelRepresentation extends RepresentationModel<StatusTicketModelRepresentation> {
 
     private Long id;

@@ -1,7 +1,12 @@
 package com.xvr.serviceBook;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xvr.serviceBook.controller.restapi.assemblers.DepartmentPaginationModelAssembler;
 import com.xvr.serviceBook.controller.restapi.dtorepresentation.DepartmentModelRepresentation;
+import com.xvr.serviceBook.controller.restapi.dtorepresentation.StatusTicketModelRepresentation;
+import com.xvr.serviceBook.controller.restapi.dtorepresentation.TicketModelRepresentation;
 import com.xvr.serviceBook.entity.AppUser;
 import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.repository.AppRoleRepository;
@@ -16,7 +21,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Commit;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 @Commit
@@ -29,13 +36,12 @@ public class DataJpaTest {
     @Autowired
     private AppRoleRepository appRoleRepository;
     @Autowired
-    private AppUserServiceImpl appUserService;
-    @Autowired
     private DepartmentPaginationModelAssembler departmentPaginationModelAssembler;
     @Autowired
     private DepartmentService departmentService;
     @Autowired
     private ModelMapper modelMapper;
+
     @BeforeEach
     public void booksShouldBeAdded() {
         /*AppRole appRoleAdmin = AppRole.builder()
@@ -59,22 +65,52 @@ public class DataJpaTest {
         Assertions.assertEquals(1, appUserRepository.count());
         Assertions.assertEquals(2, appRoleRepository.count());*/
     }
-        @Test
-        @DisplayName("проверка связи таблиц")
-        public void checkAppRolesFromAppUser() {
-            List<AppUser> appRoleList = appUserService.findAllAppUsers();
-            for (AppUser appRole : appRoleList){
-                System.out.println(appRole.toString());
-            }
-        }
 
-        @Test
-    public void checkModel(){
-            Department department = departmentService.findDepartmentById(2L).get();
-            System.out.println(department.getTickets());
-            System.out.println(modelMapper.map(department,DepartmentModelRepresentation.class));
-        DepartmentModelRepresentation departmentModelRepresentation = departmentPaginationModelAssembler.toModel(department);
-            System.out.println();
+    @Test
+    @DisplayName("проверка связи таблиц")
+    public void checkAppRolesFromAppUser() {
+        /*List<AppUser> appRoleList = appUserService.findAllAppUsers();
+        for (AppUser appRole : appRoleList) {
+            System.out.println(appRole.toString());
+        }*/
+    }
 
-        }
+    @Test
+    public void checkModel() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        String jsonPerson = mapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsString(DepartmentModelRepresentation.builder()
+                        .id(3L)
+                        .name("depart2")
+                        .departmentTickets(Set.of(TicketModelRepresentation.builder()
+                                        .id(3L)
+                                        .endDateTicket(LocalDate.now().plusDays(1))
+                                        .startDateTicket(LocalDate.now().minusDays(1))
+                                        .ticketDescription("errrorr")
+                                        .statusTicket(StatusTicketModelRepresentation.builder()
+                                                .id(3L)
+                                                .statusName("FIXED")
+                                                .statusTickets(null)
+                                                .build()
+                                        )
+                                        .clientDepartmentRepresentation(null)
+                                        .build(),
+                                TicketModelRepresentation.builder()
+                                        .id(4L)
+                                        .endDateTicket(LocalDate.now().plusDays(1))
+                                        .startDateTicket(LocalDate.now().minusDays(1))
+                                        .ticketDescription("errrorr")
+                                        .statusTicket(StatusTicketModelRepresentation.builder()
+                                                .id(4L)
+                                                .statusName("FIXED")
+                                                .statusTickets(null)
+                                                .build()
+                                        )
+                                        .clientDepartmentRepresentation(null)
+                                        .build())));
+        System.out.println(jsonPerson);
+
+    }
+
 }
