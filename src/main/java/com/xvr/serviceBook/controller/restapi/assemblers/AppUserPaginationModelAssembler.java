@@ -57,11 +57,4 @@ public class AppUserPaginationModelAssembler implements RepresentationModelAssem
                 .collect(Collectors.toSet());
     }
 
-    /*private boolean intToBoolean(int input) {
-        if ((input == 0) || (input == 1)) {
-            return input != 0;
-        } else {
-            throw new IllegalArgumentException("Входное значение может быть равно только 0 или 1 !");
-        }
-    }*/
 }

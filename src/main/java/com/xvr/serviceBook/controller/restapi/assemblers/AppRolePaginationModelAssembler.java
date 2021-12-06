@@ -21,7 +21,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class AppRolePaginationModelAssembler implements RepresentationModelAssembler<AppRole, AppRoleModelRepresentation> {
 
-    //TODO
 
     @Override
     public AppRoleModelRepresentation toModel(AppRole appRole) {
@@ -31,7 +30,8 @@ public class AppRolePaginationModelAssembler implements RepresentationModelAssem
                 .roleName(appRole.getRoleName())
                 .appUsers(toAppUserModels(appRole.getAppUsers()))
                 .build()
-                .add(linkTo(methodOn(AppRoleControllerApi.class).getRoleById(appRole.getAppRoleId())).withSelfRel());
+                .add(linkTo(
+                        methodOn(AppRoleControllerApi.class).getRoleById(appRole.getAppRoleId())).withSelfRel());
     }
 
     @Override

@@ -10,11 +10,11 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 
-@RestController
+@Controller
 @ExposesResourceFor(StatusTicket.class)
 @RequestMapping(value = "/rest/statusTickets")
 public class StatusTicketControllerApi {

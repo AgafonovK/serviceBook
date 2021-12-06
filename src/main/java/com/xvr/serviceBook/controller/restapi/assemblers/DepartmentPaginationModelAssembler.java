@@ -9,16 +9,13 @@ import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.entity.StatusTicket;
 import com.xvr.serviceBook.entity.Ticket;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,7 +37,7 @@ public class DepartmentPaginationModelAssembler implements RepresentationModelAs
 
     @Override
     public DepartmentModelRepresentation toModel(Department department) {
-        DepartmentModelRepresentation departmentModelRepresentation = buildDepartmentRepresentation(department);
+        var departmentModelRepresentation = buildDepartmentRepresentation(department);
         logger.info(departmentModelRepresentation.toString());
         return departmentModelRepresentation;
     }

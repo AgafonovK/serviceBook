@@ -10,7 +10,7 @@ import org.springframework.hateoas.RepresentationModel;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-//@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class StatusTicketModelRepresentation extends RepresentationModel<StatusTicketModelRepresentation> {
 
     private Long id;

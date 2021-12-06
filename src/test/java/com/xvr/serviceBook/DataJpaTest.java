@@ -4,29 +4,31 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xvr.serviceBook.controller.restapi.assemblers.DepartmentPaginationModelAssembler;
-import com.xvr.serviceBook.controller.restapi.dtorepresentation.DepartmentModelRepresentation;
-import com.xvr.serviceBook.controller.restapi.dtorepresentation.StatusTicketModelRepresentation;
-import com.xvr.serviceBook.controller.restapi.dtorepresentation.TicketModelRepresentation;
+import com.xvr.serviceBook.controller.restapi.dtorepresentation.*;
+import com.xvr.serviceBook.entity.AppRole;
 import com.xvr.serviceBook.entity.AppUser;
 import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.repository.AppRoleRepository;
+import com.xvr.serviceBook.repository.AppUserRepository;
 import com.xvr.serviceBook.repository.TicketRepository;
 import com.xvr.serviceBook.repository.WorkerRepository;
+import com.xvr.serviceBook.service.AppUserService;
 import com.xvr.serviceBook.service.DepartmentService;
 import com.xvr.serviceBook.service.impl.AppUserServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-@org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-@Commit
+@SpringBootTest
 public class DataJpaTest {
 
     @Autowired
@@ -36,6 +38,8 @@ public class DataJpaTest {
     @Autowired
     private AppRoleRepository appRoleRepository;
     @Autowired
+    private AppUserRepository appUserRepository;
+    @Autowired
     private DepartmentPaginationModelAssembler departmentPaginationModelAssembler;
     @Autowired
     private DepartmentService departmentService;
@@ -43,14 +47,14 @@ public class DataJpaTest {
     private ModelMapper modelMapper;
 
     @BeforeEach
-    public void booksShouldBeAdded() {
-        /*AppRole appRoleAdmin = AppRole.builder()
-                .appRoleId(1L)
-                .roleName("ADMIN")
+    public void entityShouldBeAdded() {
+        AppRole appRoleAdmin = AppRole.builder()
+                .appRoleId(3L)
+                .roleName("ADMINPLUS")
                 .build();
         AppRole appRoleUser = AppRole.builder()
-                .appRoleId(2L)
-                .roleName("USER")
+                .appRoleId(4L)
+                .roleName("USERPLUS")
                 .build();
         appRoleRepository.save(appRoleAdmin);
         appRoleRepository.save(appRoleUser);
@@ -62,55 +66,42 @@ public class DataJpaTest {
                 .appRole(appRoleSet)
                 .build();
         appUserRepository.save(appUser);
-        Assertions.assertEquals(1, appUserRepository.count());
-        Assertions.assertEquals(2, appRoleRepository.count());*/
+        Assertions.assertEquals(3, appUserRepository.count());
+        Assertions.assertEquals(4, appRoleRepository.count());
     }
 
     @Test
     @DisplayName("проверка связи таблиц")
     public void checkAppRolesFromAppUser() {
-        /*List<AppUser> appRoleList = appUserService.findAllAppUsers();
+        List<AppUser> appRoleList = appUserRepository.findAll();
         for (AppUser appRole : appRoleList) {
             System.out.println(appRole.toString());
-        }*/
+        }
     }
 
     @Test
     public void checkModel() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        String jsonPerson = mapper.writerWithDefaultPrettyPrinter()
-                .writeValueAsString(DepartmentModelRepresentation.builder()
-                        .id(3L)
-                        .name("depart2")
-                        .departmentTickets(Set.of(TicketModelRepresentation.builder()
-                                        .id(3L)
-                                        .endDateTicket(LocalDate.now().plusDays(1))
-                                        .startDateTicket(LocalDate.now().minusDays(1))
-                                        .ticketDescription("errrorr")
-                                        .statusTicket(StatusTicketModelRepresentation.builder()
-                                                .id(3L)
-                                                .statusName("FIXED")
-                                                .statusTickets(null)
-                                                .build()
-                                        )
-                                        .clientDepartmentRepresentation(null)
-                                        .build(),
-                                TicketModelRepresentation.builder()
-                                        .id(4L)
-                                        .endDateTicket(LocalDate.now().plusDays(1))
-                                        .startDateTicket(LocalDate.now().minusDays(1))
-                                        .ticketDescription("errrorr")
-                                        .statusTicket(StatusTicketModelRepresentation.builder()
-                                                .id(4L)
-                                                .statusName("FIXED")
-                                                .statusTickets(null)
-                                                .build()
-                                        )
-                                        .clientDepartmentRepresentation(null)
-                                        .build())));
-        System.out.println(jsonPerson);
 
+        AppRoleModelRepresentation appRoleModelRepresentation = new AppRoleModelRepresentation();
+        appRoleModelRepresentation.setAppRoleId(1L);
+        appRoleModelRepresentation.setRoleName("Adm");
+        appRoleModelRepresentation.setAppUsers(null);
+
+        AppRoleModelRepresentation appRoleModelRepresentation2 = new AppRoleModelRepresentation();
+        appRoleModelRepresentation2.setAppRoleId(2L);
+        appRoleModelRepresentation2.setRoleName("Use");
+        appRoleModelRepresentation2.setAppUsers(null);
+
+        AppUserModelRepresentation appUserModelRepresentation = new AppUserModelRepresentation();
+        appUserModelRepresentation.setId(1L);
+        appUserModelRepresentation.setUserName("nick");
+        appUserModelRepresentation.setEnabled(true);
+        appUserModelRepresentation.setAppRole(Set.of(appRoleModelRepresentation, appRoleModelRepresentation2));
+
+        String jsonAppUser = mapper.writeValueAsString(appUserModelRepresentation);
+        System.out.println(jsonAppUser);
     }
 
 }

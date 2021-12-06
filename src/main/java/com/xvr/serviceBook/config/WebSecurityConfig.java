@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AppUserService appUserService;
 
     @Autowired
-    public WebSecurityConfig(AccessDeniedHandler accessDeniedHandler, DataSource dataSource,@Lazy AppUserService appUserService) {
+    public WebSecurityConfig(AccessDeniedHandler accessDeniedHandler, DataSource dataSource, @Lazy AppUserService appUserService) {
         this.accessDeniedHandler = accessDeniedHandler;
         this.dataSource = dataSource;
         this.appUserService = appUserService;
@@ -40,11 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        // Setting Authentication Manager Service to find User in the database.
-        // And Setting PasswordEncoder
         auth.userDetailsService(appUserService).passwordEncoder(passwordEncoder());
-
     }
 
     @Override
@@ -53,33 +49,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/web/appusers","web/appusers/create-user","/web/appusers/user-add-successful").permitAll()
-                    .antMatchers("/h2-console/**").hasRole("ADMIN")
-                    .antMatchers("/users/**").hasRole("USER")
-                    .anyRequest().authenticated()
+                .antMatchers("/", "/web/appusers", "web/appusers/create-user", "/web/appusers/user-add-successful").permitAll()
+                .antMatchers("/h2-console/**").hasRole("ADMIN")
+                .antMatchers("/users/**").hasRole("USER")
+                .anyRequest().authenticated()
                 .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/userInfo")
-                    .failureUrl("/login?error=true")
-                    .permitAll()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/userInfo")
+                .failureUrl("/login?error=true")
+                .permitAll()
                 .and()
-                    .logout()
-                    //.logoutUrl("/logout")
-                    .logoutSuccessUrl("/login")
-                    .invalidateHttpSession(true)        // set invalidation state when logout
-                    .deleteCookies("JSESSIONID")
-                    .permitAll()
+                .logout()
+                //.logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)        // set invalidation state when logout
+                .deleteCookies("JSESSIONID")
+                .permitAll()
                 .and()
-                    .exceptionHandling()
-                    .accessDeniedPage("/403")
-                    .accessDeniedHandler(accessDeniedHandler)
+                .exceptionHandling()
+                .accessDeniedPage("/403")
+                .accessDeniedHandler(accessDeniedHandler)
                 .and()
-                    .rememberMe()
-                    .tokenRepository(this.persistentTokenRepository())
-                    .tokenValiditySeconds(60*60) // 1 hour token;*/
+                .rememberMe()
+                .tokenRepository(this.persistentTokenRepository())
+                .tokenValiditySeconds(60 * 60) // 1 hour token;*/
                 .and()
-                    .httpBasic();
+                .httpBasic();
 
     }
 

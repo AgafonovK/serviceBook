@@ -3,6 +3,7 @@ package com.xvr.serviceBook.controller.restapi;
 import com.xvr.serviceBook.controller.restapi.assemblers.DepartmentPaginationModelAssembler;
 import com.xvr.serviceBook.controller.restapi.assemblers.TicketPaginationModelAssembler;
 import com.xvr.serviceBook.controller.restapi.dtorepresentation.DepartmentModelRepresentation;
+import com.xvr.serviceBook.controller.restapi.dtorepresentation.TicketModelRepresentation;
 import com.xvr.serviceBook.entity.Department;
 import com.xvr.serviceBook.entity.Ticket;
 import com.xvr.serviceBook.form.DepartmentForm;
@@ -18,16 +19,18 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@RestController
+@Controller
 @ExposesResourceFor(Department.class)
 @RequestMapping(value = "/rest/departments")
 public class DepartmentControllerApi {
@@ -132,9 +135,22 @@ public class DepartmentControllerApi {
 
     //TODO
     @GetMapping(value = "/{id}/tickets")
-    public ResponseEntity<PagedModel<Ticket>> getDepartmentTickets(@PageableDefault(size = 5) Pageable pageRequest,
-                                                                   @PathVariable(name = "id") Long departmentId) {
+    public ResponseEntity<PagedModel<TicketModelRepresentation>> getDepartmentTickets(@PageableDefault(size = 5) Pageable pageRequest,
+                                                                                      @PathVariable(name = "id") Long departmentId) {
         Page<Ticket> ticketsByDepartmentId = ticketService.findTicketsByDepartmentId(pageRequest, departmentId);
-        return null;
+        PagedModel<TicketModelRepresentation> ticketModelRepresentations = ticketPagedResourcesAssembler.toModel(ticketsByDepartmentId,ticketPaginationModelAssembler);
+        return ResponseEntity.ok(ticketModelRepresentations);
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<DepartmentModelRepresentation> deleteDepartment(@PathVariable Long id){
+        Optional<Department> department = departmentService.findDepartmentById(id);
+        if (!department.isPresent()) {
+            throw new EntityNotFoundException("Department not found with id - " + id);
+        }
+        departmentService.deleteDepartmentById(id);
+        var departmentModelRepresentation = new DepartmentModelRepresentation();
+        departmentModelRepresentation.add(linkTo(methodOn(DepartmentControllerApi.class).getAllDepartments(PageRequest.of(0,5))).withRel("get_departments").withType("GET"));
+        return ResponseEntity.ok().body(departmentModelRepresentation);
     }
 }
